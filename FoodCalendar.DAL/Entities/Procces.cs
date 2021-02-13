@@ -4,9 +4,15 @@ using System.Text;
 
 namespace FoodCalendar.DAL.Entities
 {
-    class Procces
+    public class Procces
     {
-        int TimeRequired { get; set; }
-        string Description { get; set; }
+        public int TimeRequired { get; set; }
+        public string Description { get; set; }
+
+        public Procces(int timeRequired, string description)
+        {
+            TimeRequired = timeRequired;
+            Description = description;
+        }
     }
 }

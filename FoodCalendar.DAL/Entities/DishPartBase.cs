@@ -5,11 +5,19 @@ using System.Text;
 
 namespace FoodCalendar.DAL.Entities
 {
-    abstract class DishPartBase : EntityBase, IDishPart
+    public abstract class DishPartBase : EntityBase, IDishPart
     {
-        ICollection<IDishPart> Ingredients { get; set; }
-        Procces procces { get; set; }
-        int Calories { get; set; }
-        int TotalTime { get; set; }
+        public ICollection<IDishPart> ingredients { get; set; }
+        public Procces procces { get; set; }
+        public int Calories { get; set; }
+        public int TotalTime { get; set; }
+
+        protected DishPartBase(Procces procces, int calories, int totalTime)
+        {
+            ingredients = new List<IDishPart>();
+            this.procces = procces;
+            Calories = calories;
+            TotalTime = totalTime;
+        }
     }
 }

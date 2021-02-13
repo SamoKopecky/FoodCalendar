@@ -4,10 +4,18 @@ using System.Text;
 
 namespace FoodCalendar.DAL.Entities
 {
-    class Day : EntityBase
+    public class Day : EntityBase
     {
-        int CaloriesLimit { get; set; }
-        int CaloriesSum { get; set; }
-        ICollection<Dish> dishes { get; set; }
+        public int CaloriesLimit { get; set; }
+        public int CaloriesSum { get; set; }
+        public ICollection<Dish> dishes { get; set; }
+
+        public Day(int caloriesLimit, int caloriesSum, ICollection<Dish> dishes)
+        {
+            this.dishes = dishes;
+            CaloriesLimit = caloriesLimit;
+            CaloriesSum = caloriesSum;
+            this.dishes = dishes;
+        }
     }
 }

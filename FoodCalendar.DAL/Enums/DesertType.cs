@@ -4,7 +4,7 @@ using System.Text;
 
 namespace FoodCalendar.DAL.Enums
 {
-    enum DesertType
+    public enum DesertType
     {
         Sweet,
         Sour

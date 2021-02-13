@@ -5,8 +5,13 @@ using System.Text;
 
 namespace FoodCalendar.DAL.Entities
 {
-    class Desert: DishPartBase
+    public class Desert : DishPartBase
     {
-        ICollection<DesertType> desertTypes { get; set; }
+        public ICollection<DesertType> desertTypes { get; set; }
+
+        public Desert(Procces procces, int calories, int totalTime, DesertType desertType) : base(procces, calories, totalTime)
+        {
+            this.desertTypes = desertTypes;
+        }
     }
 }

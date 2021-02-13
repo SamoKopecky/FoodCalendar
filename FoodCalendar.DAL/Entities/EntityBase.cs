@@ -2,8 +2,8 @@
 
 namespace FoodCalendar.DAL.Entities
 {
-    abstract class EntityBase
+    public abstract class EntityBase
     {
-        Guid Id { get; set; }
+        public Guid Id { get; set; }
     }
 }
