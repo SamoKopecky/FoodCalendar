@@ -3,9 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.31005.135
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FoodCalendar.App", "FoodCalendar.App\FoodCalendar.App.csproj", "{97C76EAF-48A4-4132-96E6-6757ACB4E2DC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FoodCalendar.App", "FoodCalendar.App\FoodCalendar.App.csproj", "{97C76EAF-48A4-4132-96E6-6757ACB4E2DC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FoodCalendar.DAL", "FoodCalendar.DAL\FoodCalendar.DAL.csproj", "{A9DC602A-B500-46F0-AA49-A5108AD0FD0D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FoodCalendar.DAL", "FoodCalendar.DAL\FoodCalendar.DAL.csproj", "{A9DC602A-B500-46F0-AA49-A5108AD0FD0D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FoodCalendar.DAL.Tests", "FoodCalendar.DAL.Tests\FoodCalendar.DAL.Tests.csproj", "{23A0A3E7-E6E5-49F6-9F1B-83ABA3E9A121}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{A9DC602A-B500-46F0-AA49-A5108AD0FD0D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A9DC602A-B500-46F0-AA49-A5108AD0FD0D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A9DC602A-B500-46F0-AA49-A5108AD0FD0D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{23A0A3E7-E6E5-49F6-9F1B-83ABA3E9A121}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{23A0A3E7-E6E5-49F6-9F1B-83ABA3E9A121}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{23A0A3E7-E6E5-49F6-9F1B-83ABA3E9A121}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{23A0A3E7-E6E5-49F6-9F1B-83ABA3E9A121}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

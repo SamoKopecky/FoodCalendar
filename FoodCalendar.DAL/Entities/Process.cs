@@ -4,12 +4,12 @@ using System.Text;
 
 namespace FoodCalendar.DAL.Entities
 {
-    public class Procces
+    public class Process
     {
         public int TimeRequired { get; set; }
         public string Description { get; set; }
 
-        public Procces(int timeRequired, string description)
+        public Process(int timeRequired, string description)
         {
             TimeRequired = timeRequired;
             Description = description;

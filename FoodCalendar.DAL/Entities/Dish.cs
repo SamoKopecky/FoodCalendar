@@ -10,19 +10,40 @@ namespace FoodCalendar.DAL.Entities
         public string DishName { get; set; }
         public DateTime DishTime { get; set; }
         public int Calories { get; set; }
-        public ICollection<Food> foods { get; set; }
-        public ICollection<Drink> drinks { get; set; }
-        public ICollection<Desert> deserts { get; set; }
+        public ICollection<Food> Foods { get; set; }
+        public ICollection<Drink> Drinks { get; set; }
+        public ICollection<Desert> Deserts { get; set; }
 
-        public Dish(int totalTime, string dishName, DateTime dishTime, int calories)
+        public Dish(string dishName, DateTime dishTime)
         {
-            foods = new List<Food>();
-            drinks = new List<Drink>();
-            deserts = new List<Desert>();
-            TotalTime = totalTime;
+            Foods = new List<Food>();
+            Drinks = new List<Drink>();
+            Deserts = new List<Desert>();
             DishName = dishName;
             DishTime = dishTime;
-            Calories = calories;
+            TotalTime = 0;
+            Calories = 0;
+        }
+
+        public void SumTimeAndCalories()
+        {
+            foreach (var food in Foods)
+            {
+                TotalTime += food.TotalTime;
+                Calories += food.Calories;
+            }
+
+            foreach (var drink in Drinks)
+            {
+                TotalTime += drink.TotalTime;
+                Calories += drink.Calories;
+            }
+
+            foreach (var desert in Deserts)
+            {
+                TotalTime += desert.TotalTime;
+                Calories += desert.Calories;
+            }
         }
     }
 }

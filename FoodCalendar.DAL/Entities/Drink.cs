@@ -5,13 +5,14 @@ using System.Text;
 
 namespace FoodCalendar.DAL.Entities
 {
-    public class Drink : DishPartBase
+    public class Drink : DishPartBase<DrinkType>
     {
-        public Drink(Procces procces, int calories, int totalTime) : base(procces, calories, totalTime)
+        public Drink(int calories) : base(calories)
         {
         }
 
-        public ICollection<DrinkType> drinkTypes { get; set; }
-
+        public Drink()
+        {
+        }
     }
 }
