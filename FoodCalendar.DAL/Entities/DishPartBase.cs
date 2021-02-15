@@ -22,11 +22,12 @@ namespace FoodCalendar.DAL.Entities
         public int Calories { get; set; }
         public int TotalTime { get; set; }
         public ICollection<T> DishPartTypes { get; set; }
-        public ICollection<IDishPart> Ingredients { get; set; }
+
+        public Dictionary<IDishPart, int> IngredientsUsed { get; private set; }
 
         private void Initialize()
         {
-            Ingredients = new List<IDishPart>();
+            IngredientsUsed = new Dictionary<IDishPart, int>();
             DishPartTypes = new List<T>();
             TotalTime = 0;
         }
@@ -45,22 +46,22 @@ namespace FoodCalendar.DAL.Entities
 
         public void SumCalories()
         {
-            Calories = CycleSumCalories(this);
+            Calories = CycleSumCalories(this.IngredientsUsed);
         }
 
-        private int CycleSumCalories(DishPartBase<T> dishPart)
+        protected int CycleSumCalories(Dictionary<IDishPart, int> ingredientsUsed)
         {
             var sum = 0;
-            foreach (var element in dishPart.Ingredients)
+            foreach (var (key, value) in ingredientsUsed)
             {
-                if (element is Ingredient ingredient)
+                sum += key switch
                 {
-                    sum += ingredient.Calories * ingredient.Amount;
-                }
-                else
-                {
-                    sum += CycleSumCalories((DishPartBase<T>) element);
-                }
+                    Ingredient ingredient => ingredient.Calories * value,
+                    Desert desert => CycleSumCalories(desert.IngredientsUsed),
+                    Food food => CycleSumCalories(food.IngredientsUsed),
+                    Drink drink => CycleSumCalories(drink.IngredientsUsed),
+                    _ => throw new Exception("Unknown class type")
+                };
             }
 
             return sum;

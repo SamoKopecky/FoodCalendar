@@ -16,9 +16,9 @@ namespace FoodCalendar.DAL.Tests
             var ingredient3 = new Ingredient("butter", 1, "ks", 5);
             var food = new Food();
             var desert = new Desert();
-            desert.Ingredients.Add(ingredient3);
-            food.Ingredients.Add(ingredient1);
-            food.Ingredients.Add(ingredient2);
+            desert.IngredientsUsed.Add(ingredient3, 1);
+            food.IngredientsUsed.Add(ingredient1, 3);
+            food.IngredientsUsed.Add(ingredient2, 1);
             food.SumCalories();
             desert.SumCalories();
             var dish = new Dish("test", new DateTime());

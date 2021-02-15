@@ -1,8 +1,5 @@
 using System;
-using System.Collections.Generic;
-using System.Runtime.InteropServices.ComTypes;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using FoodCalendar.DAL.Interfaces;
 using FoodCalendar.DAL.Entities;
 
 
@@ -18,16 +15,16 @@ namespace FoodCalendar.DAL.Tests
             var ingredient1 = new Ingredient("egg", 3, "ks", 5);
             var ingredient2 = new Ingredient("ham", 1, "ks", 5);
             var ingredient3 = new Ingredient("butter", 1, "ks", 5);
-            var food1 = new Desert();
-            var food2 = new Desert();
-            food2.Ingredients.Add(ingredient3);
-            food1.Ingredients.Add(ingredient1);
-            food1.Ingredients.Add(ingredient2);
-            food1.Ingredients.Add(food2);
+            var food = new Food();
+            var desert = new Desert();
+            desert.IngredientsUsed.Add(ingredient3, 1);
+            food.IngredientsUsed.Add(ingredient1, 3);
+            food.IngredientsUsed.Add(ingredient2, 1);
+            food.IngredientsUsed.Add(desert, 1);
 
-            food1.SumCalories();
+            food.SumCalories();
 
-            var actual = food1.Calories;
+            var actual = food.Calories;
             Assert.AreEqual(expected, actual);
         }
 

@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace FoodCalendar.DAL.Enums
+﻿namespace FoodCalendar.DAL.Enums
 {
     public enum DesertType
     {
