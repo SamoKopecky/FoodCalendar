@@ -9,14 +9,24 @@ namespace FoodCalendar.DAL
         {
         }
 
+        public FoodCalendarDbContext(DbContextOptions<FoodCalendarDbContext> options) : base(options)
+        {
+        }
+
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer(
-                @"Server=192.168.1.220;
-                Database = FoodCalendar;
-                MultipleActiveResultSets = True;
-                User ID =SA;
-                Password = Casi0Casi0;");
+            if (!optionsBuilder.IsConfigured)
+            {
+                optionsBuilder.UseSqlServer(
+                    @"Server=192.168.1.220;
+                    Database = FoodCalendar;
+                    MultipleActiveResultSets = True;
+                    User ID =SA;
+                    Password = Casi0Casi0;");
+            }
+
+            base.OnConfiguring(optionsBuilder);
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -24,6 +34,6 @@ namespace FoodCalendar.DAL
         }
 
         public DbSet<Ingredient> Ingredients { get; set; }
-        
+        public DbSet<Process> Processes { get; set; }
     }
 }
