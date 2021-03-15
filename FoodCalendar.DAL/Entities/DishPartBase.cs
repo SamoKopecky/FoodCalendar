@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace FoodCalendar.DAL.Entities
 {
-    public abstract class DishPartBase<T> : EntityBase, IDishPart
+    public abstract class DishPartBase : EntityBase, IDishPart
     {
         private Process _process;
 
@@ -14,21 +14,19 @@ namespace FoodCalendar.DAL.Entities
             set
             {
                 if (value.TimeRequired <= 0) throw new DivideByZeroException();
-                TotalTime = value.TimeRequired;
+                TotalTime += value.TimeRequired;
                 _process = value;
             }
         }
 
         public int Calories { get; set; }
         public int TotalTime { get; set; }
-        public ICollection<T> DishPartTypes { get; set; }
 
-        public Dictionary<IDishPart, int> IngredientsUsed { get; private set; }
+        public ICollection<IngredientAmount> IngredientsUsed { get; private set; }
 
         private void Initialize()
         {
-            IngredientsUsed = new Dictionary<IDishPart, int>();
-            DishPartTypes = new List<T>();
+            IngredientsUsed = new List<IngredientAmount>();
             TotalTime = 0;
         }
 
@@ -49,22 +47,20 @@ namespace FoodCalendar.DAL.Entities
             Calories = CycleSumCalories(this.IngredientsUsed);
         }
 
-        protected int CycleSumCalories(Dictionary<IDishPart, int> ingredientsUsed)
+        protected int CycleSumCalories(ICollection<IngredientAmount> ingredientsUsed)
         {
             var sum = 0;
-            foreach (var (key, value) in ingredientsUsed)
+            foreach (var ingredientAmount in ingredientsUsed)
             {
-                sum += key switch
-                {
-                    Ingredient ingredient => ingredient.Calories * value,
-                    Desert desert => CycleSumCalories(desert.IngredientsUsed),
-                    Food food => CycleSumCalories(food.IngredientsUsed),
-                    Drink drink => CycleSumCalories(drink.IngredientsUsed),
-                    _ => throw new Exception("Unknown class type")
-                };
+                sum += ingredientAmount.Amount * ingredientAmount.Ingredient.Calories;
             }
 
             return sum;
+        }
+
+        public void AddIngredient(Ingredient ingredient, int amount)
+        {
+            IngredientsUsed.Add(new IngredientAmount(amount, ingredient));
         }
     }
 }

@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
+using FoodCalendar.DAL;
 using FoodCalendar.DAL.Entities;
-using FoodCalendar.DAL.Enums;
 
 namespace FoodCalendar.App
 {
@@ -10,7 +8,10 @@ namespace FoodCalendar.App
     {
         public static void Main(string[] args)
         {
-            Console.WriteLine("hello");
+            using var ctx = new FoodCalendarDbContext();
+            var ingredient = new Ingredient("test", 5, "kg", 10);
+            ctx.Ingredients.Add(ingredient);
+            ctx.SaveChanges();
         }
     }
 }

@@ -1,15 +1,10 @@
-﻿using FoodCalendar.DAL.Enums;
+﻿using System.Collections.Generic;
+using FoodCalendar.DAL.Enums;
 
 namespace FoodCalendar.DAL.Entities
 {
-    public class Desert : DishPartBase<DesertType>
+    public class Desert : DishPartBase
     {
-        public Desert(int calories) : base(calories)
-        {
-        }
-
-        public Desert()
-        {
-        }
+        public ICollection<DesertType> DesertTypes;
     }
 }

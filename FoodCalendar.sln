@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FoodCalendar.App", "FoodCal
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FoodCalendar.DAL", "FoodCalendar.DAL\FoodCalendar.DAL.csproj", "{A9DC602A-B500-46F0-AA49-A5108AD0FD0D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FoodCalendar.DAL.Tests", "FoodCalendar.DAL.Tests\FoodCalendar.DAL.Tests.csproj", "{23A0A3E7-E6E5-49F6-9F1B-83ABA3E9A121}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FoodCalendar.DAL.Tests", "FoodCalendar.DAL.Tests\FoodCalendar.DAL.Tests.csproj", "{23A0A3E7-E6E5-49F6-9F1B-83ABA3E9A121}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

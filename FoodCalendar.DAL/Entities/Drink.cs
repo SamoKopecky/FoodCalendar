@@ -1,15 +1,10 @@
-﻿using FoodCalendar.DAL.Enums;
+﻿using System.Collections.Generic;
+using FoodCalendar.DAL.Enums;
 
 namespace FoodCalendar.DAL.Entities
 {
-    public class Drink : DishPartBase<DrinkType>
+    public class Drink : DishPartBase
     {
-        public Drink(int calories) : base(calories)
-        {
-        }
-
-        public Drink()
-        {
-        }
+        public ICollection<DrinkType> DrinkTypes { get; set; }
     }
 }

@@ -16,14 +16,14 @@ namespace FoodCalendar.DAL.Tests
             var ingredient3 = new Ingredient("butter", 1, "ks", 5);
             var food = new Food();
             var desert = new Desert();
-            desert.IngredientsUsed.Add(ingredient3, 1);
-            food.IngredientsUsed.Add(ingredient1, 3);
-            food.IngredientsUsed.Add(ingredient2, 1);
+            desert.AddIngredient(ingredient3, 1);
+            food.AddIngredient(ingredient1, 3);
+            food.AddIngredient(ingredient2, 1);
             food.SumCalories();
             desert.SumCalories();
             var dish = new Dish("test", new DateTime());
-            dish.Foods.Add(food);
-            dish.Deserts.Add(desert);
+            dish.Meals.Add(food);
+            dish.Meals.Add(desert);
 
             dish.SumTimeAndCalories();
 
@@ -40,8 +40,8 @@ namespace FoodCalendar.DAL.Tests
             food.Process = new Process(60, "test");
             desert.Process = new Process(70, "test");
             var dish = new Dish("test", new DateTime());
-            dish.Foods.Add(food);
-            dish.Deserts.Add(desert);
+            dish.Meals.Add(food);
+            dish.Meals.Add(desert);
 
             dish.SumTimeAndCalories();
 

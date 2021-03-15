@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using FoodCalendar.DAL.Interfaces;
 
 namespace FoodCalendar.DAL.Entities
 {
@@ -9,15 +10,11 @@ namespace FoodCalendar.DAL.Entities
         public string DishName { get; set; }
         public DateTime DishTime { get; set; }
         public int Calories { get; set; }
-        public ICollection<Food> Foods { get; set; }
-        public ICollection<Drink> Drinks { get; set; }
-        public ICollection<Desert> Deserts { get; set; }
+        public ICollection<DishPartBase> Meals { get; set; }
 
         public Dish(string dishName, DateTime dishTime)
         {
-            Foods = new List<Food>();
-            Drinks = new List<Drink>();
-            Deserts = new List<Desert>();
+            Meals = new List<DishPartBase>();
             DishName = dishName;
             DishTime = dishTime;
             TotalTime = 0;
@@ -26,22 +23,10 @@ namespace FoodCalendar.DAL.Entities
 
         public void SumTimeAndCalories()
         {
-            foreach (var food in Foods)
+            foreach (var meal in Meals)
             {
-                TotalTime += food.TotalTime;
-                Calories += food.Calories;
-            }
-
-            foreach (var drink in Drinks)
-            {
-                TotalTime += drink.TotalTime;
-                Calories += drink.Calories;
-            }
-
-            foreach (var desert in Deserts)
-            {
-                TotalTime += desert.TotalTime;
-                Calories += desert.Calories;
+                TotalTime += meal.TotalTime;
+                Calories += meal.Calories;
             }
         }
     }
