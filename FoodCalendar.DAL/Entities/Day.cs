@@ -10,20 +10,15 @@ namespace FoodCalendar.DAL.Entities
         public int CaloriesSum { get; set; }
         public ICollection<DayDish> Dishes { get; set; }
 
+        public Day()
+        {
+        }
 
         public Day(int caloriesLimit)
         {
             Dishes = new List<DayDish>();
             CaloriesLimit = caloriesLimit;
             CaloriesSum = 0;
-        }
-
-        public void SumCalories()
-        {
-            foreach (var dish in Dishes)
-            {
-                CaloriesSum += dish.Dish.Calories;
-            }
         }
     }
 }

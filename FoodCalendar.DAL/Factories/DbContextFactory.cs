@@ -1,4 +1,5 @@
 ﻿using System;
+using FoodCalendar.DAL.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
 namespace FoodCalendar.DAL.Factories
@@ -14,6 +15,7 @@ namespace FoodCalendar.DAL.Factories
                     MultipleActiveResultSets = True;
                     User ID =SA;
                     Password = Casi0Casi0;");
+            optionsBuilder.EnableSensitiveDataLogging();
             return new FoodCalendarDbContext(optionsBuilder.Options);
         }
     }

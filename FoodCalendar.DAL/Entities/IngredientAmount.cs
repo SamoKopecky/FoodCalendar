@@ -7,14 +7,14 @@
         {
         }
 
+        public Ingredient Ingredient { get; set; }
+        public Meal Meal { get; set; }
+        public int Amount { get; set; }
+
         public IngredientAmount(int amount, Ingredient ingredient)
         {
             Amount = amount;
             Ingredient = ingredient;
         }
-
-        public Ingredient Ingredient { get; set; }
-        public Meal Meal { get; set; }
-        public int Amount { get; set; }
     }
 }

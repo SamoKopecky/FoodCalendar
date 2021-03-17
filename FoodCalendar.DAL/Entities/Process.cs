@@ -7,6 +7,10 @@
 
         public Meal Meal { get; set; }
 
+        public Process()
+        {
+        }
+
         public Process(int timeRequired, string description)
         {
             TimeRequired = timeRequired;

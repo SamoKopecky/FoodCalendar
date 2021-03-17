@@ -1,4 +1,5 @@
 ﻿using FoodCalendar.DAL.Entities;
+using FoodCalendar.DAL.Seeds;
 using Microsoft.EntityFrameworkCore;
 
 namespace FoodCalendar.DAL
@@ -21,7 +22,6 @@ namespace FoodCalendar.DAL
         public FoodCalendarDbContext(DbContextOptions<FoodCalendarDbContext> options) : base(options)
         {
         }
-
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
@@ -55,26 +55,21 @@ namespace FoodCalendar.DAL
 
             modelBuilder.Entity<DishMeal>()
                 .HasKey(dm => new {dm.DishId, dm.MealId});
-
             modelBuilder.Entity<DishMeal>()
                 .HasOne(dm => dm.Dish)
                 .WithMany(d => d.DishMeals);
-
             modelBuilder.Entity<DishMeal>()
                 .HasOne(dm => dm.Meal)
                 .WithMany(m => m.DishMeals);
 
             modelBuilder.Entity<DayDish>()
                 .HasKey(dd => new {dd.DayId, dd.DishId});
-
             modelBuilder.Entity<DayDish>()
                 .HasOne(dd => dd.Day)
                 .WithMany(day => day.Dishes);
-
             modelBuilder.Entity<DayDish>()
                 .HasOne(dd => dd.Dish)
                 .WithMany(dish => dish.DayDishes);
-
         }
     }
 }
