@@ -5,8 +5,13 @@ namespace FoodCalendar.DAL
 {
     public class FoodCalendarDbContext : DbContext
     {
+        public DbSet<Ingredient> Ingredients { get; set; }
+        public DbSet<Process> Processes { get; set; }
+        public DbSet<IngredientAmount> IngredientAmounts { get; set; }
+        public DbSet<Meal> Meals { get; set; }
+
         public FoodCalendarDbContext()
-        {
+        {    
         }
 
         public FoodCalendarDbContext(DbContextOptions<FoodCalendarDbContext> options) : base(options)
@@ -35,18 +40,14 @@ namespace FoodCalendar.DAL
                 .HasOne(ia => ia.Ingredient)
                 .WithMany(i => i.IngredientAmounts);
 
-            modelBuilder.Entity<Food>()
+            modelBuilder.Entity<Meal>()
                 .HasMany(f => f.IngredientsUsed)
-                .WithOne(ia => ia.Food);
+                .WithOne(ia => ia.Meal);
 
             modelBuilder.Entity<Process>()
-                .HasOne(p => p.Food)
+                .HasOne(p => p.Meal)
                 .WithOne(f => f.Process);
-        }
 
-        public DbSet<Ingredient> Ingredients { get; set; }
-        public DbSet<Process> Processes { get; set; }
-        public DbSet<IngredientAmount> IngredientAmounts { get; set; }
-        public DbSet<Food> Foods { get; set; }
+        }
     }
 }

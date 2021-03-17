@@ -33,11 +33,11 @@ namespace FoodCalendar.App
             var ingredientAmount2 = new IngredientAmount(3, ingredient);
             ctx.IngredientAmounts.Add(ingredientAmount2);
             var process = new Process(5, "description");
-            var food = new Food
+            var food = new Meal()
             {
-                Calories = 5, Process = process, TotalTime = 5, IngredientsUsed = {ingredientAmount, ingredientAmount2}
+                Calories = 5, Process = process, IngredientsUsed = {ingredientAmount, ingredientAmount2}
             };
-            ctx.Foods.Add(food);
+            ctx.Meals.Add(food);
             //ctx.Processes.Add(process);
             ctx.SaveChanges();
             /*var data = ctx.Set<Ingredient>().AsEnumerable().Select(ingredient1 => ingredient1).ToArray();

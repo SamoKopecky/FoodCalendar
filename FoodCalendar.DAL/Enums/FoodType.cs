@@ -2,8 +2,8 @@
 {
     public enum FoodType
     {
-        MeatProduct,
-        Vegan,
-        Pasta
+        Food,
+        Drink,
+        Desert
     }
 }

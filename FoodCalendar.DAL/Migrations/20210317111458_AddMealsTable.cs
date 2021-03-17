@@ -3,18 +3,18 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace FoodCalendar.DAL.Migrations
 {
-    public partial class AddFoodTest : Migration
+    public partial class AddMealsTable : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.AddColumn<Guid>(
-                name: "FoodId",
+                name: "MealId",
                 table: "IngredientAmounts",
                 type: "uniqueidentifier",
                 nullable: true);
 
             migrationBuilder.CreateTable(
-                name: "Foods",
+                name: "Meals",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
@@ -24,9 +24,9 @@ namespace FoodCalendar.DAL.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Foods", x => x.Id);
+                    table.PrimaryKey("PK_Meals", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Foods_Processes_ProcessId",
+                        name: "FK_Meals_Processes_ProcessId",
                         column: x => x.ProcessId,
                         principalTable: "Processes",
                         principalColumn: "Id",
@@ -34,21 +34,21 @@ namespace FoodCalendar.DAL.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_IngredientAmounts_FoodId",
+                name: "IX_IngredientAmounts_MealId",
                 table: "IngredientAmounts",
-                column: "FoodId");
+                column: "MealId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Foods_ProcessId",
-                table: "Foods",
+                name: "IX_Meals_ProcessId",
+                table: "Meals",
                 column: "ProcessId",
                 unique: true);
 
             migrationBuilder.AddForeignKey(
-                name: "FK_IngredientAmounts_Foods_FoodId",
+                name: "FK_IngredientAmounts_Meals_MealId",
                 table: "IngredientAmounts",
-                column: "FoodId",
-                principalTable: "Foods",
+                column: "MealId",
+                principalTable: "Meals",
                 principalColumn: "Id",
                 onDelete: ReferentialAction.Restrict);
         }
@@ -56,18 +56,18 @@ namespace FoodCalendar.DAL.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropForeignKey(
-                name: "FK_IngredientAmounts_Foods_FoodId",
+                name: "FK_IngredientAmounts_Meals_MealId",
                 table: "IngredientAmounts");
 
             migrationBuilder.DropTable(
-                name: "Foods");
+                name: "Meals");
 
             migrationBuilder.DropIndex(
-                name: "IX_IngredientAmounts_FoodId",
+                name: "IX_IngredientAmounts_MealId",
                 table: "IngredientAmounts");
 
             migrationBuilder.DropColumn(
-                name: "FoodId",
+                name: "MealId",
                 table: "IngredientAmounts");
         }
     }

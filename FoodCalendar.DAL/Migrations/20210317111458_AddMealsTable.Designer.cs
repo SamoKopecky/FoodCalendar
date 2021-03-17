@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FoodCalendar.DAL.Migrations
 {
     [DbContext(typeof(FoodCalendarDbContext))]
-    [Migration("20210317103149_AddFoodTest")]
-    partial class AddFoodTest
+    [Migration("20210317111458_AddMealsTable")]
+    partial class AddMealsTable
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -20,29 +20,6 @@ namespace FoodCalendar.DAL.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("ProductVersion", "5.0.4")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-            modelBuilder.Entity("FoodCalendar.DAL.Entities.Food", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<int>("Calories")
-                        .HasColumnType("int");
-
-                    b.Property<Guid>("ProcessId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<int>("TotalTime")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ProcessId")
-                        .IsUnique();
-
-                    b.ToTable("Foods");
-                });
 
             modelBuilder.Entity("FoodCalendar.DAL.Entities.Ingredient", b =>
                 {
@@ -76,19 +53,42 @@ namespace FoodCalendar.DAL.Migrations
                     b.Property<int>("Amount")
                         .HasColumnType("int");
 
-                    b.Property<Guid?>("FoodId")
+                    b.Property<Guid?>("IngredientId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid?>("IngredientId")
+                    b.Property<Guid?>("MealId")
                         .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("FoodId");
-
                     b.HasIndex("IngredientId");
 
+                    b.HasIndex("MealId");
+
                     b.ToTable("IngredientAmounts");
+                });
+
+            modelBuilder.Entity("FoodCalendar.DAL.Entities.Meal", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("Calories")
+                        .HasColumnType("int");
+
+                    b.Property<Guid>("ProcessId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("TotalTime")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProcessId")
+                        .IsUnique();
+
+                    b.ToTable("Meals");
                 });
 
             modelBuilder.Entity("FoodCalendar.DAL.Entities.Process", b =>
@@ -108,35 +108,30 @@ namespace FoodCalendar.DAL.Migrations
                     b.ToTable("Processes");
                 });
 
-            modelBuilder.Entity("FoodCalendar.DAL.Entities.Food", b =>
-                {
-                    b.HasOne("FoodCalendar.DAL.Entities.Process", "Process")
-                        .WithOne("Food")
-                        .HasForeignKey("FoodCalendar.DAL.Entities.Food", "ProcessId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Process");
-                });
-
             modelBuilder.Entity("FoodCalendar.DAL.Entities.IngredientAmount", b =>
                 {
-                    b.HasOne("FoodCalendar.DAL.Entities.Food", "Food")
-                        .WithMany("IngredientsUsed")
-                        .HasForeignKey("FoodId");
-
                     b.HasOne("FoodCalendar.DAL.Entities.Ingredient", "Ingredient")
                         .WithMany("IngredientAmounts")
                         .HasForeignKey("IngredientId");
 
-                    b.Navigation("Food");
+                    b.HasOne("FoodCalendar.DAL.Entities.Meal", "Meal")
+                        .WithMany("IngredientsUsed")
+                        .HasForeignKey("MealId");
 
                     b.Navigation("Ingredient");
+
+                    b.Navigation("Meal");
                 });
 
-            modelBuilder.Entity("FoodCalendar.DAL.Entities.Food", b =>
+            modelBuilder.Entity("FoodCalendar.DAL.Entities.Meal", b =>
                 {
-                    b.Navigation("IngredientsUsed");
+                    b.HasOne("FoodCalendar.DAL.Entities.Process", "Process")
+                        .WithOne("Meal")
+                        .HasForeignKey("FoodCalendar.DAL.Entities.Meal", "ProcessId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Process");
                 });
 
             modelBuilder.Entity("FoodCalendar.DAL.Entities.Ingredient", b =>
@@ -144,9 +139,14 @@ namespace FoodCalendar.DAL.Migrations
                     b.Navigation("IngredientAmounts");
                 });
 
+            modelBuilder.Entity("FoodCalendar.DAL.Entities.Meal", b =>
+                {
+                    b.Navigation("IngredientsUsed");
+                });
+
             modelBuilder.Entity("FoodCalendar.DAL.Entities.Process", b =>
                 {
-                    b.Navigation("Food");
+                    b.Navigation("Meal");
                 });
 #pragma warning restore 612, 618
         }

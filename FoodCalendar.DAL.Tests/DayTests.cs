@@ -15,8 +15,8 @@ namespace FoodCalendar.DAL.Tests
             var ingredient1 = new Ingredient("egg", 3, "ks", 5);
             var ingredient2 = new Ingredient("ham", 1, "ks", 5);
             var ingredient3 = new Ingredient("butter", 1, "ks", 5);
-            var food = new Food();
-            var desert = new Desert();
+            var food = new Meal();
+            var desert = new Meal();
             desert.AddIngredient(ingredient3, 1);
             food.AddIngredient(ingredient1, 3);
             food.AddIngredient(ingredient2, 1);
