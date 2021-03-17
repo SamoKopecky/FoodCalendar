@@ -31,9 +31,22 @@ namespace FoodCalendar.DAL
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<IngredientAmount>()
+                .HasOne(ia => ia.Ingredient)
+                .WithMany(i => i.IngredientAmounts);
+
+            modelBuilder.Entity<Food>()
+                .HasMany(f => f.IngredientsUsed)
+                .WithOne(ia => ia.Food);
+
+            modelBuilder.Entity<Process>()
+                .HasOne(p => p.Food)
+                .WithOne(f => f.Process);
         }
 
         public DbSet<Ingredient> Ingredients { get; set; }
         public DbSet<Process> Processes { get; set; }
+        public DbSet<IngredientAmount> IngredientAmounts { get; set; }
+        public DbSet<Food> Foods { get; set; }
     }
 }

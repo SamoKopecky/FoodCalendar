@@ -10,11 +10,11 @@ namespace FoodCalendar.DAL.Entities
         public string DishName { get; set; }
         public DateTime DishTime { get; set; }
         public int Calories { get; set; }
-        public ICollection<DishPartBase> Meals { get; set; }
+        public ICollection<MealBase> Meals { get; set; }
 
         public Dish(string dishName, DateTime dishTime)
         {
-            Meals = new List<DishPartBase>();
+            Meals = new List<MealBase>();
             DishName = dishName;
             DishTime = dishTime;
             TotalTime = 0;

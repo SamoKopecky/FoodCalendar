@@ -4,8 +4,9 @@ using System.Collections.Generic;
 
 namespace FoodCalendar.DAL.Entities
 {
-    public abstract class DishPartBase : EntityBase, IDishPart
+    public abstract class MealBase : EntityBase, IDishPart
     {
+        public Guid ProcessId { get; set; }
         private Process _process;
 
         public Process Process
@@ -30,13 +31,13 @@ namespace FoodCalendar.DAL.Entities
             TotalTime = 0;
         }
 
-        protected DishPartBase()
+        protected MealBase()
         {
             Initialize();
             Calories = 0;
         }
 
-        protected DishPartBase(int calories)
+        protected MealBase(int calories)
         {
             Initialize();
             Calories = calories;

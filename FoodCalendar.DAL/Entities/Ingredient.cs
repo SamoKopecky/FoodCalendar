@@ -1,4 +1,5 @@
-﻿using FoodCalendar.DAL.Interfaces;
+﻿using System.Collections.Generic;
+using FoodCalendar.DAL.Interfaces;
 
 namespace FoodCalendar.DAL.Entities
 {
@@ -9,6 +10,8 @@ namespace FoodCalendar.DAL.Entities
         public string UnitName { get; set; }
         public int Calories { get; set; }
 
+        public ICollection<IngredientAmount> IngredientAmounts { get; set; }
+
         public Ingredient(string name, int amountStored, string unitName, int calories)
         {
             Name = name;
@@ -16,5 +19,5 @@ namespace FoodCalendar.DAL.Entities
             UnitName = unitName;
             Calories = calories;
         }
-    }   
+    }
 }

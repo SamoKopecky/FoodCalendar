@@ -1,18 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace FoodCalendar.DAL.Entities
+﻿namespace FoodCalendar.DAL.Entities
 {
     public class IngredientAmount : EntityBase
     {
+        // Needed for entity framework
+        public IngredientAmount()
+        {
+        }
+
         public IngredientAmount(int amount, Ingredient ingredient)
         {
             Amount = amount;
             Ingredient = ingredient;
         }
 
-        public Ingredient Ingredient { get; }
-        public int Amount { get; }
+        public Ingredient Ingredient { get; set; }
+        public Food Food { get; set; }
+        public int Amount { get; set; }
     }
 }
