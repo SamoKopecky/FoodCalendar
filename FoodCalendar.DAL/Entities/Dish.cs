@@ -10,11 +10,13 @@ namespace FoodCalendar.DAL.Entities
         public string DishName { get; set; }
         public DateTime DishTime { get; set; }
         public int Calories { get; set; }
-        public ICollection<Meal> Meals { get; set; }
+        public ICollection<DishMeal> DishMeals { get; set; }
+
+        public ICollection<DayDish> DayDishes { get; set; }
 
         public Dish(string dishName, DateTime dishTime)
         {
-            Meals = new List<Meal>();
+            DishMeals = new List<DishMeal>();
             DishName = dishName;
             DishTime = dishTime;
             TotalTime = 0;
@@ -23,10 +25,10 @@ namespace FoodCalendar.DAL.Entities
 
         public void SumTimeAndCalories()
         {
-            foreach (var meal in Meals)
+            foreach (var meal in DishMeals)
             {
-                TotalTime += meal.TotalTime;
-                Calories += meal.Calories;
+                TotalTime += meal.Meal.TotalTime;
+                Calories += meal.Meal.Calories;
             }
         }
     }

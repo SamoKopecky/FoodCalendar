@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Linq;
-using System.Reflection.Metadata;
 using FoodCalendar.DAL;
 using FoodCalendar.DAL.Entities;
-using FoodCalendar.DAL.Enums;
-using FoodCalendar.DAL.Migrations;
-using Microsoft.EntityFrameworkCore;
+using FoodCalendar.DAL.Factories;
+using Microsoft.EntityFrameworkCore.Internal;
 
 namespace FoodCalendar.App
 {
@@ -13,33 +11,63 @@ namespace FoodCalendar.App
     {
         public static void Main(string[] args)
         {
-            using var ctx = new FoodCalendarDbContext();
-            var ingredients = ctx.Ingredients.Where(i => i.Name == "test");
-            foreach (var i in ingredients)
+            var dbContextFactory = new DbContextFactory();
+            using (var ctx = dbContextFactory.CreateDbContext())
             {
-                ctx.Ingredients.Remove(i);
+                var ingredient = new Ingredient("test", 5, "kg", 10);
+                //ctx.Ingredients.Add(ingredient);
+                var ingredientAmount = new IngredientAmount(2, ingredient);
+                var ingredientAmount2 = new IngredientAmount(3, ingredient);
+                var ingredientAmount3 = new IngredientAmount(3, ingredient);
+                var process = new Process(5, "description");
+                var process2 = new Process(5, "description");
+                var food = new Meal()
+                {
+                    Calories = 5,
+                    Process = process,
+                    IngredientsUsed = {ingredientAmount, ingredientAmount2}
+                };
+                var food2 = new Meal()
+                {
+                    Calories = 6,
+                    Process = process2,
+                    IngredientsUsed = {ingredientAmount, ingredientAmount2}
+                };
+                //ctx.Meals.Add(food);
+                //ctx.Processes.Add(process);
+                var dish = new Dish("test dish", new DateTime(1999, 1, 1));
+
+                dish.DishMeals.Add(new DishMeal()
+                {
+                    Meal = food
+                });
+                dish.DishMeals.Add(new DishMeal()
+                {
+                    Meal = food2
+                });
+                //ctx.Dishes.Add(dish);
+
+                var day = new Day(10);
+                day.Dishes.Add(new DayDish()
+                {
+                    Dish = dish
+                });
+                ctx.Days.Add(day);
+                ctx.SaveChanges();
             }
 
-            var ingredientsAmounts = ctx.IngredientAmounts.Select(ia => ia);
-            foreach (var ia in ingredientsAmounts)
-            {
-                ctx.IngredientAmounts.Remove(ia);
-            }
 
-            var ingredient = new Ingredient("test", 5, "kg", 10);
-            ctx.Ingredients.Add(ingredient);
-            var ingredientAmount = new IngredientAmount(2, ingredient);
-            ctx.IngredientAmounts.Add(ingredientAmount);
-            var ingredientAmount2 = new IngredientAmount(3, ingredient);
-            ctx.IngredientAmounts.Add(ingredientAmount2);
-            var process = new Process(5, "description");
-            var food = new Meal()
+            /*using var ctx2 = new FoodCalendarDbContext();
+            var sameDish = ctx2.Set<Dish>().AsEnumerable().Select(d => d).ToArray()[0];
+            var sameFood = ctx2.Set<Meal>().AsEnumerable().Select(d => d).ToArray()[0];
+
+
+            sameDish.DishMeals.Add(new DishMeal()
             {
-                Calories = 5, Process = process, IngredientsUsed = {ingredientAmount, ingredientAmount2}
-            };
-            ctx.Meals.Add(food);
-            //ctx.Processes.Add(process);
-            ctx.SaveChanges();
+                Meal = sameFood
+            });
+            ctx2.Update(sameDish);
+            ctx2.SaveChanges();*/
             /*var data = ctx.Set<Ingredient>().AsEnumerable().Select(ingredient1 => ingredient1).ToArray();
             Console.WriteLine(data[0].Name);
             var inMemOptions = new DbContextOptionsBuilder<FoodCalendarDbContext>().UseInMemoryDatabase("test").Options;

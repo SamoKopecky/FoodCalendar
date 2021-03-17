@@ -25,6 +25,8 @@ namespace FoodCalendar.DAL.Entities
 
         public ICollection<IngredientAmount> IngredientsUsed { get; private set; }
 
+        public ICollection<DishMeal> DishMeals { get; set; }
+
         private void Initialize()
         {
             IngredientsUsed = new List<IngredientAmount>();

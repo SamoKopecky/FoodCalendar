@@ -8,11 +8,12 @@ namespace FoodCalendar.DAL.Entities
         public DateTime Date { get; set; }
         public int CaloriesLimit { get; set; }
         public int CaloriesSum { get; set; }
-        public ICollection<Dish> Dishes { get; set; }
+        public ICollection<DayDish> Dishes { get; set; }
+
 
         public Day(int caloriesLimit)
         {
-            Dishes = new List<Dish>();
+            Dishes = new List<DayDish>();
             CaloriesLimit = caloriesLimit;
             CaloriesSum = 0;
         }
@@ -21,7 +22,7 @@ namespace FoodCalendar.DAL.Entities
         {
             foreach (var dish in Dishes)
             {
-                CaloriesSum += dish.Calories;
+                CaloriesSum += dish.Dish.Calories;
             }
         }
     }
