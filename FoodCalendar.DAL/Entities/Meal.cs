@@ -9,16 +9,9 @@ namespace FoodCalendar.DAL.Entities
         public Process Process { get; set; }
         public int Calories { get; set; }
         public int TotalTime { get; set; }
-        public ICollection<IngredientAmount> IngredientsUsed { get; set; }
-        public ICollection<DishMeal> DishMeals { get; set; }
+        public ICollection<IngredientAmount> IngredientsUsed { get; set; } = new List<IngredientAmount>();
+        public ICollection<DishMeal> DishMeals { get; set; } = new List<DishMeal>();
 
-        public Meal()
-        {
-            DishMeals = new List<DishMeal>();
-            IngredientsUsed = new List<IngredientAmount>();
-            TotalTime = 0;
-            Calories = 0;
-        }
 
         protected bool Equals(Meal other)
         {

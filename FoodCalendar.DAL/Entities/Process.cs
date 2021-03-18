@@ -13,12 +13,6 @@ namespace FoodCalendar.DAL.Entities
         {
         }
 
-        public Process(int timeRequired, string description)
-        {
-            TimeRequired = timeRequired;
-            Description = description;
-        }
-
         protected bool Equals(Process other)
         {
             return TimeRequired == other.TimeRequired && Description == other.Description && Equals(Meal, other.Meal);

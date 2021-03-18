@@ -4,7 +4,6 @@ namespace FoodCalendar.DAL.Entities
 {
     public class IngredientAmount : EntityBase
     {
-        // Needed for entity framework
         public IngredientAmount()
         {
         }
@@ -13,11 +12,6 @@ namespace FoodCalendar.DAL.Entities
         public Meal Meal { get; set; }
         public int Amount { get; set; }
 
-        public IngredientAmount(int amount, Ingredient ingredient)
-        {
-            Amount = amount;
-            Ingredient = ingredient;
-        }
 
         protected bool Equals(IngredientAmount other)
         {

@@ -15,6 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\FoodCalendar.BL\FoodCalendar.BL.csproj" />
     <ProjectReference Include="..\FoodCalendar.DAL\FoodCalendar.DAL.csproj" />
   </ItemGroup>
 

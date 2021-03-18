@@ -8,17 +8,10 @@ namespace FoodCalendar.DAL.Entities
         public DateTime Date { get; set; }
         public int CaloriesLimit { get; set; }
         public int CaloriesSum { get; set; }
-        public ICollection<DayDish> Dishes { get; set; }
+        public ICollection<DayDish> Dishes { get; set; } = new List<DayDish>();
 
         public Day()
         {
-        }
-
-        public Day(int caloriesLimit)
-        {
-            Dishes = new List<DayDish>();
-            CaloriesLimit = caloriesLimit;
-            CaloriesSum = 0;
         }
 
         protected bool Equals(Day other)

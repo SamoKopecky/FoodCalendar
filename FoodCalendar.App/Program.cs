@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using FoodCalendar.BL.Mappers;
 using FoodCalendar.DAL;
 using FoodCalendar.DAL.Entities;
 using FoodCalendar.DAL.Factories;
@@ -25,7 +26,6 @@ namespace FoodCalendar.App
             var hamAmount = new IngredientAmount() {Amount = 2, Ingredient = ham};
             var eggAmount = new IngredientAmount() {Amount = 1, Ingredient = eggs};
             var process = ProcessSeed.HamAndEggsProcess;
-            Console.WriteLine(process.GetHashCode());
 
             var hamAndEggs = MealSeed.HamAndEggs;
             hamAndEggs.IngredientsUsed.Add(eggAmount);
@@ -43,9 +43,16 @@ namespace FoodCalendar.App
             {
                 Dish = lunch
             });
+            var test = DayMapper.MapEntityToModel(monday);
+            var test2 = DayMapper.MapModelToEntity(test);
+            
 
-            ctx.Add(monday);
+            ctx.Add(test2);
             ctx.SaveChanges();
+            var test3 = ctx.Days.FirstOrDefault();
+            Console.WriteLine("now way this prints");
+            var test4 = DayMapper.MapEntityToModel(test3);
+            Console.WriteLine("now way this prints");
         }
     }
 }

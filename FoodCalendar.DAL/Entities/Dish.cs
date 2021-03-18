@@ -9,20 +9,11 @@ namespace FoodCalendar.DAL.Entities
         public string DishName { get; set; }
         public DateTime DishTime { get; set; }
         public int Calories { get; set; }
-        public ICollection<DishMeal> DishMeals { get; set; }
-        public ICollection<DayDish> DayDishes { get; set; }
+        public ICollection<DishMeal> DishMeals { get; set; } = new List<DishMeal>();
+        public ICollection<DayDish> DayDishes { get; set; } = new List<DayDish>();
 
         public Dish()
         {
-        }
-
-        public Dish(string dishName, DateTime dishTime)
-        {
-            DishMeals = new List<DishMeal>();
-            DishName = dishName;
-            DishTime = dishTime;
-            TotalTime = 0;
-            Calories = 0;
         }
 
         protected bool Equals(Dish other)

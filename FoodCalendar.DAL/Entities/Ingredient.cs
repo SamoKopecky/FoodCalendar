@@ -13,16 +13,8 @@ namespace FoodCalendar.DAL.Entities
         public int AmountStored { get; set; }
         public string UnitName { get; set; }
         public int Calories { get; set; }
-        public ICollection<IngredientAmount> IngredientAmounts { get; set; }
+        public ICollection<IngredientAmount> IngredientAmounts { get; set; } = new List<IngredientAmount>();
 
-
-        public Ingredient(string name, int amountStored, string unitName, int calories)
-        {
-            Name = name;
-            AmountStored = amountStored;
-            UnitName = unitName;
-            Calories = calories;
-        }
 
         protected bool Equals(Ingredient other)
         {
