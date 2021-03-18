@@ -20,5 +20,34 @@ namespace FoodCalendar.DAL.Entities
             CaloriesLimit = caloriesLimit;
             CaloriesSum = 0;
         }
+
+        protected bool Equals(Day other)
+        {
+            return Date.Equals(other.Date) && CaloriesLimit == other.CaloriesLimit &&
+                   CaloriesSum == other.CaloriesSum && Equals(Dishes, other.Dishes);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != this.GetType()) return false;
+            return Equals((Day) obj);
+        }
+
+        public static bool operator ==(Day left, Day right)
+        {
+            return Equals(left, right);
+        }
+
+        public static bool operator !=(Day left, Day right)
+        {
+            return !Equals(left, right);
+        }
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(Date, CaloriesLimit, CaloriesSum, Dishes);
+        }
     }
 }

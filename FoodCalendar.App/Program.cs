@@ -25,6 +25,7 @@ namespace FoodCalendar.App
             var hamAmount = new IngredientAmount() {Amount = 2, Ingredient = ham};
             var eggAmount = new IngredientAmount() {Amount = 1, Ingredient = eggs};
             var process = ProcessSeed.HamAndEggsProcess;
+            Console.WriteLine(process.GetHashCode());
 
             var hamAndEggs = MealSeed.HamAndEggs;
             hamAndEggs.IngredientsUsed.Add(eggAmount);

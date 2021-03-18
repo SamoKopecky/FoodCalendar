@@ -19,5 +19,35 @@ namespace FoodCalendar.DAL.Entities
             TotalTime = 0;
             Calories = 0;
         }
+
+        protected bool Equals(Meal other)
+        {
+            return ProcessId.Equals(other.ProcessId) && Equals(Process, other.Process) && Calories == other.Calories &&
+                   TotalTime == other.TotalTime && Equals(IngredientsUsed, other.IngredientsUsed) &&
+                   Equals(DishMeals, other.DishMeals);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != this.GetType()) return false;
+            return Equals((Meal) obj);
+        }
+
+        public override int GetHashCode()
+        {
+            return HashCode.Combine(ProcessId, Process, Calories, TotalTime, IngredientsUsed, DishMeals);
+        }
+
+        public static bool operator ==(Meal left, Meal right)
+        {
+            return Equals(left, right);
+        }
+
+        public static bool operator !=(Meal left, Meal right)
+        {
+            return !Equals(left, right);
+        }
     }
 }
