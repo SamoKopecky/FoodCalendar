@@ -13,7 +13,6 @@ namespace FoodCalendar.BL.Mappers
                 return new MealModel()
                 {
                     Id = entity.Id,
-                    ProcessId = entity.ProcessId,
                     Calories = entity.Calories,
                     TotalTime = entity.TotalTime,
                     Process = ProcessMapper.MapEntityToModel(entity.Process),
@@ -32,7 +31,6 @@ namespace FoodCalendar.BL.Mappers
                 return new Meal()
                 {
                     Id = model.Id,
-                    ProcessId = model.ProcessId,
                     Calories = model.Calories,
                     TotalTime = model.TotalTime,
                     Process = ProcessMapper.MapModelToEntity(model.Process),

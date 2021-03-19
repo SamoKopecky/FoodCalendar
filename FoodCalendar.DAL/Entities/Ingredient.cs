@@ -15,34 +15,24 @@ namespace FoodCalendar.DAL.Entities
         public int Calories { get; set; }
         public ICollection<IngredientAmount> IngredientAmounts { get; set; } = new List<IngredientAmount>();
 
-
-        protected bool Equals(Ingredient other)
+        private sealed class IngredientEqualityComparer : IEqualityComparer<Ingredient>
         {
-            return Name == other.Name && AmountStored == other.AmountStored && UnitName == other.UnitName &&
-                   Calories == other.Calories && Equals(IngredientAmounts, other.IngredientAmounts);
+            public bool Equals(Ingredient x, Ingredient y)
+            {
+                if (ReferenceEquals(x, y)) return true;
+                if (ReferenceEquals(x, null)) return false;
+                if (ReferenceEquals(y, null)) return false;
+                if (x.GetType() != y.GetType()) return false;
+                return x.Name == y.Name && x.AmountStored == y.AmountStored && x.UnitName == y.UnitName &&
+                       x.Calories == y.Calories;
+            }
+
+            public int GetHashCode(Ingredient obj)
+            {
+                return HashCode.Combine(obj.Name, obj.AmountStored, obj.UnitName, obj.Calories, obj.IngredientAmounts);
+            }
         }
 
-        public override bool Equals(object obj)
-        {
-            if (ReferenceEquals(null, obj)) return false;
-            if (ReferenceEquals(this, obj)) return true;
-            if (obj.GetType() != this.GetType()) return false;
-            return Equals((Ingredient) obj);
-        }
-
-        public override int GetHashCode()
-        {
-            return HashCode.Combine(Name, AmountStored, UnitName, Calories, IngredientAmounts);
-        }
-
-        public static bool operator ==(Ingredient left, Ingredient right)
-        {
-            return Equals(left, right);
-        }
-
-        public static bool operator !=(Ingredient left, Ingredient right)
-        {
-            return !Equals(left, right);
-        }
+        public static IEqualityComparer<Ingredient> IngredientComparer { get; } = new IngredientEqualityComparer();
     }
 }

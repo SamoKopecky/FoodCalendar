@@ -4,16 +4,15 @@ using System.Linq;
 using FoodCalendar.DAL.Entities;
 using FoodCalendar.DAL.Factories;
 using FoodCalendar.DAL.Interfaces;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-
+using Xunit;
 namespace FoodCalendar.DAL.Tests
 {
-    [TestClass]
+    
     public class DbContextTests
     {
         private readonly IDbContextFactory _ctxFactory = new InMemoryDbContextFactory();
 
-        [TestMethod]
+        [Fact]
         public void OneToOne_ProcessToMeal_Create()
         {
             using var ctx = _ctxFactory.CreateDbContext();
@@ -25,11 +24,11 @@ namespace FoodCalendar.DAL.Tests
 
             var dbProcess = ctx.Processes.FirstOrDefault();
             var dbMeal = ctx.Meals.FirstOrDefault();
-            Assert.AreEqual(process, dbProcess);
-            Assert.AreEqual(meal, dbMeal);
+            Assert.Equal(process, dbProcess, Process.ProcessComparer);
+            Assert.Equal(meal, dbMeal, Meal.MealComparer);
         }
 
-        [TestMethod]
+        [Fact]
         public void ManyToOne_IngredientAmountToIngredient_Create()
         {
             using var ctx = _ctxFactory.CreateDbContext();
@@ -43,11 +42,11 @@ namespace FoodCalendar.DAL.Tests
 
             var dbAmountOne = ctx.IngredientAmounts.FirstOrDefault(ia => ia.Amount == 1);
             var dbAmountTwo = ctx.IngredientAmounts.FirstOrDefault(ia => ia.Amount == 2);
-            Assert.AreEqual(amountOne, dbAmountOne);
-            Assert.AreEqual(amountTwo, dbAmountTwo);
+            Assert.Equal(amountOne, dbAmountOne, IngredientAmount.IngredientAmountComparer);
+            Assert.Equal(amountTwo, dbAmountTwo, IngredientAmount.IngredientAmountComparer);
         }
 
-        [TestMethod]
+        [Fact]
         public void ManyToOne_IngredientAmountToMeal_Create()
         {
             using var ctx = _ctxFactory.CreateDbContext();
@@ -60,10 +59,10 @@ namespace FoodCalendar.DAL.Tests
             ctx.SaveChanges();
 
             var dbMeal = ctx.Meals.FirstOrDefault();
-            Assert.AreEqual(meal, dbMeal);
+            Assert.Equal(meal, dbMeal, Meal.MealComparer);
         }
 
-        [TestMethod]
+        [Fact]
         public void ManyToMany_MealToDish_Create()
         {
             using var ctx = _ctxFactory.CreateDbContext();
@@ -85,11 +84,11 @@ namespace FoodCalendar.DAL.Tests
             var dbDishOne = ctx.Dishes.FirstOrDefault(d => d.DishName == "lunch");
             var dbDishTwo = ctx.Dishes.FirstOrDefault(d => d.DishName == "dinner");
 
-            Assert.AreEqual(dishOne, dbDishOne);
-            Assert.AreEqual(dishTwo, dbDishTwo);
+            Assert.Equal(dishOne, dbDishOne, Dish.DishComparer);
+            Assert.Equal(dishTwo, dbDishTwo, Dish.DishComparer);
         }
 
-        [TestMethod]
+        [Fact]
         public void ManyToMany_DishToDay_Create()
         {
             using var ctx = _ctxFactory.CreateDbContext();
@@ -106,8 +105,8 @@ namespace FoodCalendar.DAL.Tests
 
             var dbDayOne = ctx.Days.FirstOrDefault(d => d.Date == new DateTime(2000, 1, 1));
             var dbDayTwo = ctx.Days.FirstOrDefault(d => d.Date == new DateTime(2001, 1, 1));
-            Assert.AreEqual(dayOne, dbDayOne);
-            Assert.AreEqual(dayTwo, dbDayTwo);
+            Assert.Equal(dayOne, dbDayOne, Day.DayComparer);
+            Assert.Equal(dayTwo, dbDayTwo, Day.DayComparer);
         }
     }
 }

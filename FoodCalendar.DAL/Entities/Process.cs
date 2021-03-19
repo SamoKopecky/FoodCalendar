@@ -5,6 +5,7 @@ namespace FoodCalendar.DAL.Entities
 {
     public class Process : EntityBase
     {
+
         public int TimeRequired { get; set; }
         public string Description { get; set; }
         public Meal Meal { get; set; }
@@ -13,32 +14,23 @@ namespace FoodCalendar.DAL.Entities
         {
         }
 
-        protected bool Equals(Process other)
+        private sealed class ProcessEqualityComparer : IEqualityComparer<Process>
         {
-            return TimeRequired == other.TimeRequired && Description == other.Description && Equals(Meal, other.Meal);
+            public bool Equals(Process x, Process y)
+            {
+                if (ReferenceEquals(x, y)) return true;
+                if (ReferenceEquals(x, null)) return false;
+                if (ReferenceEquals(y, null)) return false;
+                if (x.GetType() != y.GetType()) return false;
+                return x.TimeRequired == y.TimeRequired && x.Description == y.Description;
+            }
+
+            public int GetHashCode(Process obj)
+            {
+                return HashCode.Combine(obj.TimeRequired, obj.Description, obj.Meal);
+            }
         }
 
-        public override bool Equals(object obj)
-        {
-            if (ReferenceEquals(null, obj)) return false;
-            if (ReferenceEquals(this, obj)) return true;
-            if (obj.GetType() != this.GetType()) return false;
-            return Equals((Process) obj);
-        }
-
-        public override int GetHashCode()
-        {
-            return HashCode.Combine(TimeRequired, Description, Meal);
-        }
-
-        public static bool operator ==(Process left, Process right)
-        {
-            return Equals(left, right);
-        }
-
-        public static bool operator !=(Process left, Process right)
-        {
-            return !Equals(left, right);
-        }
+        public static IEqualityComparer<Process> ProcessComparer { get; } = new ProcessEqualityComparer();
     }
 }

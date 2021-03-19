@@ -11,6 +11,7 @@ namespace FoodCalendar.BL.Repositories
             base(
                 IngredientMapper.MapEntityToModel,
                 IngredientMapper.MapModelToEntity,
+                null,
                 contextFactory
             )
         {

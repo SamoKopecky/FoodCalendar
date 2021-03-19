@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace FoodCalendar.DAL.Entities
 {
@@ -16,34 +17,68 @@ namespace FoodCalendar.DAL.Entities
         {
         }
 
-        protected bool Equals(Dish other)
+        private abstract class DishEqualityComparerBase : IEqualityComparer<Dish>
         {
-            return TotalTime == other.TotalTime && DishName == other.DishName && DishTime.Equals(other.DishTime) &&
-                   Calories == other.Calories && Equals(DishMeals, other.DishMeals) &&
-                   Equals(DayDishes, other.DayDishes);
+            public virtual bool Equals(Dish x, Dish y)
+            {
+                if (ReferenceEquals(x, y)) return true;
+                if (ReferenceEquals(x, null)) return false;
+                if (ReferenceEquals(y, null)) return false;
+                if (x.GetType() != y.GetType()) return false;
+                return x.TotalTime == y.TotalTime &&
+                       x.DishName == y.DishName &&
+                       x.DishTime.Equals(y.DishTime) &&
+                       x.Calories == y.Calories;
+            }
+
+            public int GetHashCode(Dish obj)
+            {
+                return HashCode.Combine(obj.TotalTime, obj.DishName, obj.DishTime, obj.Calories, obj.DishMeals,
+                    obj.DayDishes);
+            }
         }
 
-        public override bool Equals(object obj)
+
+        private sealed class DishEqualityComparerWithoutDays : DishEqualityComparerBase
         {
-            if (ReferenceEquals(null, obj)) return false;
-            if (ReferenceEquals(this, obj)) return true;
-            if (obj.GetType() != this.GetType()) return false;
-            return Equals((Dish) obj);
+            public override bool Equals(Dish x, Dish y)
+            {
+                return base.Equals(x, y) &&
+                       x.DishMeals.Select(dm => dm.Meal)
+                           .SequenceEqual(y.DishMeals
+                               .Select(dm => dm.Meal), Meal.MealComparerWithoutDishes);
+            }
         }
 
-        public override int GetHashCode()
+        public static IEqualityComparer<Dish> DishComparerWithoutDays { get; } = new DishEqualityComparerWithoutDays();
+
+        private sealed class DishEqualityComparerWithoutMeals : DishEqualityComparerBase
         {
-            return HashCode.Combine(TotalTime, DishName, DishTime, Calories, DishMeals, DayDishes);
+            public override bool Equals(Dish x, Dish y)
+            {
+                return base.Equals(x, y) &&
+                       x.DayDishes.Select(dd => dd.Day)
+                           .SequenceEqual(y.DayDishes
+                               .Select(dd => dd.Day), Day.BasicDayComparerWithoutDishes);
+            }
         }
 
-        public static bool operator ==(Dish left, Dish right)
+        public static IEqualityComparer<Dish> DishComparerWithoutMeals { get; } = new DishEqualityComparerWithoutMeals();
+
+        private sealed class DishEqualityComparer : DishEqualityComparerBase
         {
-            return Equals(left, right);
+            public override bool Equals(Dish x, Dish y)
+            {
+                return base.Equals(x, y) &&
+                       x.DishMeals.Select(dm => dm.Meal)
+                           .SequenceEqual(y.DishMeals
+                               .Select(dm => dm.Meal), Meal.MealComparerWithoutDishes) &&
+                       x.DayDishes.Select(dd => dd.Day)
+                           .SequenceEqual(y.DayDishes
+                               .Select(dd => dd.Day), Day.BasicDayComparerWithoutDishes);
+            }
         }
 
-        public static bool operator !=(Dish left, Dish right)
-        {
-            return !Equals(left, right);
-        }
+        public static IEqualityComparer<Dish> DishComparer { get; } = new DishEqualityComparer();
     }
 }

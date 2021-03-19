@@ -5,7 +5,6 @@ namespace FoodCalendar.BL.Models
 {
     public class MealModel : ModelBase
     {
-        public Guid ProcessId { get; set; }
         public ProcessModel Process { get; set; }
         public int Calories { get; set; }
         public int TotalTime { get; set; }

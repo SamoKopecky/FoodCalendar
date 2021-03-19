@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace FoodCalendar.DAL.Entities
 {
@@ -14,33 +15,38 @@ namespace FoodCalendar.DAL.Entities
         {
         }
 
-        protected bool Equals(Day other)
+        private class DayEqualityComparerWithoutDishes : IEqualityComparer<Day>
         {
-            return Date.Equals(other.Date) && CaloriesLimit == other.CaloriesLimit &&
-                   CaloriesSum == other.CaloriesSum && Equals(Dishes, other.Dishes);
+            public virtual bool Equals(Day x, Day y)
+            {
+                if (ReferenceEquals(x, y)) return true;
+                if (ReferenceEquals(x, null)) return false;
+                if (ReferenceEquals(y, null)) return false;
+                if (x.GetType() != y.GetType()) return false;
+                return x.Date.Equals(y.Date) &&
+                       x.CaloriesLimit == y.CaloriesLimit &&
+                       x.CaloriesSum == y.CaloriesSum;
+            }
+
+            public int GetHashCode(Day obj)
+            {
+                return HashCode.Combine(obj.Date, obj.CaloriesLimit, obj.CaloriesSum, obj.Dishes);
+            }
         }
 
-        public override bool Equals(object obj)
+        public static IEqualityComparer<Day> BasicDayComparerWithoutDishes { get; } = new DayEqualityComparerWithoutDishes();
+
+        private sealed class DayEqualityComparer : DayEqualityComparerWithoutDishes
         {
-            if (ReferenceEquals(null, obj)) return false;
-            if (ReferenceEquals(this, obj)) return true;
-            if (obj.GetType() != this.GetType()) return false;
-            return Equals((Day) obj);
+            public override bool Equals(Day x, Day y)
+            {
+                return base.Equals(x, y) &&
+                       x.Dishes.Select(dd => dd.Dish)
+                           .SequenceEqual(y.Dishes
+                               .Select(dd => dd.Dish), Dish.DishComparerWithoutDays);
+            }
         }
 
-        public static bool operator ==(Day left, Day right)
-        {
-            return Equals(left, right);
-        }
-
-        public static bool operator !=(Day left, Day right)
-        {
-            return !Equals(left, right);
-        }
-
-        public override int GetHashCode()
-        {
-            return HashCode.Combine(Date, CaloriesLimit, CaloriesSum, Dishes);
-        }
+        public static IEqualityComparer<Day> DayComparer { get; } = new DayEqualityComparer();
     }
 }

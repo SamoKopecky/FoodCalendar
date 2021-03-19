@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace FoodCalendar.DAL.Entities
 {
     public class IngredientAmount : EntityBase
     {
+
         public IngredientAmount()
         {
         }
@@ -13,32 +15,23 @@ namespace FoodCalendar.DAL.Entities
         public int Amount { get; set; }
 
 
-        protected bool Equals(IngredientAmount other)
+        private sealed class IngredientAmountEqualityComparer : IEqualityComparer<IngredientAmount>
         {
-            return Equals(Ingredient, other.Ingredient) && Equals(Meal, other.Meal) && Amount == other.Amount;
+            public bool Equals(IngredientAmount x, IngredientAmount y)
+            {
+                if (ReferenceEquals(x, y)) return true;
+                if (ReferenceEquals(x, null)) return false;
+                if (ReferenceEquals(y, null)) return false;
+                if (x.GetType() != y.GetType()) return false;
+                return Equals(x.Ingredient, y.Ingredient) && x.Amount == y.Amount;
+            }
+
+            public int GetHashCode(IngredientAmount obj)
+            {
+                return HashCode.Combine(obj.Ingredient, obj.Meal, obj.Amount);
+            }
         }
 
-        public override bool Equals(object obj)
-        {
-            if (ReferenceEquals(null, obj)) return false;
-            if (ReferenceEquals(this, obj)) return true;
-            if (obj.GetType() != this.GetType()) return false;
-            return Equals((IngredientAmount) obj);
-        }
-
-        public override int GetHashCode()
-        {
-            return HashCode.Combine(Ingredient, Meal, Amount);
-        }
-
-        public static bool operator ==(IngredientAmount left, IngredientAmount right)
-        {
-            return Equals(left, right);
-        }
-
-        public static bool operator !=(IngredientAmount left, IngredientAmount right)
-        {
-            return !Equals(left, right);
-        }
+        public static IEqualityComparer<IngredientAmount> IngredientAmountComparer { get; } = new IngredientAmountEqualityComparer();
     }
 }
