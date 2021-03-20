@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using FoodCalendar.BL.Interfaces;
-using FoodCalendar.BL.Models;
+﻿using FoodCalendar.BL.Models;
 using FoodCalendar.DAL.Entities;
 
 namespace FoodCalendar.BL.Mappers

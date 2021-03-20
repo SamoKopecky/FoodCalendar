@@ -1,5 +1,4 @@
-﻿using System;
-using FoodCalendar.DAL.Interfaces;
+﻿using FoodCalendar.DAL.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
 namespace FoodCalendar.DAL.Factories

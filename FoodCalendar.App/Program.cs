@@ -1,15 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Threading;
 using FoodCalendar.BL.Mappers;
 using FoodCalendar.BL.Repositories;
-using FoodCalendar.DAL;
 using FoodCalendar.DAL.Entities;
 using FoodCalendar.DAL.Factories;
 using FoodCalendar.DAL.Seeds;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Internal;
 
 namespace FoodCalendar.App
 {

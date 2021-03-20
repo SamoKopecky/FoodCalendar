@@ -1,5 +1,4 @@
 ﻿using FoodCalendar.DAL.Entities;
-using FoodCalendar.DAL.Seeds;
 using Microsoft.EntityFrameworkCore;
 
 namespace FoodCalendar.DAL

@@ -1,6 +1,5 @@
 ﻿using FoodCalendar.DAL.Interfaces;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
 
 namespace FoodCalendar.DAL.Factories
 {

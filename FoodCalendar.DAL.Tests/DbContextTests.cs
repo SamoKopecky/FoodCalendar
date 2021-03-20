@@ -6,8 +6,6 @@ using FoodCalendar.DAL.Entities;
 using FoodCalendar.DAL.Factories;
 using FoodCalendar.DAL.Interfaces;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Migrations.Operations;
-using Microsoft.EntityFrameworkCore.Update;
 using Xunit;
 using Process = FoodCalendar.DAL.Entities.Process;
 

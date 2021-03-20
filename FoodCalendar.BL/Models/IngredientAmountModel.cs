@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace FoodCalendar.BL.Models
+﻿namespace FoodCalendar.BL.Models
 {
     public class IngredientAmountModel : ModelBase
     {
