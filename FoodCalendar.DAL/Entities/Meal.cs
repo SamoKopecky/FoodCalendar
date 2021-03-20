@@ -23,7 +23,7 @@ namespace FoodCalendar.DAL.Entities
                 if (ReferenceEquals(y, null)) return false;
                 if (x.GetType() != y.GetType()) return false;
                 return x.ProcessId.Equals(y.ProcessId) &&
-                       Equals(x.Process, y.Process) &&
+                       Process.ProcessComparer.Equals(x.Process, y.Process) &&
                        x.Calories == y.Calories &&
                        x.TotalTime == y.TotalTime;
             }

@@ -15,7 +15,7 @@ namespace FoodCalendar.DAL.Entities
         public int Calories { get; set; }
         public ICollection<IngredientAmount> IngredientAmounts { get; set; } = new List<IngredientAmount>();
 
-        private sealed class IngredientEqualityComparer : IEqualityComparer<Ingredient>
+        public sealed class IngredientEqualityComparer : IEqualityComparer<Ingredient>
         {
             public bool Equals(Ingredient x, Ingredient y)
             {
@@ -34,5 +34,8 @@ namespace FoodCalendar.DAL.Entities
         }
 
         public static IEqualityComparer<Ingredient> IngredientComparer { get; } = new IngredientEqualityComparer();
+
+        
+
     }
 }

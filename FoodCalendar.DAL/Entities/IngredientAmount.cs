@@ -5,7 +5,6 @@ namespace FoodCalendar.DAL.Entities
 {
     public class IngredientAmount : EntityBase
     {
-
         public IngredientAmount()
         {
         }
@@ -23,7 +22,8 @@ namespace FoodCalendar.DAL.Entities
                 if (ReferenceEquals(x, null)) return false;
                 if (ReferenceEquals(y, null)) return false;
                 if (x.GetType() != y.GetType()) return false;
-                return Equals(x.Ingredient, y.Ingredient) && x.Amount == y.Amount;
+                return Ingredient.IngredientComparer.Equals(x.Ingredient, y.Ingredient) &&
+                       x.Amount == y.Amount;
             }
 
             public int GetHashCode(IngredientAmount obj)
@@ -32,6 +32,7 @@ namespace FoodCalendar.DAL.Entities
             }
         }
 
-        public static IEqualityComparer<IngredientAmount> IngredientAmountComparer { get; } = new IngredientAmountEqualityComparer();
+        public static IEqualityComparer<IngredientAmount> IngredientAmountComparer { get; } =
+            new IngredientAmountEqualityComparer();
     }
 }

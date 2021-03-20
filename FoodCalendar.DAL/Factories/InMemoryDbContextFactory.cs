@@ -6,17 +6,18 @@ namespace FoodCalendar.DAL.Factories
 {
     public class InMemoryDbContextFactory : IDbContextFactory
     {
+        private readonly string _dbName;
+
+        public InMemoryDbContextFactory(string dbName)
+        {
+            _dbName = dbName;
+        }
+
         public FoodCalendarDbContext CreateDbContext()
         {
-            // Create a fresh service provider, and therefore a fresh 
-            // InMemory database instance.
-            var serviceProvider = new ServiceCollection()
-                .AddEntityFrameworkInMemoryDatabase()
-                .BuildServiceProvider();
             var optionsBuilder = new DbContextOptionsBuilder<FoodCalendarDbContext>()
-                .UseInMemoryDatabase("InMemoryFoodCalendar")
-                .EnableSensitiveDataLogging()
-                .UseInternalServiceProvider(serviceProvider);
+                .UseInMemoryDatabase(_dbName)
+                .EnableSensitiveDataLogging();
             return new FoodCalendarDbContext(optionsBuilder.Options);
         }
     }
