@@ -11,7 +11,7 @@ namespace FoodCalendar.DAL.Entities
         public int CaloriesSum { get; set; }
         public ICollection<DayDish> Dishes { get; set; } = new List<DayDish>();
 
-        public Day()
+        public Day() : base()
         {
         }
 

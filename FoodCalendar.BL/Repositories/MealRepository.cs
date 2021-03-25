@@ -2,7 +2,6 @@
 using FoodCalendar.BL.Mappers;
 using FoodCalendar.BL.Models;
 using FoodCalendar.DAL.Entities;
-using FoodCalendar.DAL.Factories;
 using FoodCalendar.DAL.Interfaces;
 using Microsoft.EntityFrameworkCore;
 

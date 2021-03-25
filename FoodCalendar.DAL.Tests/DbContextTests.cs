@@ -13,18 +13,13 @@ namespace FoodCalendar.DAL.Tests
 {
     public class DbContextTests
     {
-        static IDbContextFactory CreateDbContextFactory(StackTrace stackTrace)
-        {
-            var methodName = stackTrace.GetFrame(0)?.GetMethod()?.Name;
-            return new InMemoryDbContextFactory(methodName);
-        }
-
         [Fact]
         public void OneToOne_ProcessToMeal_Create()
         {
+            var dbContextFactory = new InMemoryDbContextFactory(new StackTrace());
             var process = new Process() {Description = "do stuff", TimeRequired = 5};
             var meal = new Meal() {Process = process, Calories = 10};
-            using (var ctx = CreateDbContextFactory(new StackTrace()).CreateDbContext())
+            using (var ctx = dbContextFactory.CreateDbContext())
             {
                 ctx.Meals.Add(meal);
                 ctx.SaveChanges();
@@ -32,7 +27,7 @@ namespace FoodCalendar.DAL.Tests
 
             Meal dbMeal;
 
-            using (var ctx = CreateDbContextFactory(new StackTrace()).CreateDbContext())
+            using (var ctx = dbContextFactory.CreateDbContext())
             {
                 dbMeal = ctx.Meals.Select(m => m)
                     .Include(m => m.Process)
@@ -45,10 +40,11 @@ namespace FoodCalendar.DAL.Tests
         [Fact]
         public void ManyToOne_IngredientAmountToIngredient_Create()
         {
+            var dbContextFactory = new InMemoryDbContextFactory(new StackTrace());
             var ingredient = new Ingredient() {Name = "egg", AmountStored = 3};
             var amountOne = new IngredientAmount() {Ingredient = ingredient, Amount = 1};
             var amountTwo = new IngredientAmount() {Ingredient = ingredient, Amount = 2};
-            using (var ctx = CreateDbContextFactory(new StackTrace()).CreateDbContext())
+            using (var ctx = dbContextFactory.CreateDbContext())
             {
                 ctx.IngredientAmounts.Add(amountOne);
                 ctx.IngredientAmounts.Add(amountTwo);
@@ -57,7 +53,7 @@ namespace FoodCalendar.DAL.Tests
 
             IngredientAmount dbAmountOne;
             IngredientAmount dbAmountTwo;
-            using (var ctx = CreateDbContextFactory(new StackTrace()).CreateDbContext())
+            using (var ctx = dbContextFactory.CreateDbContext())
             {
                 dbAmountOne = ctx.IngredientAmounts.Select(ia => ia)
                     .Include(ia => ia.Ingredient)
@@ -74,18 +70,19 @@ namespace FoodCalendar.DAL.Tests
         [Fact]
         public void ManyToOne_IngredientAmountToMeal_Create()
         {
+            var dbContextFactory = new InMemoryDbContextFactory(new StackTrace());
             var ingredient = new Ingredient() {Name = "egg", AmountStored = 3};
             var amountOne = new IngredientAmount() {Ingredient = ingredient, Amount = 1};
             var amountTwo = new IngredientAmount() {Ingredient = ingredient, Amount = 2};
             var meal = new Meal() {IngredientsUsed = {amountOne, amountTwo}, Calories = 5};
-            using (var ctx = CreateDbContextFactory(new StackTrace()).CreateDbContext())
+            using (var ctx = dbContextFactory.CreateDbContext())
             {
                 ctx.Meals.Add(meal);
                 ctx.SaveChanges();
             }
 
             Meal dbMeal;
-            using (var ctx = CreateDbContextFactory(new StackTrace()).CreateDbContext())
+            using (var ctx = dbContextFactory.CreateDbContext())
             {
                 dbMeal = ctx.Meals.Select(m => m)
                     .Include(m => m.IngredientsUsed)
@@ -99,7 +96,7 @@ namespace FoodCalendar.DAL.Tests
         [Fact]
         public void ManyToMany_MealToDish_Create()
         {
-            var dbContextFactory = CreateDbContextFactory(new StackTrace());
+            var dbContextFactory = new InMemoryDbContextFactory(new StackTrace());
             var ingredientOne = new Ingredient() {Name = "egg", AmountStored = 3};
             var amountOne = new IngredientAmount() {Ingredient = ingredientOne, Amount = 1};
             var mealOne = new Meal() {IngredientsUsed = {amountOne}, Calories = 5};
@@ -144,7 +141,7 @@ namespace FoodCalendar.DAL.Tests
         [Fact]
         public void ManyToMany_DishToDay_Create()
         {
-            var dbContextFactory = CreateDbContextFactory(new StackTrace());
+            var dbContextFactory = new InMemoryDbContextFactory(new StackTrace());
             var dishOne = new Dish() {DishName = "lunch"};
             var dishTwo = new Dish() {DishName = "dinner"};
             var dayDishOne = new List<DayDish>() {new DayDish() {Dish = dishOne}, new DayDish() {Dish = dishTwo}};

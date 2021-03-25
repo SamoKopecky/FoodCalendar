@@ -13,6 +13,10 @@ namespace FoodCalendar.DAL.Entities
         public ICollection<IngredientAmount> IngredientsUsed { get; set; } = new List<IngredientAmount>();
         public ICollection<DishMeal> DishMeals { get; set; } = new List<DishMeal>();
 
+        public Meal() : base()
+        {
+        }
+
 
         private class BasicMealEqualityComparer : IEqualityComparer<Meal>
         {

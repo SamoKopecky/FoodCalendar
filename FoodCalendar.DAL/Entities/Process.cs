@@ -10,7 +10,7 @@ namespace FoodCalendar.DAL.Entities
         public string Description { get; set; }
         public Meal Meal { get; set; }
 
-        public Process()
+        public Process() : base()
         {
         }
 

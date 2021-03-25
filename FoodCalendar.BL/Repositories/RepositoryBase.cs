@@ -5,6 +5,7 @@ using FoodCalendar.BL.Interfaces;
 using FoodCalendar.BL.Models;
 using FoodCalendar.DAL.Entities;
 using FoodCalendar.DAL.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace FoodCalendar.BL.Repositories
 {
@@ -51,6 +52,7 @@ namespace FoodCalendar.BL.Repositories
         {
             using var dbContext = _dbContextFactory.CreateDbContext();
             var dbSet = dbContext.Set<TEntity>();
+            //dbSet.AddRange(_includeChildEntities(dbSet));
             var entity = _mapModelToEntity(model);
             if (!dbSet.Any(e => e.Equals(entity)))
             {
@@ -58,7 +60,7 @@ namespace FoodCalendar.BL.Repositories
             }
             else
             {
-                dbSet.Update(entity);
+                dbContext.Update<TEntity>(entity);
             }
 
             dbContext.SaveChanges();
@@ -68,6 +70,11 @@ namespace FoodCalendar.BL.Repositories
         {
             using var dbContext = _dbContextFactory.CreateDbContext();
             IQueryable<TEntity> dbSet = dbContext.Set<TEntity>();
+            //if (_includeChildEntities != null)
+            //{
+            //                dbSet = _includeChildEntities(dbSet);
+//            }
+
             var entity = dbSet.SingleOrDefault(e => e.Id == id);
             return _mapEntityToModel(entity);
         }

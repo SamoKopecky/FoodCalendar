@@ -5,7 +5,7 @@ namespace FoodCalendar.DAL.Entities
 {
     public class IngredientAmount : EntityBase
     {
-        public IngredientAmount()
+        public IngredientAmount() : base()
         {
         }
 

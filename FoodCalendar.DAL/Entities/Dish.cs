@@ -13,7 +13,7 @@ namespace FoodCalendar.DAL.Entities
         public ICollection<DishMeal> DishMeals { get; set; } = new List<DishMeal>();
         public ICollection<DayDish> DayDishes { get; set; } = new List<DayDish>();
 
-        public Dish()
+        public Dish() : base()
         {
         }
 

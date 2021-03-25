@@ -6,7 +6,7 @@ namespace FoodCalendar.DAL.Entities
     {
         public Guid Id { get; set; }
 
-        protected EntityBase()
+        protected EntityBase() : base()
         {
             Id = new Guid();
         }
