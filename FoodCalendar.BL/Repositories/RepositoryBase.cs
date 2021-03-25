@@ -70,11 +70,10 @@ namespace FoodCalendar.BL.Repositories
         {
             using var dbContext = _dbContextFactory.CreateDbContext();
             IQueryable<TEntity> dbSet = dbContext.Set<TEntity>();
-            //if (_includeChildEntities != null)
-            //{
-            //                dbSet = _includeChildEntities(dbSet);
-//            }
-
+            if (_includeChildEntities != null)
+            {
+                dbSet = _includeChildEntities(dbSet);
+            }
             var entity = dbSet.SingleOrDefault(e => e.Id == id);
             return _mapEntityToModel(entity);
         }
