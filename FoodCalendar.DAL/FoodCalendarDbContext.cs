@@ -1,4 +1,5 @@
-﻿using FoodCalendar.DAL.Entities;
+﻿using System.Linq;
+using FoodCalendar.DAL.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace FoodCalendar.DAL
@@ -11,8 +12,6 @@ namespace FoodCalendar.DAL
         public DbSet<Meal> Meals { get; set; }
         public DbSet<Dish> Dishes { get; set; }
         public DbSet<DishMeal> DishMeals { get; set; }
-        public DbSet<Day> Days { get; set; }
-        public DbSet<DayDish> DayDishes { get; set; }
 
         public FoodCalendarDbContext()
         {
@@ -53,22 +52,13 @@ namespace FoodCalendar.DAL
                 .WithOne(f => f.Process);
 
             modelBuilder.Entity<DishMeal>()
-                .HasKey(dm => new {dm.DishId, dm.MealId});
+                .HasKey(dm => new {dm.DishId, dm.MealId, dm.Id});
             modelBuilder.Entity<DishMeal>()
                 .HasOne(dm => dm.Dish)
                 .WithMany(d => d.DishMeals);
             modelBuilder.Entity<DishMeal>()
                 .HasOne(dm => dm.Meal)
                 .WithMany(m => m.DishMeals);
-
-            modelBuilder.Entity<DayDish>()
-                .HasKey(dd => new {dd.DayId, dd.DishId});
-            modelBuilder.Entity<DayDish>()
-                .HasOne(dd => dd.Day)
-                .WithMany(day => day.Dishes);
-            modelBuilder.Entity<DayDish>()
-                .HasOne(dd => dd.Dish)
-                .WithMany(dish => dish.DayDishes);
         }
     }
 }

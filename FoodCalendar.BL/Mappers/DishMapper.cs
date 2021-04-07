@@ -1,6 +1,8 @@
 ﻿using System.Linq;
 using FoodCalendar.BL.Models;
 using FoodCalendar.DAL.Entities;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
+using MovieCatalog.DAL.Factories;
 
 namespace FoodCalendar.BL.Mappers
 {
@@ -16,7 +18,7 @@ namespace FoodCalendar.BL.Mappers
                     Calories = entity.Calories,
                     DishName = entity.DishName,
                     TotalTime = entity.TotalTime,
-                    DishTime = entity.DishTime,
+                    DishTime = entity.DishTimeAndTime,
                     Meals = entity.DishMeals.Select(dm => MealMapper.MapEntityToModel(dm.Meal)).ToList()
                 };
             }
@@ -24,21 +26,21 @@ namespace FoodCalendar.BL.Mappers
             return null;
         }
 
-        public static Dish MapModelToEntity(DishModel model)
+        public static Dish MapModelToEntity(DishModel model, EntityFactory entityFactory)
         {
-            if (model != null)
-            {
-                return new Dish()
+            var entity = (entityFactory ??= new EntityFactory()).Create<Dish>(model.Id);
+            entity.Id = model.Id;
+            entity.Calories = model.Calories;
+            entity.DishName = model.DishName;
+            entity.TotalTime = model.TotalTime;
+            entity.DishTimeAndTime = model.DishTime;
+            entity.DishMeals = model.Meals
+                .Select(m => new DishMeal()
                 {
-                    Id = model.Id,
-                    Calories = model.Calories,
-                    DishName = model.DishName,
-                    TotalTime = model.TotalTime,
-                    DishTime = model.DishTime,
-                    DishMeals = model.Meals.Select(m => new DishMeal() {Meal = MealMapper.MapModelToEntity(m)}).ToList()
-                };
-            }
-            return null;
+                    Meal = MealMapper.MapModelToEntity(m, entityFactory), MealId = m.Id, DishId = model.Id,
+                    Dish = entity
+                }).ToList();
+            return entity;
         }
     }
 }

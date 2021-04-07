@@ -1,5 +1,8 @@
-﻿using FoodCalendar.BL.Models;
+﻿using System.Linq;
+using FoodCalendar.BL.Models;
 using FoodCalendar.DAL.Entities;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
+using MovieCatalog.DAL.Factories;
 
 namespace FoodCalendar.BL.Mappers
 {
@@ -22,21 +25,15 @@ namespace FoodCalendar.BL.Mappers
             return null;
         }
 
-        public static Ingredient MapModelToEntity(IngredientModel model)
+        public static Ingredient MapModelToEntity(IngredientModel model, EntityFactory entityFactory)
         {
-            if (model != null)
-            {
-                return new Ingredient()
-                {
-                    Id = model.Id,
-                    Calories = model.Calories,
-                    AmountStored = model.AmountStored,
-                    Name = model.Name,
-                    UnitName = model.UnitName,
-                };
-            }
-
-            return null;
+            var entity = (entityFactory ??= new EntityFactory()).Create<Ingredient>(model.Id);
+            entity.Id = model.Id;
+            entity.Calories = model.Calories;
+            entity.AmountStored = model.AmountStored;
+            entity.Name = model.Name;
+            entity.UnitName = model.UnitName;
+            return entity;
         }
     }
 }

@@ -8,7 +8,8 @@ namespace FoodCalendar.BL.Interfaces
     {
         void Delete(TModel model);
         void Delete(Guid id);
-        void InsertOrUpdate(TModel model);
+        void Insert(TModel model);
+        void Update(TModel model);
         TModel GetById(Guid id);
         ICollection<TModel> GetAll();
     }

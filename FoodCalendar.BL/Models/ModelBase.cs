@@ -8,7 +8,6 @@ namespace FoodCalendar.BL.Models
 
         protected ModelBase()
         {
-            Id = new Guid();
         }
     }
 }

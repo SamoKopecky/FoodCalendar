@@ -13,10 +13,9 @@ namespace FoodCalendar.DAL.Seeds
             Id = Guid.Parse("7a4fda42-ee8a-413b-9b3a-0191d5b42ec7"),
             TotalTime = 60,
             DishName = "Lunch",
-            DishTime = new DateTime(2021, 3, 21, 18, 00, 00),
+            DishTimeAndTime = new DateTime(2021, 3, 21, 18, 00, 00),
             Calories = 9,
-            DishMeals = new List<DishMeal>(),
-            DayDishes = new List<DayDish>()
+            DishMeals = new List<DishMeal>()
         };
     }
 }

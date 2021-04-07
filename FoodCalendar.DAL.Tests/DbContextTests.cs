@@ -137,43 +137,5 @@ namespace FoodCalendar.DAL.Tests
             Assert.Equal(dishOne, dbDishOne, Dish.DishComparer);
             Assert.Equal(dishTwo, dbDishTwo, Dish.DishComparer);
         }
-
-        [Fact]
-        public void ManyToMany_DishToDay_Create()
-        {
-            var dbContextFactory = new InMemoryDbContextFactory(new StackTrace());
-            var dishOne = new Dish() {DishName = "lunch"};
-            var dishTwo = new Dish() {DishName = "dinner"};
-            var dayDishOne = new List<DayDish>() {new DayDish() {Dish = dishOne}, new DayDish() {Dish = dishTwo}};
-            var dayDishTwo = new List<DayDish>() {new DayDish() {Dish = dishOne}};
-            var dayOne = new Day() {Dishes = dayDishOne, Date = new DateTime(2000, 1, 1)};
-            var dayTwo = new Day() {Dishes = dayDishTwo, Date = new DateTime(2001, 1, 1)};
-            using (var ctx = dbContextFactory.CreateDbContext())
-            {
-                ctx.Days.Add(dayOne);
-                ctx.Days.Add(dayTwo);
-                ctx.SaveChanges();
-            }
-
-            Day dbDayOne;
-            Day dbDayTwo;
-            using (var ctx = dbContextFactory.CreateDbContext())
-            {
-                dbDayOne = ctx.Days.Select(d => d)
-                    .Include(d => d.Dishes)
-                    .ThenInclude(dd => dd.Dish)
-                    .ThenInclude(d => d.DayDishes)
-                    .FirstOrDefault(d => d.Date == new DateTime(2000, 1, 1));
-                dbDayTwo = ctx.Days.Select(d => d)
-                    .Include(d => d.Dishes)
-                    .ThenInclude(dd => dd.Dish)
-                    .ThenInclude(d => d.DayDishes)
-                    .FirstOrDefault(d => d.Date == new DateTime(2001, 1, 1));
-            }
-
-            //if (dbDayTwo != null) dbDayTwo.Dishes.First().Dish.DishName = "test";
-            Assert.Equal(dayOne, dbDayOne, Day.DayComparer);
-            Assert.Equal(dayTwo, dbDayTwo, Day.DayComparer);
-        }
     }
 }

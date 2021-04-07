@@ -6,6 +6,8 @@ using FoodCalendar.BL.Models;
 using FoodCalendar.DAL.Entities;
 using FoodCalendar.DAL.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
+using MovieCatalog.DAL.Factories;
 
 namespace FoodCalendar.BL.Repositories
 {
@@ -14,13 +16,13 @@ namespace FoodCalendar.BL.Repositories
         where TEntity : EntityBase, new()
     {
         private readonly Func<TEntity, TModel> _mapEntityToModel;
-        private readonly Func<TModel, TEntity> _mapModelToEntity;
+        private readonly Func<TModel, EntityFactory, TEntity> _mapModelToEntity;
         private readonly Func<IQueryable<TEntity>, IQueryable<TEntity>> _includeChildEntities;
         private readonly IDbContextFactory _dbContextFactory;
 
         protected RepositoryBase(
             Func<TEntity, TModel> mapEntityToModel,
-            Func<TModel, TEntity> mapModelToEntity,
+            Func<TModel, EntityFactory, TEntity> mapModelToEntity,
             Func<IQueryable<TEntity>, IQueryable<TEntity>> includeChildEntities,
             IDbContextFactory dbContextFactory
         )
@@ -35,7 +37,7 @@ namespace FoodCalendar.BL.Repositories
         {
             using var dbContext = _dbContextFactory.CreateDbContext();
             var dbSet = dbContext.Set<TEntity>();
-            dbSet.Remove(_mapModelToEntity(model));
+            dbSet.Remove(_mapModelToEntity(model, new EntityFactory(dbContext.ChangeTracker)));
             dbContext.SaveChanges();
         }
 
@@ -48,23 +50,52 @@ namespace FoodCalendar.BL.Repositories
             dbContext.SaveChanges();
         }
 
-        public void InsertOrUpdate(TModel model)
+        public void Insert(TModel model)
         {
             using var dbContext = _dbContextFactory.CreateDbContext();
             var dbSet = dbContext.Set<TEntity>();
-            //dbSet.AddRange(_includeChildEntities(dbSet));
-            var entity = _mapModelToEntity(model);
+            var entity = _mapModelToEntity(model, new EntityFactory(dbContext.ChangeTracker));
             if (!dbSet.Any(e => e.Equals(entity)))
             {
                 dbSet.Add(entity);
             }
-            else
-            {
-                dbContext.Update<TEntity>(entity);
-            }
 
             dbContext.SaveChanges();
         }
+
+        public void Update(TModel model)
+        {
+            using var dbContext = _dbContextFactory.CreateDbContext();
+            
+            var entity = _mapModelToEntity(model, new EntityFactory(dbContext.ChangeTracker));
+
+            //var dbSet = dbContext.Set<TEntity>();
+            //if (_includeChildEntities != null)
+            //{
+            //    dbSet = _includeChildEntities(dbSet);
+            //}
+
+            //foreach (var a in dbSet)
+            //{
+            //    dbContext.Entry(a).State = EntityState.Detached;
+            //}
+            //dbSet.AddRange(_includeChildEntities(dbSet));
+
+
+            dbContext.Update(entity);
+
+
+            dbContext.SaveChanges();
+        }
+
+        private static void DisplayStates(IEnumerable<EntityEntry> entries)
+        {
+            foreach (var entry in entries)
+            {
+                Console.WriteLine($"Entity: {entry.Entity.GetType().Name}, State: {entry.State.ToString()}");
+            }
+        }
+
 
         public TModel GetById(Guid id)
         {
@@ -74,6 +105,7 @@ namespace FoodCalendar.BL.Repositories
             {
                 dbSet = _includeChildEntities(dbSet);
             }
+
             var entity = dbSet.SingleOrDefault(e => e.Id == id);
             return _mapEntityToModel(entity);
         }

@@ -13,7 +13,7 @@ namespace FoodCalendar.BL.Tests
 {
     public class BaseRepositoryTests
     {
-        private List<DayModel> CreateTestDays()
+        private List<DishModel> CreateTestDays()
         {
             var eggs = new IngredientModel() {Name = "egg", AmountStored = 5};
             var ham = new IngredientModel() {Name = "ham", AmountStored = 10};
@@ -52,47 +52,47 @@ namespace FoodCalendar.BL.Tests
                 DishName = "dinner",
                 Meals = {mealTwo}
             };
-            var monday = new DayModel()
-            {
-                CaloriesLimit = 5000,
-                Dishes = {dinner, lunch}
-            };
-            var sunday = new DayModel()
-            {
-                CaloriesLimit = 6000,
-                Dishes = {dinner}
-            };
-            return new List<DayModel>() {monday, sunday};
+            
+            return new List<DishModel>() {lunch, dinner};
         }
 
         [Fact]
         public void InsertOrUpdate_Create()
         {
             var dbContextFactory = new InMemoryDbContextFactory(new StackTrace());
-            var repo = new DayRepository(dbContextFactory);
+            var repo = new DishRepository(dbContextFactory);
             var day = CreateTestDays().First();
 
-            repo.InsertOrUpdate(day);
+            repo.Insert(day);
 
             var dbDay = repo.GetAll().First();
-            Assert.Equal(day, dbDay, DayModel.DayModelComparer);
+            Assert.Equal(day, dbDay, DishModel.DishModelComparer);
         }
 
         [Fact]
         public void InsertOrUpdate_Update()
         {
             var dbContextFactory = new InMemoryDbContextFactory(new StackTrace());
-            var repo = new DayRepository(dbContextFactory);
-            var day = CreateTestDays().First();
-            day.Id = new Guid("d49e0b93-c041-4c91-973a-ac2bd58a596e");
+            var repo = new DishRepository(dbContextFactory);
+            var ingredientOne = new IngredientModel() {Calories = 54, Name = "eggs"};
+            var ia = new IngredientAmountModel() {Amount = 2, Ingredient = ingredientOne};
+            var m = new MealModel()
+            {
+                Calories = 2, IngredientsUsed = new List<IngredientAmountModel>() {ia},
+                Process = new ProcessModel() {Description = "a"}
+            };
+            var dish = new DishModel()
+            {
+                Calories = 4, Meals = new List<MealModel>() {m}
+            };
 
-            repo.InsertOrUpdate(day);
-            day = repo.GetById(day.Id);
-            day.CaloriesSum = 50;
-            repo.InsertOrUpdate(day);
+            repo.Insert(dish);
 
-            var dbDay = repo.GetAll().First();
-            Assert.Equal(day, dbDay, DayModel.DayModelComparer);
+
+            var ingredients = repo.GetAll().First();
+            ingredients.Meals.First().IngredientsUsed.First().Amount = 200;
+            repo.Update(ingredients);
+            Assert.Equal(ingredients, repo.GetAll().First(), DishModel.DishModelComparer);
         }
 
         [Fact]
@@ -103,8 +103,8 @@ namespace FoodCalendar.BL.Tests
             var ingredientOne = new IngredientModel() {Calories = 54, Name = "eggs"};
             var ingredientTwo = new IngredientModel() {Calories = 50, Name = "ham"};
 
-            repo.InsertOrUpdate(ingredientOne);
-            repo.InsertOrUpdate(ingredientTwo);
+            repo.Insert(ingredientOne);
+            repo.Insert(ingredientTwo);
 
             var ingredients = repo.GetAll();
             Assert.Contains(ingredientOne, ingredients, IngredientModel.IngredientModelComparer);
@@ -119,7 +119,7 @@ namespace FoodCalendar.BL.Tests
             var id = new Guid("a12ef0f4-babf-43be-aaee-3c009b3372bd");
             var ingredient = new IngredientModel() {Calories = 54, Name = "eggs", Id = id};
 
-            repo.InsertOrUpdate(ingredient);
+            repo.Insert(ingredient);
             repo.Delete(id);
 
             var ingredients = repo.GetAll();
@@ -134,7 +134,7 @@ namespace FoodCalendar.BL.Tests
             var id = new Guid("a12ef0f4-babf-43be-aaee-3c009b3372bd");
             var ingredient = new IngredientModel() {Calories = 54, Name = "eggs", Id = id};
 
-            repo.InsertOrUpdate(ingredient);
+            repo.Insert(ingredient);
             repo.Delete(ingredient);
 
             var ingredients = repo.GetAll();
