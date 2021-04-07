@@ -27,7 +27,7 @@ namespace FoodCalendar.DAL
             if (!optionsBuilder.IsConfigured)
             {
                 optionsBuilder.UseSqlServer(
-                    @"Server=192.168.1.220;
+                    @"Server=172.105.249.59;
                     Database = FoodCalendar;
                     MultipleActiveResultSets = True;
                     User ID =SA;
@@ -52,7 +52,7 @@ namespace FoodCalendar.DAL
                 .WithOne(f => f.Process);
 
             modelBuilder.Entity<DishMeal>()
-                .HasKey(dm => new {dm.DishId, dm.MealId, dm.Id});
+                .HasKey(dm => new {dm.DishId, dm.MealId});
             modelBuilder.Entity<DishMeal>()
                 .HasOne(dm => dm.Dish)
                 .WithMany(d => d.DishMeals);

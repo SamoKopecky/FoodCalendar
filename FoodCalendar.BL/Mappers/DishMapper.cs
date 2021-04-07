@@ -1,7 +1,7 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using FoodCalendar.BL.Models;
 using FoodCalendar.DAL.Entities;
-using Microsoft.EntityFrameworkCore.ChangeTracking;
 using MovieCatalog.DAL.Factories;
 
 namespace FoodCalendar.BL.Mappers
@@ -18,7 +18,7 @@ namespace FoodCalendar.BL.Mappers
                     Calories = entity.Calories,
                     DishName = entity.DishName,
                     TotalTime = entity.TotalTime,
-                    DishTime = entity.DishTimeAndTime,
+                    DishTime = entity.DishTimeAndDate,
                     Meals = entity.DishMeals.Select(dm => MealMapper.MapEntityToModel(dm.Meal)).ToList()
                 };
             }
@@ -33,12 +33,11 @@ namespace FoodCalendar.BL.Mappers
             entity.Calories = model.Calories;
             entity.DishName = model.DishName;
             entity.TotalTime = model.TotalTime;
-            entity.DishTimeAndTime = model.DishTime;
+            entity.DishTimeAndDate = model.DishTime;
             entity.DishMeals = model.Meals
                 .Select(m => new DishMeal()
                 {
-                    Meal = MealMapper.MapModelToEntity(m, entityFactory), MealId = m.Id, DishId = model.Id,
-                    Dish = entity
+                    Meal = MealMapper.MapModelToEntity(m, entityFactory), MealId = m.Id, Dish = entity, DishId = entity.Id
                 }).ToList();
             return entity;
         }

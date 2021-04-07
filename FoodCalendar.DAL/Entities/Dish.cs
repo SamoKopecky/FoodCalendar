@@ -8,7 +8,7 @@ namespace FoodCalendar.DAL.Entities
     {
         public int TotalTime { get; set; }
         public string DishName { get; set; }
-        public DateTime DishTimeAndTime { get; set; }
+        public DateTime DishTimeAndDate { get; set; }
         public int Calories { get; set; }
         public ICollection<DishMeal> DishMeals { get; set; } = new List<DishMeal>();
 
@@ -16,7 +16,7 @@ namespace FoodCalendar.DAL.Entities
         {
         }
 
-        private abstract class DishEqualityComparerBase : IEqualityComparer<Dish>
+        private class DishEqualityComparerWithoutMeals : IEqualityComparer<Dish>
         {
             public virtual bool Equals(Dish x, Dish y)
             {
@@ -26,29 +26,20 @@ namespace FoodCalendar.DAL.Entities
                 if (x.GetType() != y.GetType()) return false;
                 return x.TotalTime == y.TotalTime &&
                        x.DishName == y.DishName &&
-                       x.DishTimeAndTime.Equals(y.DishTimeAndTime) &&
+                       x.DishTimeAndDate.Equals(y.DishTimeAndDate) &&
                        x.Calories == y.Calories;
             }
 
             public int GetHashCode(Dish obj)
             {
-                return HashCode.Combine(obj.TotalTime, obj.DishName, obj.DishTimeAndTime, obj.Calories, obj.DishMeals);
-            }
-        }
-
-
-        private sealed class DishEqualityComparerWithoutMeals : DishEqualityComparerBase
-        {
-            public override bool Equals(Dish x, Dish y)
-            {
-                return base.Equals(x, y);
+                return HashCode.Combine(obj.TotalTime, obj.DishName, obj.DishTimeAndDate, obj.Calories, obj.DishMeals);
             }
         }
 
         public static IEqualityComparer<Dish> DishComparerWithoutMeals { get; } =
             new DishEqualityComparerWithoutMeals();
 
-        private sealed class DishEqualityComparer : DishEqualityComparerBase
+        private sealed class DishEqualityComparer : DishEqualityComparerWithoutMeals
         {
             public override bool Equals(Dish x, Dish y)
             {

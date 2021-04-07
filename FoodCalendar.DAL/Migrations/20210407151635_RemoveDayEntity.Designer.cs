@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FoodCalendar.DAL.Migrations
 {
     [DbContext(typeof(FoodCalendarDbContext))]
-    [Migration("20210407143617_RemoveDayEntity")]
+    [Migration("20210407151635_RemoveDayEntity")]
     partial class RemoveDayEntity
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -33,7 +33,7 @@ namespace FoodCalendar.DAL.Migrations
                     b.Property<string>("DishName")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("DishTimeAndTime")
+                    b.Property<DateTime>("DishTimeAndDate")
                         .HasColumnType("datetime2");
 
                     b.Property<int>("TotalTime")
@@ -52,10 +52,7 @@ namespace FoodCalendar.DAL.Migrations
                     b.Property<Guid>("MealId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<Guid>("Id")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("DishId", "MealId", "Id");
+                    b.HasKey("DishId", "MealId");
 
                     b.HasIndex("MealId");
 

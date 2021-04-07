@@ -18,7 +18,7 @@ namespace FoodCalendar.DAL.Entities
         }
 
 
-        private class BasicMealEqualityComparer : IEqualityComparer<Meal>
+        private abstract class BasicMealEqualityComparer : IEqualityComparer<Meal>
         {
             public virtual bool Equals(Meal x, Meal y)
             {
@@ -38,8 +38,6 @@ namespace FoodCalendar.DAL.Entities
                     obj.DishMeals);
             }
         }
-
-        public static IEqualityComparer<Meal> BasicMealComparer { get; } = new BasicMealEqualityComparer();
 
         private class MealEqualityComparerWithoutDishes : BasicMealEqualityComparer
         {

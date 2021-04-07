@@ -2,7 +2,7 @@
 
 namespace FoodCalendar.DAL.Entities
 {
-    public class DishMeal : EntityBase
+    public class DishMeal
     {
         public Guid DishId { get; set; }
         public Dish Dish { get; set; }

@@ -19,6 +19,28 @@ namespace FoodCalendar.App
         {
 
             SeedDb();
+            //var dbContextFactory = new DbContextFactory();
+            //var repo = new DishRepository(dbContextFactory);
+            //var ingredientOne = new IngredientModel() { Calories = 54, Name = "eggs" };
+            //var ia = new IngredientAmountModel() { Amount = 2, Ingredient = ingredientOne };
+            //var m = new MealModel()
+            //{
+            //    Calories = 2,
+            //    IngredientsUsed = new List<IngredientAmountModel>() { ia },
+            //    Process = new ProcessModel() { Description = "a" }
+            //};
+            //var dish = new DishModel()
+            //{
+            //    Calories = 4,
+            //    Meals = new List<MealModel>() { m }
+            //};
+
+            //repo.Insert(dish);
+
+
+            //var ingredients = repo.GetAll().First();
+            //ingredients.Meals.First().IngredientsUsed.First().Amount = 200;
+            //repo.Update(ingredients);
         }
 
         public static void SeedDb()
@@ -42,10 +64,8 @@ namespace FoodCalendar.App
                 Meal = hamAndEggs
             });
 
-            
-            Console.WriteLine("now way this prints");
-            
-            Console.WriteLine("now way this prints");
+            ctx.Dishes.Add(lunch);
+            ctx.SaveChanges();
         }
     }
 }

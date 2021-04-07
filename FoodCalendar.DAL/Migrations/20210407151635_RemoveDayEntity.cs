@@ -13,36 +13,29 @@ namespace FoodCalendar.DAL.Migrations
             migrationBuilder.DropTable(
                 name: "Days");
 
-            migrationBuilder.DropPrimaryKey(
-                name: "PK_DishMeals",
+            migrationBuilder.DropColumn(
+                name: "Id",
                 table: "DishMeals");
 
             migrationBuilder.RenameColumn(
                 name: "DishTime",
                 table: "Dishes",
-                newName: "DishTimeAndTime");
-
-            migrationBuilder.AddPrimaryKey(
-                name: "PK_DishMeals",
-                table: "DishMeals",
-                columns: new[] { "DishId", "MealId", "Id" });
+                newName: "DishTimeAndDate");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropPrimaryKey(
-                name: "PK_DishMeals",
-                table: "DishMeals");
-
             migrationBuilder.RenameColumn(
-                name: "DishTimeAndTime",
+                name: "DishTimeAndDate",
                 table: "Dishes",
                 newName: "DishTime");
 
-            migrationBuilder.AddPrimaryKey(
-                name: "PK_DishMeals",
+            migrationBuilder.AddColumn<Guid>(
+                name: "Id",
                 table: "DishMeals",
-                columns: new[] { "DishId", "MealId" });
+                type: "uniqueidentifier",
+                nullable: false,
+                defaultValue: new Guid("00000000-0000-0000-0000-000000000000"));
 
             migrationBuilder.CreateTable(
                 name: "Days",
