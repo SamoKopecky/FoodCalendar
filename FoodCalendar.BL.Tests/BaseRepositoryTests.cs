@@ -1,144 +1,126 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Diagnostics;
 using System.Linq;
-using System.Net.Http.Headers;
+using FoodCalendar.BL.Mappers;
 using FoodCalendar.BL.Models;
 using FoodCalendar.DAL.Factories;
 using FoodCalendar.BL.Repositories;
+using FoodCalendar.DAL.Seeds;
 using Xunit;
 
 namespace FoodCalendar.BL.Tests
 {
     public class BaseRepositoryTests
     {
-        private List<DishModel> CreateTestDays()
-        {
-            var eggs = new IngredientModel() {Name = "egg", AmountStored = 5};
-            var ham = new IngredientModel() {Name = "ham", AmountStored = 10};
-            var eggsAmount = new IngredientAmountModel() {Amount = 10, Ingredient = eggs};
-            var eggsAmountTwo = new IngredientAmountModel() {Amount = 15, Ingredient = eggs};
-            var hamAmount = new IngredientAmountModel() {Amount = 10, Ingredient = ham};
-            var mealOne = new MealModel()
-            {
-                Calories = 10,
-                IngredientsUsed = {eggsAmount, hamAmount},
-                Process = new ProcessModel()
-                {
-                    Description = "make em",
-                    TimeRequired = 60
-                }
-            };
-            var mealTwo = new MealModel()
-            {
-                Calories = 20,
-                IngredientsUsed = {eggsAmountTwo, hamAmount},
-                Process = new ProcessModel()
-                {
-                    Description = "make em good",
-                    TimeRequired = 120
-                }
-            };
-            var lunch = new DishModel()
-            {
-                Calories = 200,
-                DishName = "lunch",
-                Meals = {mealOne}
-            };
-            var dinner = new DishModel()
-            {
-                Calories = 200,
-                DishName = "dinner",
-                Meals = {mealTwo}
-            };
-            
-            return new List<DishModel>() {lunch, dinner};
-        }
-
         [Fact]
-        public void InsertOrUpdate_Create()
+        public void Insert_Dish_One()
         {
             var dbContextFactory = new InMemoryDbContextFactory(new StackTrace());
             var repo = new DishRepository(dbContextFactory);
-            var day = CreateTestDays().First();
-
-            repo.Insert(day);
-
-            var dbDay = repo.GetAll().First();
-            Assert.Equal(day, dbDay, DishModel.DishModelComparer);
-        }
-
-        [Fact]
-        public void InsertOrUpdate_Update()
-        {
-            var dbContextFactory = new InMemoryDbContextFactory(new StackTrace());
-            var repo = new DishRepository(dbContextFactory);
-            var ingredientOne = new IngredientModel() {Calories = 54, Name = "eggs"};
-            var ia = new IngredientAmountModel() {Amount = 2, Ingredient = ingredientOne};
-            var m = new MealModel()
-            {
-                Calories = 2, IngredientsUsed = new List<IngredientAmountModel>() {ia},
-                Process = new ProcessModel() {Description = "a"}
-            };
-            var dish = new DishModel()
-            {
-                Calories = 4, Meals = new List<MealModel>() {m}
-            };
+            var dish = DishMapper.MapEntityToModel(DishSeed.Lunch);
 
             repo.Insert(dish);
 
+            var dbDish = repo.GetAll().First();
 
-            var ingredients = repo.GetAll().First();
-            ingredients.Meals.First().IngredientsUsed.First().Amount = 200;
-            repo.Update(ingredients);
-            Assert.Equal(ingredients, repo.GetAll().First(), DishModel.DishModelComparer);
+            Assert.Equal(dish, dbDish, DishModel.DishModelComparer);
         }
 
+
         [Fact]
-        public void GetAll_Ingredient_List()
+        public void Insert_DuplicateIngredient_One()
         {
             var dbContextFactory = new InMemoryDbContextFactory(new StackTrace());
             var repo = new IngredientRepository(dbContextFactory);
-            var ingredientOne = new IngredientModel() {Calories = 54, Name = "eggs"};
-            var ingredientTwo = new IngredientModel() {Calories = 50, Name = "ham"};
-
-            repo.Insert(ingredientOne);
-            repo.Insert(ingredientTwo);
-
-            var ingredients = repo.GetAll();
-            Assert.Contains(ingredientOne, ingredients, IngredientModel.IngredientModelComparer);
-            Assert.Contains(ingredientTwo, ingredients, IngredientModel.IngredientModelComparer);
-        }
-
-        [Fact]
-        public void DeleteById_Ingredient_One()
-        {
-            var dbContextFactory = new InMemoryDbContextFactory(new StackTrace());
-            var repo = new IngredientRepository(dbContextFactory);
-            var id = new Guid("a12ef0f4-babf-43be-aaee-3c009b3372bd");
-            var ingredient = new IngredientModel() {Calories = 54, Name = "eggs", Id = id};
+            var ingredient = IngredientMapper.MapEntityToModel(IngredientSeed.Egg);
+            ingredient.Id = new Guid("e3db45b6-5493-4876-b771-765e580b71c9");
+            var ingredients = new List<IngredientModel> {ingredient};
 
             repo.Insert(ingredient);
-            repo.Delete(id);
+            repo.Insert(ingredient);
 
-            var ingredients = repo.GetAll();
-            Assert.Empty(ingredients);
+            var dbDishes = repo.GetAll().ToList();
+            Assert.Equal(ingredients, dbDishes, IngredientModel.IngredientModelComparer);
         }
 
         [Fact]
-        public void DeleteByModel_Ingredient_One()
+        public void Update_IngredientAmount_One()
         {
             var dbContextFactory = new InMemoryDbContextFactory(new StackTrace());
-            var repo = new IngredientRepository(dbContextFactory);
-            var id = new Guid("a12ef0f4-babf-43be-aaee-3c009b3372bd");
-            var ingredient = new IngredientModel() {Calories = 54, Name = "eggs", Id = id};
+            var repo = new DishRepository(dbContextFactory);
+            var dish = DishMapper.MapEntityToModel(DishSeed.Lunch);
 
-            repo.Insert(ingredient);
-            repo.Delete(ingredient);
+            repo.Insert(dish);
 
-            var ingredients = repo.GetAll();
-            Assert.Empty(ingredients);
+            var updatedDish = repo.GetAll().First();
+            updatedDish.Meals.First().IngredientsUsed.First().Ingredient.Calories = 2054;
+            repo.Update(updatedDish);
+            Assert.Equal(repo.GetAll().First(), updatedDish, DishModel.DishModelComparer);
+        }
+
+        [Fact]
+        public void GetAll_Dish_List()
+        {
+            var dbContextFactory = new InMemoryDbContextFactory(new StackTrace());
+            var repo = new DishRepository(dbContextFactory);
+            var dishOne = DishMapper.MapEntityToModel(DishSeed.Lunch);
+            var dishTwo = DishMapper.MapEntityToModel(DishSeed.Lunch);
+            dishTwo.Calories = 500;
+            var newDishes = new List<DishModel>() {dishTwo, dishOne};
+            newDishes[0].Id = new Guid("de1123d5-e47d-4a3a-9f6f-3ebe70deafd3");
+            newDishes[1].Id = new Guid("e3db45b6-5493-4876-b771-765e580b71c9");
+
+            repo.Insert(newDishes[0]);
+            repo.Insert(newDishes[1]);
+
+            var dbDishes = repo.GetAll().ToList();
+            Assert.Equal(newDishes, dbDishes, DishModel.DishModelComparer);
+        }
+
+        [Fact]
+        public void DeleteById_Dish_One()
+        {
+            var dbContextFactory = new InMemoryDbContextFactory(new StackTrace());
+            var repo = new DishRepository(dbContextFactory);
+            var dish = DishMapper.MapEntityToModel(DishSeed.Lunch);
+            dish.Id = new Guid("8abb44cb-e3e6-4850-8028-2418424123da");
+            repo.Insert(dish);
+
+            repo.Delete(dish.Id);
+
+            var dishes = repo.GetAll();
+            Assert.Empty(dishes);
+        }
+
+        [Fact]
+        public void DeleteByModel_Dish_One()
+        {
+            var dbContextFactory = new InMemoryDbContextFactory(new StackTrace());
+            var repo = new DishRepository(dbContextFactory);
+            var dish = DishMapper.MapEntityToModel(DishSeed.Lunch);
+            dish.Id = new Guid("8abb44cb-e3e6-4850-8028-2418424123da");
+            repo.Insert(dish);
+
+            repo.Delete(dish);
+
+            var dishes = repo.GetAll();
+            Assert.Empty(dishes);
+        }
+
+        [Fact]
+        public void GetById_Dish_one()
+        {
+            var dbContextFactory = new InMemoryDbContextFactory(new StackTrace());
+            var repo = new DishRepository(dbContextFactory);
+            var dish = DishMapper.MapEntityToModel(DishSeed.Lunch);
+            var id = new Guid("8abb44cb-e3e6-4850-8028-2418424123da");
+            dish.Id = id;
+
+            repo.Insert(dish);
+
+            var dbDish = repo.GetById(id);
+            Assert.Equal(dish, dbDish, DishModel.DishModelComparer);
         }
     }
 }

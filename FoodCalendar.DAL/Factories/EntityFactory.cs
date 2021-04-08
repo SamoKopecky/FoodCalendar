@@ -3,7 +3,7 @@ using System.Linq;
 using FoodCalendar.DAL.Entities;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 
-namespace MovieCatalog.DAL.Factories
+namespace FoodCalendar.DAL.Factories
 {
     public class EntityFactory
     {
@@ -17,14 +17,14 @@ namespace MovieCatalog.DAL.Factories
 
         public TEntity Create<TEntity>(Guid id) where TEntity : EntityBase, new()
         {
-            TEntity entity = null;
+            TEntity entity;
             if (id != Guid.Empty)
             {
-                entity = _changeTracker?.Entries<TEntity>().SingleOrDefault(i => i.Entity.Id == id)
-                    ?.Entity;
+                entity = _changeTracker?.Entries<TEntity>()
+                    .SingleOrDefault(i => i.Entity.Id == id)?.Entity;
                 if (entity == null)
                 {
-                    entity = new TEntity { Id = id };
+                    entity = new TEntity {Id = id};
                     _changeTracker?.Context.Attach(entity);
                 }
             }
@@ -32,6 +32,7 @@ namespace MovieCatalog.DAL.Factories
             {
                 entity = new TEntity();
             }
+
             return entity;
         }
     }

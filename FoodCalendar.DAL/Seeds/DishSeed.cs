@@ -10,11 +10,11 @@ namespace FoodCalendar.DAL.Seeds
     {
         public static readonly Dish Lunch = new Dish()
         {
-            Id = Guid.Parse("7a4fda42-ee8a-413b-9b3a-0191d5b42ec7"),
             TotalTime = 60,
             DishName = "Lunch",
             DishTimeAndDate = new DateTime(2021, 3, 21, 18, 00, 00),
             Calories = 9,
+            Meals = new List<Meal>() {MealSeed.HamAndEggs}
         };
     }
 }

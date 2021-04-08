@@ -1,8 +1,8 @@
 ﻿using System.Linq;
 using FoodCalendar.BL.Models;
 using FoodCalendar.DAL.Entities;
+using FoodCalendar.DAL.Factories;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
-using MovieCatalog.DAL.Factories;
 
 namespace FoodCalendar.BL.Mappers
 {
@@ -25,8 +25,7 @@ namespace FoodCalendar.BL.Mappers
 
         public static IngredientAmount MapModelToEntity(IngredientAmountModel model, EntityFactory entityFactory)
         {
-            var entity = (entityFactory ??= new EntityFactory()).Create<IngredientAmount>(model.Id);
-
+            var entity = entityFactory.Create<IngredientAmount>(model.Id);
             entity.Id = model.Id;
             entity.Amount = model.Amount;
             entity.Ingredient = IngredientMapper.MapModelToEntity(model.Ingredient, entityFactory);

@@ -4,10 +4,8 @@ using System.Linq;
 using FoodCalendar.BL.Interfaces;
 using FoodCalendar.BL.Models;
 using FoodCalendar.DAL.Entities;
+using FoodCalendar.DAL.Factories;
 using FoodCalendar.DAL.Interfaces;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.ChangeTracking;
-using MovieCatalog.DAL.Factories;
 
 namespace FoodCalendar.BL.Repositories
 {
@@ -45,7 +43,7 @@ namespace FoodCalendar.BL.Repositories
         {
             using var dbContext = _dbContextFactory.CreateDbContext();
             var dbSet = dbContext.Set<TEntity>();
-            var entity = new TEntity() {Id = id};
+            var entity = new TEntity {Id = id};
             dbSet.Remove(entity);
             dbContext.SaveChanges();
         }
@@ -66,28 +64,10 @@ namespace FoodCalendar.BL.Repositories
         public void Update(TModel model)
         {
             using var dbContext = _dbContextFactory.CreateDbContext();
-            
             var entity = _mapModelToEntity(model, new EntityFactory(dbContext.ChangeTracker));
-
-            //var dbSet = dbContext.Set<TEntity>();
-            //if (_includeChildEntities != null)
-            //{
-            //    dbSet = _includeChildEntities(dbSet);
-            //}
-
-            //foreach (var a in dbSet)
-            //{
-            //    dbContext.Entry(a).State = EntityState.Detached;
-            //}
-            //dbSet.AddRange(_includeChildEntities(dbSet));
-
-
-            //dbContext.Update(entity);
-
-
+            dbContext.Update(entity);
             dbContext.SaveChanges();
         }
-
 
         public TModel GetById(Guid id)
         {

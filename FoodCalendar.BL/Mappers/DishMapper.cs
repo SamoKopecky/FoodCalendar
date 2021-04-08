@@ -2,7 +2,7 @@
 using System.Linq;
 using FoodCalendar.BL.Models;
 using FoodCalendar.DAL.Entities;
-using MovieCatalog.DAL.Factories;
+using FoodCalendar.DAL.Factories;
 
 namespace FoodCalendar.BL.Mappers
 {
@@ -28,7 +28,7 @@ namespace FoodCalendar.BL.Mappers
 
         public static Dish MapModelToEntity(DishModel model, EntityFactory entityFactory)
         {
-            var entity = (entityFactory ??= new EntityFactory()).Create<Dish>(model.Id);
+            var entity = entityFactory.Create<Dish>(model.Id);
             entity.Id = model.Id;
             entity.Calories = model.Calories;
             entity.DishName = model.DishName;
