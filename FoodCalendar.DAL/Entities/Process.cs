@@ -5,7 +5,6 @@ namespace FoodCalendar.DAL.Entities
 {
     public class Process : EntityBase
     {
-
         public int TimeRequired { get; set; }
         public string Description { get; set; }
         public Meal Meal { get; set; }
@@ -14,9 +13,9 @@ namespace FoodCalendar.DAL.Entities
         {
         }
 
-        private sealed class ProcessEqualityComparer : IEqualityComparer<Process>
+        private class ProcessEqualityComparerNoMeal : IEqualityComparer<Process>
         {
-            public bool Equals(Process x, Process y)
+            public virtual bool Equals(Process x, Process y)
             {
                 if (ReferenceEquals(x, y)) return true;
                 if (ReferenceEquals(x, null)) return false;
@@ -31,6 +30,15 @@ namespace FoodCalendar.DAL.Entities
             }
         }
 
+        private class ProcessEqualityComparer : ProcessEqualityComparerNoMeal
+        {
+            public override bool Equals(Process x, Process y)
+            {
+                return base.Equals(x, y) && Meal.MealComparerNoProcess.Equals(x?.Meal, y?.Meal);
+            }
+        }
+
         public static IEqualityComparer<Process> ProcessComparer { get; } = new ProcessEqualityComparer();
+        public static IEqualityComparer<Process> ProcessComparerNoMeal { get; } = new ProcessEqualityComparerNoMeal();
     }
 }

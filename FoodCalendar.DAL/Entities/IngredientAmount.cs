@@ -1,19 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Security.Cryptography.X509Certificates;
 
 namespace FoodCalendar.DAL.Entities
 {
     public class IngredientAmount : EntityBase
     {
+        public int Amount { get; set; }
+        public Ingredient Ingredient { get; set; }
+        public Meal Meal { get; set; }
+
         public IngredientAmount() : base()
         {
         }
-
-        public Ingredient Ingredient { get; set; }
-        public Meal Meal { get; set; }
-        public int Amount { get; set; }
-
 
         private abstract class BaseIngredientAmountEqualityComparer : IEqualityComparer<IngredientAmount>
         {
@@ -32,7 +30,7 @@ namespace FoodCalendar.DAL.Entities
             }
         }
 
-        private class IngredientAmountEqualityComparerNoIngredient : BaseIngredientAmountEqualityComparer
+        private sealed class IngredientAmountEqualityComparerNoIngredient : BaseIngredientAmountEqualityComparer
         {
             public override bool Equals(IngredientAmount x, IngredientAmount y)
             {
@@ -41,7 +39,7 @@ namespace FoodCalendar.DAL.Entities
         }
 
 
-        private class IngredientAmountEqualityComparerNoMeal : BaseIngredientAmountEqualityComparer
+        private sealed class IngredientAmountEqualityComparerNoMeal : BaseIngredientAmountEqualityComparer
         {
             public override bool Equals(IngredientAmount x, IngredientAmount y)
             {
@@ -50,7 +48,7 @@ namespace FoodCalendar.DAL.Entities
             }
         }
 
-        private class IngredientAmountEqualityComparer : BaseIngredientAmountEqualityComparer
+        private sealed class IngredientAmountEqualityComparer : BaseIngredientAmountEqualityComparer
         {
             public override bool Equals(IngredientAmount x, IngredientAmount y)
             {
@@ -65,7 +63,6 @@ namespace FoodCalendar.DAL.Entities
 
         public static IEqualityComparer<IngredientAmount> IngredientAmountComparerNoMeal { get; } =
             new IngredientAmountEqualityComparerNoMeal();
-
 
         public static IEqualityComparer<IngredientAmount> IngredientAmountComparer { get; } =
             new IngredientAmountEqualityComparer();

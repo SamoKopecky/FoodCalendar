@@ -35,6 +35,7 @@ namespace FoodCalendar.DAL.Tests
             }
 
             Assert.Equal(meal, dbMeal, Meal.MealComparer);
+            Assert.Equal(meal.Process, dbMeal?.Process, Process.ProcessComparer);
         }
 
         [Fact]

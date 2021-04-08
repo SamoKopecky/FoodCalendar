@@ -6,15 +6,15 @@ namespace FoodCalendar.DAL.Entities
 {
     public class Ingredient : EntityBase
     {
-        public Ingredient() : base()
-        {
-        }
-
         public string Name { get; set; }
         public int AmountStored { get; set; }
         public string UnitName { get; set; }
         public int Calories { get; set; }
         public ICollection<IngredientAmount> IngredientAmounts { get; set; } = new List<IngredientAmount>();
+
+        public Ingredient() : base()
+        {
+        }
 
         public class IngredientEqualityComparerNoIngredientAmounts : IEqualityComparer<Ingredient>
         {
