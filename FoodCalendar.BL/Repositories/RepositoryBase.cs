@@ -88,14 +88,6 @@ namespace FoodCalendar.BL.Repositories
             dbContext.SaveChanges();
         }
 
-        private static void DisplayStates(IEnumerable<EntityEntry> entries)
-        {
-            foreach (var entry in entries)
-            {
-                Console.WriteLine($"Entity: {entry.Entity.GetType().Name}, State: {entry.State.ToString()}");
-            }
-        }
-
 
         public TModel GetById(Guid id)
         {

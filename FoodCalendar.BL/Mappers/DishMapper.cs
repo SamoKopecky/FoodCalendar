@@ -19,7 +19,7 @@ namespace FoodCalendar.BL.Mappers
                     DishName = entity.DishName,
                     TotalTime = entity.TotalTime,
                     DishTime = entity.DishTimeAndDate,
-                    Meals = entity.DishMeals.Select(dm => MealMapper.MapEntityToModel(dm.Meal)).ToList()
+                    Meals = entity.Meals.Select(MealMapper.MapEntityToModel).ToList()
                 };
             }
 
@@ -34,11 +34,7 @@ namespace FoodCalendar.BL.Mappers
             entity.DishName = model.DishName;
             entity.TotalTime = model.TotalTime;
             entity.DishTimeAndDate = model.DishTime;
-            entity.DishMeals = model.Meals
-                .Select(m => new DishMeal()
-                {
-                    Meal = MealMapper.MapModelToEntity(m, entityFactory), MealId = m.Id, Dish = entity, DishId = entity.Id
-                }).ToList();
+            entity.Meals = model.Meals.Select(m => MealMapper.MapModelToEntity(m, entityFactory)).ToList();
             return entity;
         }
     }

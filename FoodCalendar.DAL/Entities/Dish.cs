@@ -10,13 +10,13 @@ namespace FoodCalendar.DAL.Entities
         public string DishName { get; set; }
         public DateTime DishTimeAndDate { get; set; }
         public int Calories { get; set; }
-        public ICollection<DishMeal> DishMeals { get; set; } = new List<DishMeal>();
+        public ICollection<Meal> Meals { get; set; } = new List<Meal>();
 
         public Dish() : base()
         {
         }
 
-        private class DishEqualityComparerWithoutMeals : IEqualityComparer<Dish>
+        private class DishEqualityComparerNoMeals : IEqualityComparer<Dish>
         {
             public virtual bool Equals(Dish x, Dish y)
             {
@@ -32,24 +32,20 @@ namespace FoodCalendar.DAL.Entities
 
             public int GetHashCode(Dish obj)
             {
-                return HashCode.Combine(obj.TotalTime, obj.DishName, obj.DishTimeAndDate, obj.Calories, obj.DishMeals);
+                return HashCode.Combine(obj.TotalTime, obj.DishName, obj.DishTimeAndDate, obj.Calories, obj.Meals);
             }
         }
 
-        public static IEqualityComparer<Dish> DishComparerWithoutMeals { get; } =
-            new DishEqualityComparerWithoutMeals();
-
-        private sealed class DishEqualityComparer : DishEqualityComparerWithoutMeals
+        private sealed class DishEqualityComparer : DishEqualityComparerNoMeals
         {
             public override bool Equals(Dish x, Dish y)
             {
-                return base.Equals(x, y) &&
-                       x.DishMeals.Select(dm => dm.Meal)
-                           .SequenceEqual(y.DishMeals
-                               .Select(dm => dm.Meal), Meal.MealComparerWithoutDishes);
+                return y != null && x != null && base.Equals(x, y) &&
+                       x.Meals.SequenceEqual(y.Meals, Meal.MealComparerNoDishes);
             }
         }
 
+        public static IEqualityComparer<Dish> DishComparerNoMeals { get; } = new DishEqualityComparerNoMeals();
         public static IEqualityComparer<Dish> DishComparer { get; } = new DishEqualityComparer();
     }
 }

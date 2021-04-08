@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Security.Cryptography.X509Certificates;
 
 namespace FoodCalendar.DAL.Entities
 {
@@ -14,16 +15,15 @@ namespace FoodCalendar.DAL.Entities
         public int Amount { get; set; }
 
 
-        private sealed class IngredientAmountEqualityComparer : IEqualityComparer<IngredientAmount>
+        private abstract class BaseIngredientAmountEqualityComparer : IEqualityComparer<IngredientAmount>
         {
-            public bool Equals(IngredientAmount x, IngredientAmount y)
+            public virtual bool Equals(IngredientAmount x, IngredientAmount y)
             {
                 if (ReferenceEquals(x, y)) return true;
                 if (ReferenceEquals(x, null)) return false;
                 if (ReferenceEquals(y, null)) return false;
                 if (x.GetType() != y.GetType()) return false;
-                return Ingredient.IngredientComparer.Equals(x.Ingredient, y.Ingredient) &&
-                       x.Amount == y.Amount;
+                return x.Amount == y.Amount;
             }
 
             public int GetHashCode(IngredientAmount obj)
@@ -31,6 +31,41 @@ namespace FoodCalendar.DAL.Entities
                 return HashCode.Combine(obj.Ingredient, obj.Meal, obj.Amount);
             }
         }
+
+        private class IngredientAmountEqualityComparerNoIngredient : BaseIngredientAmountEqualityComparer
+        {
+            public override bool Equals(IngredientAmount x, IngredientAmount y)
+            {
+                return base.Equals(x, y) && Meal.MealComparerNoIngredientAmounts.Equals(x?.Meal, y?.Meal);
+            }
+        }
+
+
+        private class IngredientAmountEqualityComparerNoMeal : BaseIngredientAmountEqualityComparer
+        {
+            public override bool Equals(IngredientAmount x, IngredientAmount y)
+            {
+                return base.Equals(x, y) &&
+                       Ingredient.IngredientComparerNoIngredientAmounts.Equals(x?.Ingredient, y?.Ingredient);
+            }
+        }
+
+        private class IngredientAmountEqualityComparer : BaseIngredientAmountEqualityComparer
+        {
+            public override bool Equals(IngredientAmount x, IngredientAmount y)
+            {
+                return base.Equals(x, y) &&
+                       Ingredient.IngredientComparerNoIngredientAmounts.Equals(x?.Ingredient, y?.Ingredient) &&
+                       Meal.MealComparerNoIngredientAmounts.Equals(x?.Meal, y?.Meal);
+            }
+        }
+
+        public static IEqualityComparer<IngredientAmount> IngredientAmountComparerNoIngredient { get; } =
+            new IngredientAmountEqualityComparerNoIngredient();
+
+        public static IEqualityComparer<IngredientAmount> IngredientAmountComparerNoMeal { get; } =
+            new IngredientAmountEqualityComparerNoMeal();
+
 
         public static IEqualityComparer<IngredientAmount> IngredientAmountComparer { get; } =
             new IngredientAmountEqualityComparer();

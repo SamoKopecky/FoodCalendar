@@ -14,12 +14,10 @@ namespace FoodCalendar.BL.Repositories
                 DishMapper.MapEntityToModel,
                 DishMapper.MapModelToEntity,
                 entity => entity.Select(d => d)
-                    .Include(d => d.DishMeals)
-                    .ThenInclude(dm => dm.Meal)
+                    .Include(d => d.Meals)
                     .ThenInclude(m => m.IngredientsUsed)
                     .ThenInclude(ia => ia.Ingredient)
-                    .Include(d => d.DishMeals)
-                    .ThenInclude(dm => dm.Meal)
+                    .Include(d => d.Meals)
                     .ThenInclude(m => m.Process),
                 contextFactory
             )

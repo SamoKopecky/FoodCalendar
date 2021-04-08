@@ -30,8 +30,6 @@ namespace FoodCalendar.BL.Mappers
             entity.Id = model.Id;
             entity.Amount = model.Amount;
             entity.Ingredient = IngredientMapper.MapModelToEntity(model.Ingredient, entityFactory);
-
-
             return entity;
         }
     }

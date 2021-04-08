@@ -65,6 +65,7 @@ namespace FoodCalendar.DAL.Tests
 
             Assert.Equal(amountOne, dbAmountOne, IngredientAmount.IngredientAmountComparer);
             Assert.Equal(amountTwo, dbAmountTwo, IngredientAmount.IngredientAmountComparer);
+            Assert.Equal(amountOne.Ingredient, dbAmountOne.Ingredient, Ingredient.IngredientComparer);
         }
 
         [Fact]
@@ -103,10 +104,10 @@ namespace FoodCalendar.DAL.Tests
             var ingredientTwo = new Ingredient() {Name = "ham", AmountStored = 4};
             var amountTwo = new IngredientAmount() {Ingredient = ingredientTwo, Amount = 1};
             var mealTwo = new Meal() {IngredientsUsed = {amountTwo}, Calories = 5};
-            var dishMealOne = new List<DishMeal>() {new DishMeal() {Meal = mealOne}, new DishMeal() {Meal = mealTwo}};
-            var dishOne = new Dish() {DishName = "lunch", DishMeals = dishMealOne};
-            var dishMealTwo = new List<DishMeal>() {new DishMeal() {Meal = mealOne}};
-            var dishTwo = new Dish() {DishName = "dinner", DishMeals = dishMealTwo};
+            var dishMealOne = new List<Meal>() {mealOne, mealTwo};
+            var dishOne = new Dish() {DishName = "lunch", Meals = dishMealOne};
+            var dishMealTwo = new List<Meal>() {mealOne};
+            var dishTwo = new Dish() {DishName = "dinner", Meals = dishMealTwo};
 
             using (var ctx = dbContextFactory.CreateDbContext())
             {
@@ -121,14 +122,12 @@ namespace FoodCalendar.DAL.Tests
             using (var ctx = dbContextFactory.CreateDbContext())
             {
                 dbDishOne = ctx.Dishes.Select(d => d)
-                    .Include(d => d.DishMeals)
-                    .ThenInclude(dm => dm.Meal)
+                    .Include(d => d.Meals)
                     .ThenInclude(m => m.IngredientsUsed)
                     .ThenInclude(ia => ia.Ingredient)
                     .FirstOrDefault(d => d.DishName == "lunch");
                 dbDishTwo = ctx.Dishes.Select(d => d)
-                    .Include(d => d.DishMeals)
-                    .ThenInclude(dm => dm.Meal)
+                    .Include(d => d.Meals)
                     .ThenInclude(m => m.IngredientsUsed)
                     .ThenInclude(ia => ia.Ingredient)
                     .FirstOrDefault(d => d.DishName == "dinner");
@@ -136,6 +135,28 @@ namespace FoodCalendar.DAL.Tests
 
             Assert.Equal(dishOne, dbDishOne, Dish.DishComparer);
             Assert.Equal(dishTwo, dbDishTwo, Dish.DishComparer);
+        }
+
+        [Fact]
+        public void None_Ingredient_Create()
+        {
+            var dbContextFactory = new InMemoryDbContextFactory(new StackTrace());
+            var ingredient = new Ingredient() {Name = "egg", AmountStored = 3};
+
+            using (var ctx = dbContextFactory.CreateDbContext())
+            {
+                ctx.Add(ingredient);
+                ctx.SaveChanges();
+            }
+
+            Ingredient dbIngredient;
+
+            using (var ctx = dbContextFactory.CreateDbContext())
+            {
+                dbIngredient = ctx.Ingredients.Select(i => i).FirstOrDefault();
+            }
+
+            Assert.Equal(ingredient, dbIngredient, Ingredient.IngredientComparer);
         }
     }
 }

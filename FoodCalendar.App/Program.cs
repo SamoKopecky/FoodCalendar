@@ -59,10 +59,7 @@ namespace FoodCalendar.App
             hamAndEggs.Process = process;
 
             var lunch = DishSeed.Lunch;
-            lunch.DishMeals.Add(new DishMeal()
-            {
-                Meal = hamAndEggs
-            });
+            lunch.Meals.Add(hamAndEggs);
 
             ctx.Dishes.Add(lunch);
             ctx.SaveChanges();

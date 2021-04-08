@@ -11,7 +11,6 @@ namespace FoodCalendar.DAL
         public DbSet<IngredientAmount> IngredientAmounts { get; set; }
         public DbSet<Meal> Meals { get; set; }
         public DbSet<Dish> Dishes { get; set; }
-        public DbSet<DishMeal> DishMeals { get; set; }
 
         public FoodCalendarDbContext()
         {
@@ -44,21 +43,16 @@ namespace FoodCalendar.DAL
                 .WithMany(i => i.IngredientAmounts);
 
             modelBuilder.Entity<Meal>()
-                .HasMany(f => f.IngredientsUsed)
+                .HasMany(m => m.IngredientsUsed)
                 .WithOne(ia => ia.Meal);
 
             modelBuilder.Entity<Process>()
                 .HasOne(p => p.Meal)
-                .WithOne(f => f.Process);
+                .WithOne(m => m.Process);
 
-            modelBuilder.Entity<DishMeal>()
-                .HasKey(dm => new {dm.DishId, dm.MealId});
-            modelBuilder.Entity<DishMeal>()
-                .HasOne(dm => dm.Dish)
-                .WithMany(d => d.DishMeals);
-            modelBuilder.Entity<DishMeal>()
-                .HasOne(dm => dm.Meal)
-                .WithMany(m => m.DishMeals);
+            modelBuilder.Entity<Dish>()
+                .HasMany(d => d.Meals)
+                .WithOne(m => m.Dish);
         }
     }
 }

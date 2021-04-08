@@ -15,7 +15,6 @@ namespace FoodCalendar.DAL.Seeds
             DishName = "Lunch",
             DishTimeAndDate = new DateTime(2021, 3, 21, 18, 00, 00),
             Calories = 9,
-            DishMeals = new List<DishMeal>()
         };
     }
 }
