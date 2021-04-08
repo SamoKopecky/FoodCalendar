@@ -31,7 +31,7 @@ namespace FoodCalendar.DAL
                     Database = FoodCalendar;
                     MultipleActiveResultSets = True;
                     User ID =SA;
-                    Password = Casi0Casi0;");
+                    Password = Yq47KJ#*zXEhT%E;");
             }
 
             base.OnConfiguring(optionsBuilder);

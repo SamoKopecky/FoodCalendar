@@ -13,7 +13,7 @@ namespace FoodCalendar.DAL.Factories
                     Database = FoodCalendar;
                     MultipleActiveResultSets = True;
                     User ID =SA;
-                    Password = Casi0Casi0;");
+                    Password = Yq47KJ#*zXEhT%E;");
             optionsBuilder.EnableSensitiveDataLogging();
             return new FoodCalendarDbContext(optionsBuilder.Options);
         }
