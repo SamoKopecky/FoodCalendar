@@ -55,7 +55,7 @@ namespace FoodCalendar.DAL.Entities
             public override bool Equals(Meal x, Meal y)
             {
                 return base.Equals(x, y) && Dish.DishComparerNoMeals.Equals(x?.Dish, y?.Dish) &&
-                       Process.ProcessComparerNoMeal.Equals(x.Process, y.Process);
+                       Process.ProcessComparerNoMeal.Equals(x?.Process, y?.Process);
             }
         }
 

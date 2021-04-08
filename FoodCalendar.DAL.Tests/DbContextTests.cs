@@ -66,7 +66,7 @@ namespace FoodCalendar.DAL.Tests
 
             Assert.Equal(amountOne, dbAmountOne, IngredientAmount.IngredientAmountComparer);
             Assert.Equal(amountTwo, dbAmountTwo, IngredientAmount.IngredientAmountComparer);
-            Assert.Equal(amountOne.Ingredient, dbAmountOne.Ingredient, Ingredient.IngredientComparer);
+            Assert.Equal(amountOne.Ingredient, dbAmountOne?.Ingredient, Ingredient.IngredientComparer);
         }
 
         [Fact]
