@@ -3,15 +3,15 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.31005.135
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FoodCalendar.App", "FoodCalendar.App\FoodCalendar.App.csproj", "{97C76EAF-48A4-4132-96E6-6757ACB4E2DC}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FoodCalendar.DAL", "FoodCalendar.DAL\FoodCalendar.DAL.csproj", "{A9DC602A-B500-46F0-AA49-A5108AD0FD0D}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FoodCalendar.DAL.Tests", "FoodCalendar.DAL.Tests\FoodCalendar.DAL.Tests.csproj", "{23A0A3E7-E6E5-49F6-9F1B-83ABA3E9A121}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FoodCalendar.BL", "FoodCalendar.BL\FoodCalendar.BL.csproj", "{7ED42368-99E6-46A0-80F9-217D443B9C86}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FoodCalendar.BL.Tests", "FoodCalendar.BL.Tests\FoodCalendar.BL.Tests.csproj", "{AE3F442A-E6CB-4F29-BA4E-9EE9600D0A07}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FoodCalendar.BL.Tests", "FoodCalendar.BL.Tests\FoodCalendar.BL.Tests.csproj", "{AE3F442A-E6CB-4F29-BA4E-9EE9600D0A07}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FoodCalendar.ConsoleApp", "FoodCalendar.ConsoleApp\FoodCalendar.ConsoleApp.csproj", "{373CF3C6-F37C-436F-A021-50CB32921195}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -19,10 +19,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{97C76EAF-48A4-4132-96E6-6757ACB4E2DC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{97C76EAF-48A4-4132-96E6-6757ACB4E2DC}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{97C76EAF-48A4-4132-96E6-6757ACB4E2DC}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{97C76EAF-48A4-4132-96E6-6757ACB4E2DC}.Release|Any CPU.Build.0 = Release|Any CPU
 		{A9DC602A-B500-46F0-AA49-A5108AD0FD0D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{A9DC602A-B500-46F0-AA49-A5108AD0FD0D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A9DC602A-B500-46F0-AA49-A5108AD0FD0D}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -39,6 +35,10 @@ Global
 		{AE3F442A-E6CB-4F29-BA4E-9EE9600D0A07}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AE3F442A-E6CB-4F29-BA4E-9EE9600D0A07}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AE3F442A-E6CB-4F29-BA4E-9EE9600D0A07}.Release|Any CPU.Build.0 = Release|Any CPU
+		{373CF3C6-F37C-436F-A021-50CB32921195}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{373CF3C6-F37C-436F-A021-50CB32921195}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{373CF3C6-F37C-436F-A021-50CB32921195}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{373CF3C6-F37C-436F-A021-50CB32921195}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

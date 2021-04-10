@@ -4,7 +4,7 @@ using FoodCalendar.BL.Models;
 
 namespace FoodCalendar.BL.Interfaces
 {
-    interface IRepository<TModel> where TModel : ModelBase, new()
+    public interface IRepository<TModel> where TModel : ModelBase 
     {
         void Delete(TModel model);
         void Delete(Guid id);
