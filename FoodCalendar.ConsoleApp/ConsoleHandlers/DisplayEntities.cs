@@ -7,25 +7,25 @@ using FoodCalendar.DAL.Interfaces;
 
 namespace FoodCalendar.ConsoleApp.ConsoleHandlers
 {
-    public class EntityTables
+    public class DisplayEntities
     {
         private readonly IDbContextFactory _dbContextFactory;
         private readonly int _idLength;
 
-        public EntityTables(IDbContextFactory dbContextFactory, int idLength)
+        public DisplayEntities(IDbContextFactory dbContextFactory, int idLength)
         {
             _dbContextFactory = dbContextFactory;
             _idLength = idLength;
         }
 
-        public void PrintEntity()
+        public void DisplayEntity()
         {
             var entities = new Dictionary<string, Action>()
             {
-                {"Ingredient", PrintIngredients},
-                {"Meal", PrintMeals},
-                {"Dish", PrintDishes},
-                {"All", PrintAllEntities}
+                {"Ingredient", DisplayIngredients},
+                {"Meal", DisplayMeals},
+                {"Dish", DisplayDishes},
+                {"All", DisplayAllEntities}
             };
             var optionsHandler = new OptionsHandler(entities.Keys.ToList());
             var option = optionsHandler.HandleOptions("Choose entities to display");
@@ -34,16 +34,16 @@ namespace FoodCalendar.ConsoleApp.ConsoleHandlers
             Console.ReadKey();
         }
 
-        private void PrintAllEntities()
+        private void DisplayAllEntities()
         {
-            PrintIngredients();
+            DisplayIngredients();
             Console.WriteLine();
-            PrintMeals();
+            DisplayMeals();
             Console.WriteLine();
-            PrintDishes();
+            DisplayDishes();
         }
 
-        private void PrintIngredients()
+        private void DisplayIngredients()
         {
             Console.WriteLine("Ingredients:");
             var table = GetIngredientTable();
@@ -65,7 +65,7 @@ namespace FoodCalendar.ConsoleApp.ConsoleHandlers
             return table;
         }
 
-        private void PrintMeals()
+        private void DisplayMeals()
         {
             Console.WriteLine("Meals:");
             var table = GetMealTable();
@@ -94,7 +94,7 @@ namespace FoodCalendar.ConsoleApp.ConsoleHandlers
             return table;
         }
 
-        private void PrintDishes()
+        private void DisplayDishes()
         {
             Console.WriteLine("Dishes:");
             var table = GetDishTable();

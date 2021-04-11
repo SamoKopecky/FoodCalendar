@@ -17,12 +17,12 @@ namespace FoodCalendar.ConsoleApp
         {
             //SeedDb();
             var contextFactory = new DbContextFactory();
-            var addingOptions = new AddingOptions(contextFactory, IdLength);
-            var entityTables = new EntityTables(contextFactory, IdLength);
+            var addEntity = new AddEntity(contextFactory, IdLength);
+            var displayEntities = new DisplayEntities(contextFactory, IdLength);
             var choices = new Dictionary<string, Action>()
             {
-                {"Add new entity", addingOptions.AddEntity},
-                {"List an entity", entityTables.PrintEntity},
+                {"Add new entity", addEntity.AddEntity},
+                {"List an entity", displayEntities.DisplayEntity},
                 {"List other information", () => { }},
                 {"Update an entity", () => { }},
                 {"Delete an entity", () => { }}
