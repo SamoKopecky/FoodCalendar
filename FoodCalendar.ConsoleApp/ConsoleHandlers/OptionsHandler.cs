@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace FoodCalendar.ConsoleApp.ConsoleHandlers
 {
@@ -27,15 +26,20 @@ namespace FoodCalendar.ConsoleApp.ConsoleHandlers
             }
         }
 
-        public string HandleOptions()
+        public string HandleOptions(string actionDescription)
         {
             Console.Clear();
+            if (actionDescription != "")
+            {
+                Console.WriteLine(actionDescription);
+                Console.WriteLine(new string('-', actionDescription.Length));
+            }
             foreach (var (key, value) in _optionsDictionary)
             {
                 Console.WriteLine($"{key}) {value}");
             }
 
-            Console.Write("Choose your option: ");
+            Console.Write("\nChoose your option: ");
             var selectedOption = Console.ReadLine();
             while (selectedOption == null || !_optionsDictionary.ContainsKey(selectedOption))
             {

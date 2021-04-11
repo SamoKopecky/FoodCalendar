@@ -21,7 +21,7 @@ namespace FoodCalendar.ConsoleApp.DataFunctions
                 {"Dish", CreateDish}
             };
             var optionHandler = new OptionsHandler(entities.Keys.ToList());
-            var createFunction = entities[optionHandler.HandleOptions()];
+            var createFunction = entities[optionHandler.HandleOptions("Choosing entity")];
             var entity = createFunction();
             if (entity == null) return;
 
@@ -54,7 +54,8 @@ namespace FoodCalendar.ConsoleApp.DataFunctions
                 {"Create and add a new meal", d => d.Meals.Add(CreateMeal())},
                 {"Add an existing meal", d => d.Meals.Add(CreateMeal())}
             };
-            FillEntity(propertiesWithString, properties, dish);
+            // TODO: Function for adding an existing meal
+            FillEntity(propertiesWithString, properties, dish, "Adding dish");
             return dish;
         }
 
@@ -74,7 +75,7 @@ namespace FoodCalendar.ConsoleApp.DataFunctions
                 {"Add process", m => m.Process = CreateProcess()},
                 {"Add ingredient amount", m => m.IngredientsUsed.Add(CreateIngredientUsed())}
             };
-            FillEntity(propertiesWithString, properties, meal);
+            FillEntity(propertiesWithString, properties, meal, "Adding meal");
 
             return meal;
         }
@@ -89,7 +90,7 @@ namespace FoodCalendar.ConsoleApp.DataFunctions
                 {"Unit Name", (s, i) => i.UnitName = Utils.ScanProperty<string>(s)},
                 {"Calories", (s, i) => i.Calories = Utils.ScanProperty<int>(s)},
             };
-            FillEntity(properties, null, ingredient);
+            FillEntity(properties, null, ingredient, "Adding ingredient");
             return ingredient;
         }
 
@@ -102,7 +103,7 @@ namespace FoodCalendar.ConsoleApp.DataFunctions
                 {"Description", (s, p) => p.Description = Utils.ScanProperty<string>(s)}
             };
 
-            FillEntity(properties, null, process);
+            FillEntity(properties, null, process, "Adding process");
             return process;
         }
 
@@ -118,7 +119,7 @@ namespace FoodCalendar.ConsoleApp.DataFunctions
                 {"Create and add new ingredient", ia => ia.Ingredient = CreateIngredient()},
                 {"Add an existing ingredient", ia => ia.Ingredient = new IngredientModel()}
             };
-            FillEntity(propertiesWithString, properties, ingredientAm);
+            FillEntity(propertiesWithString, properties, ingredientAm, "Adding ingredient amount");
             // TODO: Function for adding an existing ingredient
             return ingredientAm;
         }
@@ -126,7 +127,9 @@ namespace FoodCalendar.ConsoleApp.DataFunctions
         private static void FillEntity<TModel>(
             Dictionary<string, Action<string, TModel>> propertiesWithString,
             Dictionary<string, Action<TModel>> properties,
-            TModel entity)
+            TModel entity,
+            string actionDescription
+        )
             where TModel : ModelBase
         {
             var choices = new List<string>();
@@ -136,7 +139,7 @@ namespace FoodCalendar.ConsoleApp.DataFunctions
             var optionsHandler = new OptionsHandler(choices);
             do
             {
-                var choice = optionsHandler.HandleOptions();
+                var choice = optionsHandler.HandleOptions(actionDescription);
                 if (choice == "Done") break;
                 if (propertiesWithString != null && propertiesWithString.Keys.Contains(choice))
                 {

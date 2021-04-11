@@ -1,6 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
+using FoodCalendar.BL.Models;
+using FoodCalendar.BL.Repositories;
+using FoodCalendar.DAL.Factories;
 
 namespace FoodCalendar.ConsoleApp.ConsoleHandlers
 {
@@ -10,7 +14,11 @@ namespace FoodCalendar.ConsoleApp.ConsoleHandlers
         {
             Console.Write($"Enter value for {propertyName}: ");
             var parameter = Console.ReadLine();
-            return (T)Convert.ChangeType(parameter, typeof(T));
+            return (T) Convert.ChangeType(parameter, typeof(T));
         }
+
+        
+
+        
     }
 }
