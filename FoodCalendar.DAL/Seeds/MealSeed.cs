@@ -10,6 +10,7 @@ namespace FoodCalendar.DAL.Seeds
         public static readonly Meal HamAndEggs = new Meal()
         {
             Calories = 10,
+            MealName = "Ham and eggs",
             TotalTime = 60,
             ProcessId = ProcessSeed.HamAndEggsProcess.Id,
             Process = ProcessSeed.HamAndEggsProcess,

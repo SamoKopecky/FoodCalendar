@@ -15,6 +15,7 @@ namespace FoodCalendar.BL.Mappers
                 return new MealModel()
                 {
                     Id = entity.Id,
+                    MealName = entity.MealName,
                     Calories = entity.Calories,
                     TotalTime = entity.TotalTime,
                     Process = ProcessMapper.MapEntityToModel(entity.Process),
@@ -30,6 +31,7 @@ namespace FoodCalendar.BL.Mappers
         {
             var entity = entityFactory.Create<Meal>(model.Id);
             entity.Id = model.Id;
+            entity.MealName = model.MealName;
             entity.Calories = model.Calories;
             entity.TotalTime = model.TotalTime;
             entity.Process = ProcessMapper.MapModelToEntity(model.Process, entityFactory);

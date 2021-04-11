@@ -20,7 +20,8 @@ namespace FoodCalendar.ConsoleApp
                 {"Add new entity", AddingOptions.AddEntity},
                 {"List an entity", EntityTables.PrintEntity},
                 {"List other information", () => { }},
-                {"Update an entity", () => { }}
+                {"Update an entity", () => { }},
+                {"Delete an entity", () => { }}
             };
             var choicesList = choices.Keys.ToList();
             choicesList.Add("Done");

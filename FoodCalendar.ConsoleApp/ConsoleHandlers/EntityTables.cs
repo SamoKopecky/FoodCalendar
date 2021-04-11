@@ -36,6 +36,7 @@ namespace FoodCalendar.ConsoleApp.ConsoleHandlers
 
         public static void PrintIngredients()
         {
+            Console.WriteLine("Ingredients:");
             var dbContextFactory = new DbContextFactory();
             var headersToValues = new Dictionary<string, Func<IngredientModel, string>>()
             {
@@ -51,9 +52,11 @@ namespace FoodCalendar.ConsoleApp.ConsoleHandlers
 
         public static void PrintMeals()
         {
+            Console.WriteLine("Meals:");
             var dbContextFactory = new DbContextFactory();
             var headersToValues = new Dictionary<string, Func<MealModel, string>>()
             {
+                {"Meal Name", m => $"{m.MealName}"},
                 {"Total Time", m => $"{m.TotalTime}"},
                 {"Calories", m => $"{m.Calories}"},
                 {"Process: Time Required", m => $"{m.Process.TimeRequired}"},
@@ -72,17 +75,18 @@ namespace FoodCalendar.ConsoleApp.ConsoleHandlers
 
         public static void PrintDishes()
         {
+            Console.WriteLine("Dishes:");
             var dbContextFactory = new DbContextFactory();
             var headersToValues = new Dictionary<string, Func<DishModel, string>>()
             {
                 {"Dish Name", d => d.DishName},
-                {"Dish Time", d => $"{d.DishTime}"},
+                {"Dish Time (Y/M/D H:M:S)", d => $"{d.DishTime}"},
                 {"Total Time", d => $"{d.TotalTime}"},
                 {"Calories", d => $"{d.Calories}"},
                 {
                     "Meals", m => ListToString(
                         m.Meals,
-                        meal => $"{meal.Process.Description}"
+                        meal => $"{meal.MealName}"
                     )
                 },
             };

@@ -4,7 +4,6 @@ using System.Linq;
 using FoodCalendar.BL.Models;
 using FoodCalendar.BL.Repositories;
 using FoodCalendar.ConsoleApp.ConsoleHandlers;
-using FoodCalendar.DAL.Entities;
 using FoodCalendar.DAL.Factories;
 
 namespace FoodCalendar.ConsoleApp.DataFunctions
@@ -67,8 +66,10 @@ namespace FoodCalendar.ConsoleApp.DataFunctions
             };
             var propertiesWithString = new Dictionary<string, Action<string, MealModel>>()
             {
+                {"Dish Name", (s, m) => m.MealName = Utils.ScanProperty<string>(s)},
                 {"Calories", (s, m) => m.Calories = Utils.ScanProperty<int>(s)},
                 {"Total Time", (s, m) => m.TotalTime = Utils.ScanProperty<int>(s)}
+                
             };
             var properties = new Dictionary<string, Action<MealModel>>()
             {

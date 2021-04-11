@@ -7,6 +7,7 @@ namespace FoodCalendar.BL.Models
     public class MealModel : ModelBase
     {
         public ProcessModel Process { get; set; }
+        public string MealName { get; set; }
         public int Calories { get; set; }
         public int TotalTime { get; set; }
         public ICollection<IngredientAmountModel> IngredientsUsed { get; set; } = new List<IngredientAmountModel>();
@@ -26,6 +27,7 @@ namespace FoodCalendar.BL.Models
                 return ProcessModel.ProcessModelComparer.Equals(x.Process, y.Process) &&
                        x.Calories == y.Calories &&
                        x.TotalTime == y.TotalTime &&
+                       x.MealName == y.MealName &&
                        x.IngredientsUsed.SequenceEqual(y.IngredientsUsed,
                            IngredientAmountModel.IngredientAmountComparer);
                 ;

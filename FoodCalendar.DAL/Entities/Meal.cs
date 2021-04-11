@@ -7,6 +7,7 @@ namespace FoodCalendar.DAL.Entities
     public class Meal : EntityBase
     {
         public Guid ProcessId { get; set; }
+        public string MealName { get; set; }
         public int Calories { get; set; }
         public int TotalTime { get; set; }
         public Process Process { get; set; }
@@ -29,13 +30,14 @@ namespace FoodCalendar.DAL.Entities
                 if (x.GetType() != y.GetType()) return false;
                 return x.ProcessId.Equals(y.ProcessId) &&
                        x.Calories == y.Calories &&
-                       x.TotalTime == y.TotalTime;
+                       x.TotalTime == y.TotalTime &&
+                       x.MealName == y.MealName;
             }
 
             public int GetHashCode(Meal obj)
             {
                 return HashCode.Combine(obj.ProcessId, obj.Process, obj.Calories, obj.TotalTime, obj.IngredientsUsed,
-                    obj.Dish);
+                    obj.Dish, obj.MealName);
             }
         }
 
