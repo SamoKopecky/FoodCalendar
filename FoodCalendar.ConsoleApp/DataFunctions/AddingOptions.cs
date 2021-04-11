@@ -4,6 +4,7 @@ using System.Linq;
 using FoodCalendar.BL.Models;
 using FoodCalendar.BL.Repositories;
 using FoodCalendar.ConsoleApp.ConsoleHandlers;
+using FoodCalendar.DAL.Entities;
 using FoodCalendar.DAL.Factories;
 
 namespace FoodCalendar.ConsoleApp.DataFunctions
@@ -22,10 +23,7 @@ namespace FoodCalendar.ConsoleApp.DataFunctions
             var optionHandler = new OptionsHandler(entities.Keys.ToList());
             var createFunction = entities[optionHandler.HandleOptions()];
             var entity = createFunction();
-            if (entity == null)
-            {
-                return;
-            }
+            if (entity == null) return;
 
             switch (entity)
             {
@@ -41,9 +39,23 @@ namespace FoodCalendar.ConsoleApp.DataFunctions
             }
         }
 
-        private static ModelBase CreateDish()
+        private static DishModel CreateDish()
         {
-            throw new NotImplementedException();
+            var dish = new DishModel();
+            var propertiesWithString = new Dictionary<string, Action<string, DishModel>>()
+            {
+                {"Total Time", (s, d) => d.TotalTime = Utils.ScanProperty<int>(s)},
+                {"Dish Name", (s, d) => d.DishName = Utils.ScanProperty<string>(s)},
+                {"Dish Time (Y/M/D H:M:S)", (s, d) => d.DishTime = Utils.ScanProperty<DateTime>(s)},
+                {"Calories", (s, d) => d.Calories = Utils.ScanProperty<int>(s)},
+            };
+            var properties = new Dictionary<string, Action<DishModel>>()
+            {
+                {"Create and add a new meal", d => d.Meals.Add(CreateMeal())},
+                {"Add an existing meal", d => d.Meals.Add(CreateMeal())}
+            };
+            FillEntity(propertiesWithString, properties, dish);
+            return dish;
         }
 
         private static MealModel CreateMeal()
@@ -59,8 +71,8 @@ namespace FoodCalendar.ConsoleApp.DataFunctions
             };
             var properties = new Dictionary<string, Action<MealModel>>()
             {
-                {"Process", m => m.Process = CreateProcess()},
-                {"Ingredients", m => m.IngredientsUsed = CreateIngredientsUsed()}
+                {"Add process", m => m.Process = CreateProcess()},
+                {"Add ingredient amount", m => m.IngredientsUsed.Add(CreateIngredientUsed())}
             };
             FillEntity(propertiesWithString, properties, meal);
 
@@ -94,9 +106,8 @@ namespace FoodCalendar.ConsoleApp.DataFunctions
             return process;
         }
 
-        private static ICollection<IngredientAmountModel> CreateIngredientsUsed()
+        private static IngredientAmountModel CreateIngredientUsed()
         {
-            var ingredients = new List<IngredientAmountModel>();
             var ingredientAm = new IngredientAmountModel();
             var propertiesWithString = new Dictionary<string, Action<string, IngredientAmountModel>>()
             {
@@ -104,13 +115,12 @@ namespace FoodCalendar.ConsoleApp.DataFunctions
             };
             var properties = new Dictionary<string, Action<IngredientAmountModel>>()
             {
-                {"Create a new ingredient", ia => ia.Ingredient = CreateIngredient()},
+                {"Create and add new ingredient", ia => ia.Ingredient = CreateIngredient()},
                 {"Add an existing ingredient", ia => ia.Ingredient = new IngredientModel()}
             };
             FillEntity(propertiesWithString, properties, ingredientAm);
-            // TODO: Multiple ias
-            ingredients.Add(ingredientAm);
-            return ingredients;
+            // TODO: Function for adding an existing ingredient
+            return ingredientAm;
         }
 
         private static void FillEntity<TModel>(
