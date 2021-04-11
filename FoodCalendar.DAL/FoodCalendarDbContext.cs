@@ -40,19 +40,23 @@ namespace FoodCalendar.DAL
         {
             modelBuilder.Entity<IngredientAmount>()
                 .HasOne(ia => ia.Ingredient)
-                .WithMany(i => i.IngredientAmounts);
+                .WithMany(i => i.IngredientAmounts)
+                .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<Meal>()
                 .HasMany(m => m.IngredientsUsed)
-                .WithOne(ia => ia.Meal);
+                .WithOne(ia => ia.Meal)
+                .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<Process>()
                 .HasOne(p => p.Meal)
-                .WithOne(m => m.Process);
+                .WithOne(m => m.Process)
+                .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<Dish>()
                 .HasMany(d => d.Meals)
-                .WithOne(m => m.Dish);
+                .WithOne(m => m.Dish)
+                .OnDelete(DeleteBehavior.Cascade);
         }
     }
 }
