@@ -17,7 +17,8 @@ namespace FoodCalendar.ConsoleApp.ConsoleHandlers
         public static T GetExistingEntity<T>(
             List<T> entities,
             List<string> table,
-            string entityName
+            string entityName,
+            int idLength
         )
             where T : ModelBase
         {
@@ -29,7 +30,7 @@ namespace FoodCalendar.ConsoleApp.ConsoleHandlers
 
             Console.Write($"Enter {entityName} ID: ");
             table = table.Where(s => s[0] == '|').ToList();
-            var shortIds = table.Select(row => row.Substring(2, 13)).ToList();
+            var shortIds = table.Select(row => row.Substring(2, idLength)).ToList();
             shortIds.RemoveAt(0);
             var id = GetBestMatch(shortIds);
             return entities.First(m => $"{m.Id}".Substring(0, id.Length) == id);

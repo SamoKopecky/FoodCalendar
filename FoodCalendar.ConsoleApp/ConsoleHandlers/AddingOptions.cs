@@ -10,16 +10,17 @@ namespace FoodCalendar.ConsoleApp.ConsoleHandlers
 {
     public class AddingOptions
     {
-        private IDbContextFactory _dbContextFactory;
+        private readonly IDbContextFactory _dbContextFactory;
+        private readonly int _idLength;
 
-        public AddingOptions(IDbContextFactory dbContextFactory)
+        public AddingOptions(IDbContextFactory dbContextFactory, int idLength)
         {
             _dbContextFactory = dbContextFactory;
+            _idLength = idLength;
         }
 
         public void AddEntity()
         {
-            _dbContextFactory = new DbContextFactory();
             var entities = new Dictionary<string, Func<ModelBase>>()
             {
                 {"Ingredient", CreateIngredient},
@@ -60,7 +61,6 @@ namespace FoodCalendar.ConsoleApp.ConsoleHandlers
                 {"Create and add a new meal", d => d.Meals.Add(CreateMeal())},
                 {"Add an existing meal", d => d.Meals.Add(AddExistingMeal())}
             };
-            // TODO: Function for adding an existing meal
             FillEntity(propertiesWithString, properties, dish, "Adding dish");
             return dish;
         }
@@ -127,24 +127,23 @@ namespace FoodCalendar.ConsoleApp.ConsoleHandlers
                 {"Add an existing ingredient", ia => ia.Ingredient = AddExistingIngredient()}
             };
             FillEntity(propertiesWithString, properties, ingredientAm, "Adding ingredient amount");
-            // TODO: Function for adding an existing ingredient
             return ingredientAm;
         }
 
         private IngredientModel AddExistingIngredient()
         {
-            var entityTables = new EntityTables(_dbContextFactory);
+            var entityTables = new EntityTables(_dbContextFactory, _idLength);
             var repo = new IngredientRepository(_dbContextFactory);
             var table = entityTables.GetIngredientTable();
-            return Utils.GetExistingEntity(repo.GetAll().ToList(), table, "Ingredient");
+            return Utils.GetExistingEntity(repo.GetAll().ToList(), table, "Ingredient", _idLength);
         }
 
         private MealModel AddExistingMeal()
         {
-            var entityTables = new EntityTables(_dbContextFactory);
+            var entityTables = new EntityTables(_dbContextFactory, _idLength);
             var repo = new MealRepository(_dbContextFactory);
             var table = entityTables.GetMealTable();
-            return Utils.GetExistingEntity(repo.GetAll().ToList(), table, "Meal");
+            return Utils.GetExistingEntity(repo.GetAll().ToList(), table, "Meal", _idLength);
         }
 
 

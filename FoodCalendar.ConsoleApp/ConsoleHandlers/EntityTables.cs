@@ -10,10 +10,12 @@ namespace FoodCalendar.ConsoleApp.ConsoleHandlers
     public class EntityTables
     {
         private readonly IDbContextFactory _dbContextFactory;
+        private readonly int _idLength;
 
-        public EntityTables(IDbContextFactory dbContextFactory)
+        public EntityTables(IDbContextFactory dbContextFactory, int idLength)
         {
             _dbContextFactory = dbContextFactory;
+            _idLength = idLength;
         }
 
         public void PrintEntity()
@@ -52,7 +54,7 @@ namespace FoodCalendar.ConsoleApp.ConsoleHandlers
         {
             var headersToValues = new Dictionary<string, Func<IngredientModel, string>>()
             {
-                {"Short ID", i => $"{i.Id}".Substring(0, 13)},
+                {"Short ID", i => $"{i.Id}".Substring(0, _idLength)},
                 {"Name", i => i.Name},
                 {"Amount Stored", i => $"{i.AmountStored}"},
                 {"Unit Name", i => i.UnitName},
@@ -74,7 +76,7 @@ namespace FoodCalendar.ConsoleApp.ConsoleHandlers
         {
             var headersToValues = new Dictionary<string, Func<MealModel, string>>()
             {
-                {"Short ID", m => $"{m.Id}".Substring(0, 13)},
+                {"Short ID", m => $"{m.Id}".Substring(0, _idLength)},
                 {"Meal Name", m => $"{m.MealName}"},
                 {"Total Time", m => $"{m.TotalTime}"},
                 {"Calories", m => $"{m.Calories}"},
@@ -103,7 +105,7 @@ namespace FoodCalendar.ConsoleApp.ConsoleHandlers
         {
             var headersToValues = new Dictionary<string, Func<DishModel, string>>()
             {
-                {"Short ID", d => $"{d.Id}".Substring(0, 13)},
+                {"Short ID", d => $"{d.Id}".Substring(0, _idLength)},
                 {"Dish Name", d => d.DishName},
                 {"Dish Time (Y/M/D H:M:S)", d => $"{d.DishTime}"},
                 {"Total Time", d => $"{d.TotalTime}"},

@@ -11,12 +11,14 @@ namespace FoodCalendar.ConsoleApp
 {
     public class Program
     {
+        private const int IdLength = 8;
+
         public static void Main(string[] args)
         {
-            var contextFactory = new DbContextFactory();
-            var addingOptions = new AddingOptions(contextFactory);
-            var entityTables = new EntityTables(contextFactory);
             //SeedDb();
+            var contextFactory = new DbContextFactory();
+            var addingOptions = new AddingOptions(contextFactory, IdLength);
+            var entityTables = new EntityTables(contextFactory, IdLength);
             var choices = new Dictionary<string, Action>()
             {
                 {"Add new entity", addingOptions.AddEntity},
