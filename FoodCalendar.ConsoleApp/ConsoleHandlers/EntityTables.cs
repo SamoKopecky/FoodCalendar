@@ -3,13 +3,20 @@ using System.Collections.Generic;
 using System.Linq;
 using FoodCalendar.BL.Models;
 using FoodCalendar.BL.Repositories;
-using FoodCalendar.DAL.Factories;
+using FoodCalendar.DAL.Interfaces;
 
 namespace FoodCalendar.ConsoleApp.ConsoleHandlers
 {
     public class EntityTables
     {
-        public static void PrintEntity()
+        private readonly IDbContextFactory _dbContextFactory;
+
+        public EntityTables(IDbContextFactory dbContextFactory)
+        {
+            _dbContextFactory = dbContextFactory;
+        }
+
+        public void PrintEntity()
         {
             var entities = new Dictionary<string, Action>()
             {
@@ -25,7 +32,7 @@ namespace FoodCalendar.ConsoleApp.ConsoleHandlers
             Console.ReadKey();
         }
 
-        private static void PrintAllEntities()
+        private void PrintAllEntities()
         {
             PrintIngredients();
             Console.WriteLine();
@@ -34,28 +41,40 @@ namespace FoodCalendar.ConsoleApp.ConsoleHandlers
             PrintDishes();
         }
 
-        public static void PrintIngredients()
+        private void PrintIngredients()
         {
             Console.WriteLine("Ingredients:");
-            var dbContextFactory = new DbContextFactory();
+            var table = GetIngredientTable();
+            table.ForEach(Console.WriteLine);
+        }
+
+        public List<string> GetIngredientTable()
+        {
             var headersToValues = new Dictionary<string, Func<IngredientModel, string>>()
             {
+                {"Short ID", i => $"{i.Id}".Substring(0, 13)},
                 {"Name", i => i.Name},
                 {"Amount Stored", i => $"{i.AmountStored}"},
                 {"Unit Name", i => i.UnitName},
                 {"Calories", i => $"{i.Calories}"}
             };
-            var repo = new IngredientRepository(dbContextFactory);
+            var repo = new IngredientRepository(_dbContextFactory);
             var table = GenericTable(repo.GetAll().ToList(), headersToValues);
+            return table;
+        }
+
+        private void PrintMeals()
+        {
+            Console.WriteLine("Meals:");
+            var table = GetMealTable();
             table.ForEach(Console.WriteLine);
         }
 
-        public static void PrintMeals()
+        public List<string> GetMealTable()
         {
-            Console.WriteLine("Meals:");
-            var dbContextFactory = new DbContextFactory();
             var headersToValues = new Dictionary<string, Func<MealModel, string>>()
             {
+                {"Short ID", m => $"{m.Id}".Substring(0, 13)},
                 {"Meal Name", m => $"{m.MealName}"},
                 {"Total Time", m => $"{m.TotalTime}"},
                 {"Calories", m => $"{m.Calories}"},
@@ -68,17 +87,23 @@ namespace FoodCalendar.ConsoleApp.ConsoleHandlers
                     )
                 }
             };
-            var repo = new MealRepository(dbContextFactory);
+            var repo = new MealRepository(_dbContextFactory);
             var table = GenericTable(repo.GetAll().ToList(), headersToValues);
+            return table;
+        }
+
+        private void PrintDishes()
+        {
+            Console.WriteLine("Dishes:");
+            var table = GetDishTable();
             table.ForEach(Console.WriteLine);
         }
 
-        public static void PrintDishes()
+        public List<string> GetDishTable()
         {
-            Console.WriteLine("Dishes:");
-            var dbContextFactory = new DbContextFactory();
             var headersToValues = new Dictionary<string, Func<DishModel, string>>()
             {
+                {"Short ID", d => $"{d.Id}".Substring(0, 13)},
                 {"Dish Name", d => d.DishName},
                 {"Dish Time (Y/M/D H:M:S)", d => $"{d.DishTime}"},
                 {"Total Time", d => $"{d.TotalTime}"},
@@ -90,18 +115,18 @@ namespace FoodCalendar.ConsoleApp.ConsoleHandlers
                     )
                 },
             };
-            var repo = new DishRepository(dbContextFactory);
+            var repo = new DishRepository(_dbContextFactory);
             var table = GenericTable(repo.GetAll().ToList(), headersToValues);
-            table.ForEach(Console.WriteLine);
+            return table;
         }
 
-        private static string ListToString<T>(IEnumerable<T> list, Func<T, string> format)
+        private string ListToString<T>(IEnumerable<T> list, Func<T, string> format)
         {
             var formattedList = list.Select(format);
             return string.Join(", ", formattedList);
         }
 
-        private static List<string> GenericTable<T>(
+        private List<string> GenericTable<T>(
             List<T> entities,
             Dictionary<string, Func<T, string>> variables
         )

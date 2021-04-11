@@ -4,7 +4,6 @@ using System.Linq;
 using FoodCalendar.BL.Mappers;
 using FoodCalendar.BL.Repositories;
 using FoodCalendar.ConsoleApp.ConsoleHandlers;
-using FoodCalendar.ConsoleApp.DataFunctions;
 using FoodCalendar.DAL.Factories;
 using FoodCalendar.DAL.Seeds;
 
@@ -14,11 +13,14 @@ namespace FoodCalendar.ConsoleApp
     {
         public static void Main(string[] args)
         {
+            var contextFactory = new DbContextFactory();
+            var addingOptions = new AddingOptions(contextFactory);
+            var entityTables = new EntityTables(contextFactory);
             //SeedDb();
             var choices = new Dictionary<string, Action>()
             {
-                {"Add new entity", AddingOptions.AddEntity},
-                {"List an entity", EntityTables.PrintEntity},
+                {"Add new entity", addingOptions.AddEntity},
+                {"List an entity", entityTables.PrintEntity},
                 {"List other information", () => { }},
                 {"Update an entity", () => { }},
                 {"Delete an entity", () => { }}
@@ -33,6 +35,7 @@ namespace FoodCalendar.ConsoleApp
                 choices[choice]();
             } while (true);
         }
+
         public static void SeedDb()
         {
             var dbContextFactory = new DbContextFactory();

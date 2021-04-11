@@ -1,10 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using FoodCalendar.BL.Models;
-using FoodCalendar.BL.Repositories;
-using FoodCalendar.DAL.Factories;
 
 namespace FoodCalendar.ConsoleApp.ConsoleHandlers
 {
@@ -17,8 +14,38 @@ namespace FoodCalendar.ConsoleApp.ConsoleHandlers
             return (T) Convert.ChangeType(parameter, typeof(T));
         }
 
-        
+        public static T GetExistingEntity<T>(
+            List<T> entities,
+            List<string> table,
+            string entityName
+        )
+            where T : ModelBase
+        {
+            Console.Clear();
+            foreach (var row in table)
+            {
+                Console.WriteLine(row);
+            }
 
-        
+            Console.Write($"Enter {entityName} ID: ");
+            table = table.Where(s => s[0] == '|').ToList();
+            var shortIds = table.Select(row => row.Substring(2, 13)).ToList();
+            shortIds.RemoveAt(0);
+            var id = GetBestMatch(shortIds);
+            return entities.First(m => $"{m.Id}".Substring(0, id.Length) == id);
+        }
+
+        private static string GetBestMatch(IReadOnlyCollection<string> shortIds)
+        {
+            List<string> matches;
+            do
+            {
+                var userId = Console.ReadLine();
+                matches = shortIds.Where(s => userId != null && s.Substring(0, userId.Length) == userId)
+                    .ToList();
+            } while (matches.Count > 1);
+
+            return matches[0];
+        }
     }
 }
