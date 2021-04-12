@@ -65,7 +65,7 @@ namespace FoodCalendar.ConsoleApp.ConsoleHandlers
                 {"Process: Time Required", m => $"{m.Process.TimeRequired}"},
                 {"Process: Description", m => m.Process.Description},
                 {
-                    "Ingredient amounts", m => Utils.ListToString(
+                    "Ingredient amounts", m => ListToString(
                         m.IngredientsUsed,
                         amountModel => $"{amountModel.Ingredient.Name}: {amountModel.Amount}"
                     )
@@ -86,7 +86,7 @@ namespace FoodCalendar.ConsoleApp.ConsoleHandlers
                 {"Total Time", d => $"{d.TotalTime}"},
                 {"Calories", d => $"{d.Calories}"},
                 {
-                    "Meals", m => Utils.ListToString(
+                    "Meals", m => ListToString(
                         m.Meals,
                         meal => $"{meal.MealName}"
                     )
@@ -109,6 +109,7 @@ namespace FoodCalendar.ConsoleApp.ConsoleHandlers
 
             return matches[0];
         }
+
         private static string ListToString<T>(IEnumerable<T> list, Func<T, string> format)
         {
             var formattedList = list.Select(format);

@@ -7,10 +7,13 @@ using FoodCalendar.DAL.Interfaces;
 
 namespace FoodCalendar.ConsoleApp.ConsoleHandlers
 {
-    class UpdateEntities : ConsoleHandlerBase
+    public class UpdateEntities : ConsoleHandlerBase
     {
+        public AddNewEntity AddNewEntity;
+
         public UpdateEntities(IDbContextFactory dbContextFactory, int idLength) : base(dbContextFactory, idLength)
         {
+            AddNewEntity = new AddNewEntity(dbContextFactory, idLength);
         }
 
         public void UpdateEntity()
@@ -31,7 +34,8 @@ namespace FoodCalendar.ConsoleApp.ConsoleHandlers
             var repo = new MealRepository(DbContextFactory);
             var table = Utils.GetMealTable(DbContextFactory, IdLength);
             var meal =
-                Utils.GetExistingEntity(repo.GetAll().ToList(), table, "Ingredient", IdLength);
+                Utils.GetExistingEntity(repo.GetAll().ToList(), table, "Meal", IdLength);
+            AddNewEntity.CreateMeal(meal);
             repo.Update(meal);
         }
 
@@ -40,7 +44,8 @@ namespace FoodCalendar.ConsoleApp.ConsoleHandlers
             var repo = new DishRepository(DbContextFactory);
             var table = Utils.GetDishTable(DbContextFactory, IdLength);
             var dish =
-                Utils.GetExistingEntity(repo.GetAll().ToList(), table, "Ingredient", IdLength);
+                Utils.GetExistingEntity(repo.GetAll().ToList(), table, "Dish", IdLength);
+            AddNewEntity.CreateDish(dish);
             repo.Update(dish);
         }
 
@@ -50,9 +55,7 @@ namespace FoodCalendar.ConsoleApp.ConsoleHandlers
             var table = Utils.GetIngredientTable(DbContextFactory, IdLength);
             var ingredient =
                 Utils.GetExistingEntity(repo.GetAll().ToList(), table, "Ingredient", IdLength);
-            var addNewEntity = new AddNewEntity(DbContextFactory, IdLength);
-
-
+            AddNewEntity.CreateIngredient(ingredient);
             repo.Update(ingredient);
         }
     }

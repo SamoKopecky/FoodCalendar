@@ -42,7 +42,7 @@ namespace FoodCalendar.ConsoleApp.ConsoleHandlers
             }
         }
 
-        private DishModel CreateDish(DishModel dish)
+        public DishModel CreateDish(DishModel dish)
         {
             var propertiesWithString = new Dictionary<string, Action<string, DishModel>>()
             {
@@ -60,9 +60,9 @@ namespace FoodCalendar.ConsoleApp.ConsoleHandlers
             return dish;
         }
 
-        private MealModel CreateMeal(MealModel meal)
+        public MealModel CreateMeal(MealModel meal)
         {
-            if (meal.Process == null) meal.Process = new ProcessModel();
+            meal.Process ??= new ProcessModel();
             var propertiesWithString = new Dictionary<string, Action<string, MealModel>>()
             {
                 {"Dish Name", (s, m) => m.MealName = Utils.ScanProperty<string>(s)},
@@ -79,7 +79,7 @@ namespace FoodCalendar.ConsoleApp.ConsoleHandlers
             return meal;
         }
 
-        private IngredientModel CreateIngredient(IngredientModel ingredient)
+        public IngredientModel CreateIngredient(IngredientModel ingredient)
         {
             var properties = new Dictionary<string, Action<string, IngredientModel>>()
             {

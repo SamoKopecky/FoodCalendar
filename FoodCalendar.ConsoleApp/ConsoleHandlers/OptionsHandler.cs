@@ -5,10 +5,7 @@ namespace FoodCalendar.ConsoleApp.ConsoleHandlers
 {
     public class OptionsHandler
     {
-        // TODO: fixed letter option for exit
-
         private readonly Dictionary<string, string> _optionsDictionary = new Dictionary<string, string>();
-
 
         public OptionsHandler(List<string> options)
         {
@@ -34,6 +31,7 @@ namespace FoodCalendar.ConsoleApp.ConsoleHandlers
                 Console.WriteLine(actionDescription);
                 Console.WriteLine(new string('-', actionDescription.Length));
             }
+
             foreach (var (key, value) in _optionsDictionary)
             {
                 Console.WriteLine($"{key}) {value}");
