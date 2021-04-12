@@ -7,7 +7,7 @@ using FoodCalendar.DAL.Interfaces;
 
 namespace FoodCalendar.ConsoleApp.ConsoleHandlers
 {
-    public class DeleteEntities : ConsoleHandler
+    public class DeleteEntities : ConsoleHandlerBase
     {
         public DeleteEntities(IDbContextFactory dbContextFactory, int idLength) : base(dbContextFactory, idLength)
         {
@@ -30,18 +30,18 @@ namespace FoodCalendar.ConsoleApp.ConsoleHandlers
         {
             var repo = new DishRepository(DbContextFactory);
             var table = Utils.GetDishTable(DbContextFactory, IdLength);
-            var ingredient =
+            var dish =
                 Utils.GetExistingEntity(repo.GetAll().ToList(), table, "Dish", IdLength);
-            repo.Delete(ingredient.Id);
+            repo.Delete(dish.Id);
         }
 
         private void DeleteMeal()
         {
             var repo = new MealRepository(DbContextFactory);
             var table = Utils.GetMealTable(DbContextFactory, IdLength);
-            var ingredient =
+            var meal =
                 Utils.GetExistingEntity(repo.GetAll().ToList(), table, "Meal", IdLength);
-            repo.Delete(ingredient.Id);
+            repo.Delete(meal.Id);
         }
 
         private void DeleteIngredient()

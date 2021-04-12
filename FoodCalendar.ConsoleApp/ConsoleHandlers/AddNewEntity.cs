@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using FoodCalendar.BL.Models;
 using FoodCalendar.BL.Repositories;
+using FoodCalendar.DAL.Entities;
 using FoodCalendar.DAL.Factories;
 using FoodCalendar.DAL.Interfaces;
 
 namespace FoodCalendar.ConsoleApp.ConsoleHandlers
 {
-    public class AddNewEntity : ConsoleHandler
+    public class AddNewEntity : ConsoleHandlerBase
     {
         public AddNewEntity(IDbContextFactory dbContextFactory, int idLength) : base(dbContextFactory, idLength)
         {
@@ -18,9 +19,9 @@ namespace FoodCalendar.ConsoleApp.ConsoleHandlers
         {
             var entities = new Dictionary<string, Func<ModelBase>>()
             {
-                {"Ingredient", CreateIngredient},
-                {"Meal", CreateMeal},
-                {"Dish", CreateDish}
+                {"Ingredient", () => CreateIngredient(new IngredientModel())},
+                {"Meal", () => CreateMeal(new MealModel())},
+                {"Dish", () => CreateDish(new DishModel())}
             };
             var optionHandler = new OptionsHandler(entities.Keys.ToList());
             var createFunction = entities[optionHandler.HandleOptions("Choosing entity")];
@@ -41,9 +42,8 @@ namespace FoodCalendar.ConsoleApp.ConsoleHandlers
             }
         }
 
-        private DishModel CreateDish()
+        private DishModel CreateDish(DishModel dish)
         {
-            var dish = new DishModel();
             var propertiesWithString = new Dictionary<string, Action<string, DishModel>>()
             {
                 {"Total Time", (s, d) => d.TotalTime = Utils.ScanProperty<int>(s)},
@@ -53,19 +53,16 @@ namespace FoodCalendar.ConsoleApp.ConsoleHandlers
             };
             var properties = new Dictionary<string, Action<DishModel>>()
             {
-                {"Create and add a new meal", d => d.Meals.Add(CreateMeal())},
+                {"Create and add a new meal", d => d.Meals.Add(CreateMeal(new MealModel()))},
                 {"Add an existing meal", d => d.Meals.Add(AddExistingMeal())}
             };
             FillEntity(propertiesWithString, properties, dish, "Adding dish");
             return dish;
         }
 
-        private MealModel CreateMeal()
+        private MealModel CreateMeal(MealModel meal)
         {
-            var meal = new MealModel()
-            {
-                Process = new ProcessModel()
-            };
+            if (meal.Process == null) meal.Process = new ProcessModel();
             var propertiesWithString = new Dictionary<string, Action<string, MealModel>>()
             {
                 {"Dish Name", (s, m) => m.MealName = Utils.ScanProperty<string>(s)},
@@ -82,9 +79,8 @@ namespace FoodCalendar.ConsoleApp.ConsoleHandlers
             return meal;
         }
 
-        private IngredientModel CreateIngredient()
+        private IngredientModel CreateIngredient(IngredientModel ingredient)
         {
-            var ingredient = new IngredientModel();
             var properties = new Dictionary<string, Action<string, IngredientModel>>()
             {
                 {"Name", (s, i) => i.Name = Utils.ScanProperty<string>(s)},
@@ -118,7 +114,7 @@ namespace FoodCalendar.ConsoleApp.ConsoleHandlers
             };
             var properties = new Dictionary<string, Action<IngredientAmountModel>>()
             {
-                {"Create and add new ingredient", ia => ia.Ingredient = CreateIngredient()},
+                {"Create and add new ingredient", ia => ia.Ingredient = CreateIngredient(new IngredientModel())},
                 {"Add an existing ingredient", ia => ia.Ingredient = AddExistingIngredient()}
             };
             FillEntity(propertiesWithString, properties, ingredientAm, "Adding ingredient amount");
@@ -136,7 +132,11 @@ namespace FoodCalendar.ConsoleApp.ConsoleHandlers
         {
             var repo = new MealRepository(DbContextFactory);
             var table = Utils.GetMealTable(DbContextFactory, IdLength);
-            return Utils.GetExistingEntity(repo.GetAll().ToList(), table, "Meal", IdLength);
+            var meal = Utils.GetExistingEntity(repo.GetAll().ToList(), table, "Meal", IdLength);
+            meal.Id = Guid.Empty;
+            meal.Process.Id = Guid.Empty;
+            meal.IngredientsUsed.ToList().ForEach(ia => ia.Id = Guid.Empty);
+            return meal;
         }
 
 

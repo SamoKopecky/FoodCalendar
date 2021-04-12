@@ -5,12 +5,12 @@ using FoodCalendar.DAL.Interfaces;
 
 namespace FoodCalendar.ConsoleApp.ConsoleHandlers
 {
-    public abstract class ConsoleHandler
+    public abstract class ConsoleHandlerBase
     {
         protected readonly IDbContextFactory DbContextFactory;
         protected readonly int IdLength;
 
-        protected ConsoleHandler(IDbContextFactory dbContextFactory, int idLength)
+        protected ConsoleHandlerBase(IDbContextFactory dbContextFactory, int idLength)
         {
             DbContextFactory = dbContextFactory;
             IdLength = idLength;

@@ -7,7 +7,7 @@ using FoodCalendar.DAL.Interfaces;
 
 namespace FoodCalendar.ConsoleApp.ConsoleHandlers
 {
-    public class DisplayEntities : ConsoleHandler
+    public class DisplayEntities : ConsoleHandlerBase
     {
         public DisplayEntities(IDbContextFactory dbContextFactory, int idLength) : base(dbContextFactory, idLength)
         {
