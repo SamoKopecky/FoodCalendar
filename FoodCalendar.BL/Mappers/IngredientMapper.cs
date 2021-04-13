@@ -1,8 +1,6 @@
-﻿using System.Linq;
-using FoodCalendar.BL.Models;
+﻿using FoodCalendar.BL.Models;
 using FoodCalendar.DAL.Entities;
 using FoodCalendar.DAL.Factories;
-using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace FoodCalendar.BL.Mappers
 {
