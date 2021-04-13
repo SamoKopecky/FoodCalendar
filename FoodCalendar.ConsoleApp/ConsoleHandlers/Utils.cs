@@ -62,8 +62,7 @@ namespace FoodCalendar.ConsoleApp.ConsoleHandlers
                 {"Meal Name", m => $"{m.MealName}"},
                 {"Total Time", m => $"{m.TotalTime}"},
                 {"Calories", m => $"{m.Calories}"},
-                {"Process: Time Required", m => $"{m.Process.TimeRequired}"},
-                {"Process: Description", m => m.Process.Description},
+                {"Process description", m => m.Process.Description},
                 {
                     "Ingredient amounts", m => ListToString(
                         m.IngredientsUsed,
@@ -99,13 +98,20 @@ namespace FoodCalendar.ConsoleApp.ConsoleHandlers
 
         private static string GetBestMatch(IReadOnlyCollection<string> shortIds)
         {
-            List<string> matches;
+            var matches = new List<string>();
             do
             {
                 var userId = Console.ReadLine();
-                matches = shortIds.Where(s => userId != null && s.Substring(0, userId.Length) == userId)
-                    .ToList();
-            } while (matches.Count > 1);
+                if (userId == null) continue;
+                var smallIds = shortIds.ToList().Select(s => s.Substring(0, userId.Length)).ToList();
+                if (!smallIds.Contains(userId))
+                {
+                    Console.Write("No match found enter again: ");
+                    continue;
+                }
+
+                matches = smallIds.Where(s => s == userId).ToList();
+            } while (matches.Count > 1 || matches.Count == 0);
 
             return matches[0];
         }
@@ -189,6 +195,13 @@ namespace FoodCalendar.ConsoleApp.ConsoleHandlers
             }
 
             return finalRows.ToList();
+        }
+
+        public static void DisplayError(Exception e)
+        {
+            Console.Clear();
+            Console.WriteLine(e.Message);
+            Console.ReadKey();
         }
     }
 }

@@ -3,8 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using FoodCalendar.BL.Models;
 using FoodCalendar.BL.Repositories;
-using FoodCalendar.DAL.Entities;
-using FoodCalendar.DAL.Factories;
+using FoodCalendar.ConsoleApp.DbSynchronization;
 using FoodCalendar.DAL.Interfaces;
 
 namespace FoodCalendar.ConsoleApp.ConsoleHandlers
@@ -25,7 +24,17 @@ namespace FoodCalendar.ConsoleApp.ConsoleHandlers
             };
             var optionHandler = new OptionsHandler(entities.Keys.ToList());
             var createFunction = entities[optionHandler.HandleOptions("Choosing entity")];
-            var entity = createFunction();
+            ModelBase entity;
+            try
+            {
+                entity = createFunction();
+            }
+            catch (Exception e)
+            {
+                Utils.DisplayError(e);
+                return;
+            }
+
             if (entity == null) return;
 
             switch (entity)
@@ -67,7 +76,6 @@ namespace FoodCalendar.ConsoleApp.ConsoleHandlers
             {
                 {"Dish Name", (s, m) => m.MealName = Utils.ScanProperty<string>(s)},
                 {"Calories", (s, m) => m.Calories = Utils.ScanProperty<int>(s)},
-                {"Total Time", (s, m) => m.TotalTime = Utils.ScanProperty<int>(s)}
             };
             var properties = new Dictionary<string, Action<MealModel>>()
             {
@@ -166,6 +174,8 @@ namespace FoodCalendar.ConsoleApp.ConsoleHandlers
                     properties[choice](entity);
                 }
             } while (true);
+
+            Synchronization.SynchronizeEntity(entity);
         }
     }
 }

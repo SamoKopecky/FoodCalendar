@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using FoodCalendar.BL.Repositories;
 using FoodCalendar.DAL.Interfaces;
 
@@ -24,9 +23,23 @@ namespace FoodCalendar.ConsoleApp.ConsoleHandlers
                 {"Meal", UpdateMeal},
                 {"Dish", UpdateDish}
             };
-            var optionsHandler = new OptionsHandler(entities.Keys.ToList());
+            var choices = entities.Keys.ToList();
+            choices.Add("Done");
+            var optionsHandler = new OptionsHandler(choices);
             var option = optionsHandler.HandleOptions("Updating entity");
-            entities[option]();
+            if (option == "Done")
+            {
+                return;
+            }
+
+            try
+            {
+                entities[option]();
+            }
+            catch (Exception e)
+            {
+                Utils.DisplayError(e);
+            }
         }
 
         private void UpdateMeal()

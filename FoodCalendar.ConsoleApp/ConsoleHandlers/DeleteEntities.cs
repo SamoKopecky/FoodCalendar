@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using FoodCalendar.BL.Repositories;
 using FoodCalendar.DAL.Interfaces;
 
@@ -21,8 +20,14 @@ namespace FoodCalendar.ConsoleApp.ConsoleHandlers
                 {"Meal", DeleteMeal},
                 {"Dish", DeleteDish},
             };
+            var choices = entities.Keys.ToList();
+            choices.Add("Done");
             var optionsHandler = new OptionsHandler(entities.Keys.ToList());
             var option = optionsHandler.HandleOptions("Deleting entity");
+            if (option == "Done")
+            {
+                return;
+            }
             entities[option]();
         }
 
