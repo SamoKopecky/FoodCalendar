@@ -22,8 +22,12 @@ namespace FoodCalendar.ConsoleApp.ConsoleHandlers
                 {"Meal", () => CreateMeal(new MealModel())},
                 {"Dish", () => CreateDish(new DishModel())}
             };
-            var optionHandler = new OptionsHandler(entities.Keys.ToList());
-            var createFunction = entities[optionHandler.HandleOptions("Choosing entity")];
+            var choices = entities.Keys.ToList();
+            choices.Add("Done");
+            var optionHandler = new OptionsHandler(choices);
+            var option = optionHandler.HandleOptions("Choosing entity");
+            if (option == "Done") return;
+            var createFunction = entities[option];
             ModelBase entity;
             try
             {
@@ -55,8 +59,8 @@ namespace FoodCalendar.ConsoleApp.ConsoleHandlers
         {
             var propertiesWithString = new Dictionary<string, Action<string, DishModel>>()
             {
-                {"Total Time", (s, d) => d.TotalTime = Utils.ScanProperty<int>(s)},
                 {"Dish Name", (s, d) => d.DishName = Utils.ScanProperty<string>(s)},
+                {"Total Time", (s, d) => d.TotalTime = Utils.ScanProperty<int>(s)},
                 {"Dish Time (Y/M/D H:M:S)", (s, d) => d.DishTime = Utils.ScanProperty<DateTime>(s)},
                 {"Calories", (s, d) => d.Calories = Utils.ScanProperty<int>(s)},
             };

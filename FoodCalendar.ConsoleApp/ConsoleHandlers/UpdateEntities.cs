@@ -27,11 +27,7 @@ namespace FoodCalendar.ConsoleApp.ConsoleHandlers
             choices.Add("Done");
             var optionsHandler = new OptionsHandler(choices);
             var option = optionsHandler.HandleOptions("Updating entity");
-            if (option == "Done")
-            {
-                return;
-            }
-
+            if (option == "Done") return;
             try
             {
                 entities[option]();

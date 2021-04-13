@@ -39,7 +39,8 @@ namespace FoodCalendar.ConsoleApp.ConsoleHandlers
         }
 
 
-        public static List<string> GetIngredientTable(IDbContextFactory dbContextFactory, int idLength)
+        public static List<string> GetIngredientTable(IDbContextFactory dbContextFactory, int idLength,
+            Func<IngredientModel, bool> filter = null)
         {
             var headersToValues = new Dictionary<string, Func<IngredientModel, string>>()
             {
@@ -50,11 +51,13 @@ namespace FoodCalendar.ConsoleApp.ConsoleHandlers
                 {"Calories", i => $"{i.Calories}"}
             };
             var repo = new IngredientRepository(dbContextFactory);
-            var table = GenericTable(repo.GetAll().ToList(), headersToValues);
+            var collection = FilterEntities(repo.GetAll(), filter);
+            var table = GenericTable(collection, headersToValues);
             return table;
         }
 
-        public static List<string> GetMealTable(IDbContextFactory dbContextFactory, int idLength)
+        public static List<string> GetMealTable(IDbContextFactory dbContextFactory, int idLength,
+            Func<MealModel, bool> filter = null)
         {
             var headersToValues = new Dictionary<string, Func<MealModel, string>>()
             {
@@ -71,11 +74,13 @@ namespace FoodCalendar.ConsoleApp.ConsoleHandlers
                 }
             };
             var repo = new MealRepository(dbContextFactory);
-            var table = GenericTable(repo.GetAll().ToList(), headersToValues);
+            var collection = FilterEntities(repo.GetAll(), filter);
+            var table = GenericTable(collection, headersToValues);
             return table;
         }
 
-        public static List<string> GetDishTable(IDbContextFactory dbContextFactory, int idLength)
+        public static List<string> GetDishTable(IDbContextFactory dbContextFactory, int idLength,
+            Func<DishModel, bool> filter = null)
         {
             var headersToValues = new Dictionary<string, Func<DishModel, string>>()
             {
@@ -92,8 +97,28 @@ namespace FoodCalendar.ConsoleApp.ConsoleHandlers
                 },
             };
             var repo = new DishRepository(dbContextFactory);
-            var table = GenericTable(repo.GetAll().ToList(), headersToValues);
+            var collection = FilterEntities(repo.GetAll(), filter);
+            var table = GenericTable(collection, headersToValues);
             return table;
+        }
+
+        private static List<T> FilterEntities<T>(
+            IEnumerable<T> entities,
+            Func<T, bool> filter
+        )
+            where T : ModelBase
+        {
+            List<T> collection;
+            if (filter == null)
+            {
+                collection = entities.ToList();
+            }
+            else
+            {
+                collection = entities.Where(filter).ToList();
+            }
+
+            return collection;
         }
 
         private static string GetBestMatch(IReadOnlyCollection<string> shortIds)
@@ -121,6 +146,7 @@ namespace FoodCalendar.ConsoleApp.ConsoleHandlers
             var formattedList = list.Select(format);
             return string.Join(", ", formattedList);
         }
+
 
         private static List<string> GenericTable<T>(
             List<T> entities,

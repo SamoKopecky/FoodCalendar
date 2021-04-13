@@ -22,12 +22,9 @@ namespace FoodCalendar.ConsoleApp.ConsoleHandlers
             };
             var choices = entities.Keys.ToList();
             choices.Add("Done");
-            var optionsHandler = new OptionsHandler(entities.Keys.ToList());
+            var optionsHandler = new OptionsHandler(choices);
             var option = optionsHandler.HandleOptions("Deleting entity");
-            if (option == "Done")
-            {
-                return;
-            }
+            if (option == "Done") return;
             entities[option]();
         }
 
