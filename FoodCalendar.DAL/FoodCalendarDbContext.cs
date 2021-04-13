@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using FoodCalendar.DAL.Entities;
+﻿using FoodCalendar.DAL.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace FoodCalendar.DAL

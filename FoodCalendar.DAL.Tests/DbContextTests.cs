@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using FoodCalendar.DAL.Entities;
 using FoodCalendar.DAL.Factories;
-using FoodCalendar.DAL.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Xunit;
 using Process = FoodCalendar.DAL.Entities.Process;

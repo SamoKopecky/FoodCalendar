@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using FoodCalendar.DAL.Entities;
+﻿using FoodCalendar.DAL.Entities;
 
 namespace FoodCalendar.DAL.Seeds
 {

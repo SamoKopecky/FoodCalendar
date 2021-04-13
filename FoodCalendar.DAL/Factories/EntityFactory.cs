@@ -9,10 +9,6 @@ namespace FoodCalendar.DAL.Factories
     {
         private readonly ChangeTracker _changeTracker;
 
-        public EntityFactory()
-        {
-        }
-
         public EntityFactory(ChangeTracker changeTracker) => _changeTracker = changeTracker;
 
         public TEntity Create<TEntity>(Guid id) where TEntity : EntityBase, new()
