@@ -12,6 +12,10 @@ namespace FoodCalendar.ConsoleApp.ConsoleHandlers
         {
         }
 
+        /// <summary>
+        /// Function for choosing which type of entity to delete. The correct
+        /// functions are then chosen from the defined dictionary of actions.
+        /// </summary>
         public void DeleteEntity()
         {
             var entities = new Dictionary<string, Action>()

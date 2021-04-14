@@ -10,6 +10,10 @@ namespace FoodCalendar.ConsoleApp.ConsoleHandlers
     {
         public AddNewEntity AddNewEntity;
 
+        /// <summary>
+        /// Function for choosing which type of entity to update. The correct
+        /// functions are then chosen from the defined dictionary of actions.
+        /// </summary>
         public UpdateEntities(IDbContextFactory dbContextFactory, int idLength) : base(dbContextFactory, idLength)
         {
             AddNewEntity = new AddNewEntity(dbContextFactory, idLength);

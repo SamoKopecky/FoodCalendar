@@ -11,6 +11,10 @@ namespace FoodCalendar.ConsoleApp.ConsoleHandlers
         {
         }
 
+        /// <summary>
+        /// Choose the type of models to display. Correct functions are chosen
+        /// from the dictionary of actions.
+        /// </summary>
         public void DisplayEntity()
         {
             var entities = new Dictionary<string, Action>()

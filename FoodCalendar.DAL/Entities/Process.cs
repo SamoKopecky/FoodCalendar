@@ -30,7 +30,7 @@ namespace FoodCalendar.DAL.Entities
             }
         }
 
-        private class ProcessEqualityComparer : ProcessEqualityComparerNoMeal
+        private sealed class ProcessEqualityComparer : ProcessEqualityComparerNoMeal
         {
             public override bool Equals(Process x, Process y)
             {

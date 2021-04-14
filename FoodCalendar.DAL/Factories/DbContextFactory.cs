@@ -5,6 +5,10 @@ namespace FoodCalendar.DAL.Factories
 {
     public class DbContextFactory : IDbContextFactory
     {
+        /// <summary>
+        /// Creates a db context for real applications.
+        /// </summary>
+        /// <returns>The created db context.</returns>
         public FoodCalendarDbContext CreateDbContext()
         {
             var optionsBuilder = new DbContextOptionsBuilder<FoodCalendarDbContext>()

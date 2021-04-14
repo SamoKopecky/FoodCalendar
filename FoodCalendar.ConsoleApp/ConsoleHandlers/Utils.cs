@@ -9,6 +9,12 @@ namespace FoodCalendar.ConsoleApp.ConsoleHandlers
 {
     public class Utils
     {
+        /// <summary>
+        /// Convert a string value into any primitive type.
+        /// </summary>
+        /// <typeparam name="T">Type to convert to.</typeparam>
+        /// <param name="propertyName">Name of the property.</param>
+        /// <returns>The converted value.</returns>
         public static T ScanProperty<T>(string propertyName)
         {
             Console.Write($"Enter value for {propertyName}: ");
@@ -16,6 +22,15 @@ namespace FoodCalendar.ConsoleApp.ConsoleHandlers
             return (T) Convert.ChangeType(parameter, typeof(T));
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="entities"></param>
+        /// <param name="table"></param>
+        /// <param name="entityName"></param>
+        /// <param name="idLength"></param>
+        /// <returns></returns>
         public static T GetExistingEntity<T>(
             List<T> entities,
             List<string> table,
@@ -37,7 +52,13 @@ namespace FoodCalendar.ConsoleApp.ConsoleHandlers
             return entities.First(m => $"{m.Id}".Substring(0, id.Length) == id);
         }
 
-
+        /// <summary>
+        /// Generates a table of all ingredients.
+        /// </summary>
+        /// <param name="dbContextFactory"></param>
+        /// <param name="idLength">Number digits to display the id.</param>
+        /// <param name="filter">Function to filter the set of all ingredients.</param>
+        /// <returns>The generated table.</returns>
         public static List<string> GetIngredientTable(IDbContextFactory dbContextFactory, int idLength,
             Func<IngredientModel, bool> filter = null)
         {
@@ -55,6 +76,13 @@ namespace FoodCalendar.ConsoleApp.ConsoleHandlers
             return table;
         }
 
+        /// <summary>
+        /// Generates a table of all meals.
+        /// </summary>
+        /// <param name="dbContextFactory"></param>
+        /// <param name="idLength">Number digits to display the id.</param>
+        /// <param name="filter">Function to filter the set of all meals.</param>
+        /// <returns>The generated table.</returns>
         public static List<string> GetMealTable(IDbContextFactory dbContextFactory, int idLength,
             Func<MealModel, bool> filter = null)
         {
@@ -78,6 +106,13 @@ namespace FoodCalendar.ConsoleApp.ConsoleHandlers
             return table;
         }
 
+        /// <summary>
+        /// Generates a table of all dishes.
+        /// </summary>
+        /// <param name="dbContextFactory"></param>
+        /// <param name="idLength">Number digits to display the id.</param>
+        /// <param name="filter">Function to filter the set of all dishes.</param>
+        /// <returns>The generated table.</returns>
         public static List<string> GetDishTable(IDbContextFactory dbContextFactory, int idLength,
             Func<DishModel, bool> filter = null)
         {
@@ -101,6 +136,13 @@ namespace FoodCalendar.ConsoleApp.ConsoleHandlers
             return table;
         }
 
+        /// <summary>
+        /// Filters a collection of models with the given function.
+        /// </summary>
+        /// <typeparam name="T">Type of the model.</typeparam>
+        /// <param name="entities">Models to be filtered.</param>
+        /// <param name="filter">Function to filter with.</param>
+        /// <returns>The filtered collection of models.</returns>
         private static List<T> FilterEntities<T>(
             IEnumerable<T> entities,
             Func<T, bool> filter
@@ -120,6 +162,12 @@ namespace FoodCalendar.ConsoleApp.ConsoleHandlers
             return collection;
         }
 
+        /// <summary>
+        /// Gets the match of an id of given length of a collection of ids.
+        /// </summary>
+        /// <param name="shortIds">The ids to search trough.</param>
+        /// <param name="name">Name of the action to take.</param>
+        /// <returns>The matched Id.</returns>
         private static string GetBestMatch(IReadOnlyCollection<string> shortIds, string name)
         {
             var matches = new List<string>();
@@ -148,7 +196,13 @@ namespace FoodCalendar.ConsoleApp.ConsoleHandlers
             return string.Join(", ", formattedList);
         }
 
-
+        /// <summary>
+        /// Generates a table of models.
+        /// </summary>
+        /// <typeparam name="T">Model type.</typeparam>
+        /// <param name="entities">Models to generate a table of.</param>
+        /// <param name="variables">Functions for getting the getting the values of properties.</param>
+        /// <returns>The generated table.</returns>
         private static List<string> GenericTable<T>(
             List<T> entities,
             Dictionary<string, Func<T, string>> variables
@@ -224,6 +278,10 @@ namespace FoodCalendar.ConsoleApp.ConsoleHandlers
             return finalRows.ToList();
         }
 
+        /// <summary>
+        /// Prints an exception.
+        /// </summary>
+        /// <param name="e">Exception to be printed.</param>
         public static void DisplayError(Exception e)
         {
             Console.Clear();

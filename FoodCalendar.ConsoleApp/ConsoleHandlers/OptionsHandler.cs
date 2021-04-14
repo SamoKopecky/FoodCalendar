@@ -12,6 +12,13 @@ namespace FoodCalendar.ConsoleApp.ConsoleHandlers
             BuildOptions(options);
         }
 
+
+        /// <summary>
+        /// Builds the option dictionary for a specific list of options.
+        /// Option dictionary can then be used to choose from the given options
+        /// by typing the corresponding character of the option.
+        /// </summary>
+        /// <param name="options">List of options to generate a dictionary from.</param>
         public void BuildOptions(List<string> options)
         {
             var alphabetKeys = GenerateOptions(options.Count);
@@ -23,6 +30,12 @@ namespace FoodCalendar.ConsoleApp.ConsoleHandlers
             }
         }
 
+        /// <summary>
+        /// Gets the chosen option from the user and then returns the
+        /// chosen option.
+        /// </summary>
+        /// <param name="actionDescription">Description of the action the user is doing.</param>
+        /// <returns>The chosen option.</returns>
         public string HandleOptions(string actionDescription)
         {
             Console.Clear();
@@ -49,6 +62,12 @@ namespace FoodCalendar.ConsoleApp.ConsoleHandlers
             return _optionsDictionary[selectedOption];
         }
 
+        /// <summary>
+        /// Generate a required number of alphabet characters to
+        /// then later bind with the actual options.
+        /// </summary>
+        /// <param name="length">Number of characters to generate.</param>
+        /// <returns>The generated characters.</returns>
         private IEnumerable<string> GenerateOptions(int length)
         {
             var options = new string[length];

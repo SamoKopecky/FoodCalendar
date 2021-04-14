@@ -14,6 +14,10 @@ namespace FoodCalendar.ConsoleApp.ConsoleHandlers
         {
         }
 
+        /// <summary>
+        /// Generate a menu to add a new entity. Correct create functions
+        /// are then called.
+        /// </summary>
         public void AddEntity()
         {
             var entities = new Dictionary<string, Func<ModelBase>>()
@@ -55,6 +59,11 @@ namespace FoodCalendar.ConsoleApp.ConsoleHandlers
             }
         }
 
+        /// <summary>
+        /// Create or update dish model. To create a new dish call function with empty model.
+        /// </summary>
+        /// <param name="dish">Dish to updated/created.</param>
+        /// <returns>Created/updated model.</returns>
         public DishModel CreateDish(DishModel dish)
         {
             var propertiesWithString = new Dictionary<string, Action<string, DishModel>>()
@@ -71,6 +80,11 @@ namespace FoodCalendar.ConsoleApp.ConsoleHandlers
             return dish;
         }
 
+        /// <summary>
+        /// Create or update meal model. To create a new meal call function with empty model.
+        /// </summary>
+        /// <param name="meal">Meal to updated/created.</param>
+        /// <returns>Created/updated model.</returns>
         public MealModel CreateMeal(MealModel meal, bool implicitCreation = false)
         {
             meal.Process ??= new ProcessModel();
@@ -84,12 +98,18 @@ namespace FoodCalendar.ConsoleApp.ConsoleHandlers
                 {"Add ingredient amount", m => m.IngredientsUsed.Add(CreateIngredientUsed())}
             };
             FillEntity(propertiesWithString, properties, meal, "Adding meal");
+            // Needed when a meal is created implicitly by the creation of a dish
             if (!implicitCreation) return meal;
             var repo = new MealRepository(DbContextFactory);
             meal = repo.Insert(meal);
             return meal;
         }
 
+        /// <summary>
+        /// Create or update ingredient model. To create a new ingredient call function with empty model.
+        /// </summary>
+        /// <param name="ingredient">ingredient to updated/created.</param>
+        /// <returns>Created/updated model.</returns>
         public IngredientModel CreateIngredient(IngredientModel ingredient)
         {
             var properties = new Dictionary<string, Action<string, IngredientModel>>()
@@ -103,6 +123,10 @@ namespace FoodCalendar.ConsoleApp.ConsoleHandlers
             return ingredient;
         }
 
+        /// <summary>
+        /// Create a new process model.
+        /// </summary>
+        /// <returns>Created process model.</returns>
         private ProcessModel CreateProcess()
         {
             var process = new ProcessModel();
@@ -116,6 +140,10 @@ namespace FoodCalendar.ConsoleApp.ConsoleHandlers
             return process;
         }
 
+        /// <summary>
+        /// Create a list of ingredient amount models.
+        /// </summary>
+        /// <returns>List of created models.</returns>
         private IngredientAmountModel CreateIngredientUsed()
         {
             var ingredientAm = new IngredientAmountModel();
@@ -132,6 +160,11 @@ namespace FoodCalendar.ConsoleApp.ConsoleHandlers
             return ingredientAm;
         }
 
+        /// <summary>
+        /// Choose which ingredient to get from a
+        /// table of existing ingredients in the Database.
+        /// </summary>
+        /// <returns></returns>
         private IngredientModel AddExistingIngredient()
         {
             var repo = new IngredientRepository(DbContextFactory);
@@ -139,18 +172,34 @@ namespace FoodCalendar.ConsoleApp.ConsoleHandlers
             return Utils.GetExistingEntity(repo.GetAll().ToList(), table, "Ingredient", IdLength);
         }
 
+        /// <summary>
+        /// Choose which meal to get from a table of existing meals in the Database.
+        /// Since there is no many-to-many relation between dish and meal entity a new
+        /// model is created each time a meal is going to be reused.
+        /// </summary>
+        /// <returns>A copy of an existing meal.</returns>
         private MealModel AddExistingMeal()
         {
             var repo = new MealRepository(DbContextFactory);
             var table = Utils.GetMealTable(DbContextFactory, IdLength);
             var meal = Utils.GetExistingEntity(repo.GetAll().ToList(), table, "Meal", IdLength);
+            // Reset the ids so that a new meal can be inserted
             meal.Id = Guid.Empty;
             meal.Process.Id = Guid.Empty;
             meal.IngredientsUsed.ToList().ForEach(ia => ia.Id = Guid.Empty);
             return meal;
         }
 
-
+        /// <summary>
+        /// Generic function for filing a model. The properties of a model
+        /// are filled with the anonymous functions from parameter properties and
+        /// propertiesWithString.
+        /// </summary>
+        /// <typeparam name="TModel">Specific type of the model</typeparam>
+        /// <param name="propertiesWithString">Functions for filling simple properties</param>
+        /// <param name="properties">Functions for filling properties of relations</param>
+        /// <param name="entity">Model to be filled.</param>
+        /// <param name="actionDescription">String description of the model to be filled.</param>
         private void FillEntity<TModel>(
             Dictionary<string, Action<string, TModel>> propertiesWithString,
             Dictionary<string, Action<TModel>> properties,

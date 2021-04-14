@@ -14,6 +14,9 @@ namespace FoodCalendar.ConsoleApp.ConsoleHandlers
         {
         }
 
+        /// <summary>
+        /// Chose a filter to use on a table of models.
+        /// </summary>
         public void FilterEntities()
         {
             var filters = new Dictionary<string, Action>()
@@ -28,6 +31,9 @@ namespace FoodCalendar.ConsoleApp.ConsoleHandlers
             filters[option]();
         }
 
+        /// <summary>
+        /// Filter the days with the given date and displays them.
+        /// </summary>
         private void FilterDays()
         {
             Console.Clear();

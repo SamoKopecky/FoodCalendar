@@ -18,6 +18,10 @@ namespace FoodCalendar.DAL.Factories
             _dbName = stackTrace.GetFrame(0)?.GetMethod()?.Name;
         }
 
+        /// <summary>
+        /// Creates db context for tests.
+        /// </summary>
+        /// <returns>Created in memory db context.</returns>
         public FoodCalendarDbContext CreateDbContext()
         {
             var optionsBuilder = new DbContextOptionsBuilder<FoodCalendarDbContext>()
