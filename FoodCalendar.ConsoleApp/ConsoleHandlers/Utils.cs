@@ -262,9 +262,11 @@ namespace FoodCalendar.ConsoleApp.ConsoleHandlers
 
             var finalRows = new string[entities.Count + 4];
             using var enumerator = dataRows.GetEnumerator();
-            var fillerString = new string('-', rowLen);
+            var fillerString = new string('-', rowLen - 2);
+            fillerString = fillerString.PadLeft(fillerString.Length + 1);
             for (int i = 0; i < finalRows.Length; i++)
             {
+                // Insert filter row above and below header name and at the end
                 if (i == 0 || i == 2 || i == entities.Count + 3)
                 {
                     finalRows[i] = fillerString;

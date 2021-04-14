@@ -8,7 +8,8 @@ namespace FoodCalendar.DAL.Factories
         /// <summary>
         /// Creates a db context for real applications.
         /// </summary>
-        /// <returns>The created db context.</returns>
+        /// <returns>The created db context.
+        /// </returns>
         public FoodCalendarDbContext CreateDbContext()
         {
             var optionsBuilder = new DbContextOptionsBuilder<FoodCalendarDbContext>()
