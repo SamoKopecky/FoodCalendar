@@ -40,5 +40,16 @@ namespace FoodCalendar.BL.Models
         }
 
         public static IEqualityComparer<MealModel> MealModelComparer { get; } = new MealModelEqualityComparer();
+
+        public override bool Equals(object obj)
+        {
+            var meal = (MealModel) obj;
+            return MealModelComparer.Equals(this, meal) && meal != null && Id == meal.Id;
+        }
+
+        public override int GetHashCode()
+        {
+            return MealModelComparer.GetHashCode(this);
+        }
     }
 }

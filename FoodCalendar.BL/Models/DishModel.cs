@@ -38,5 +38,16 @@ namespace FoodCalendar.BL.Models
         }
 
         public static IEqualityComparer<DishModel> DishModelComparer { get; } = new DishModelEqualityComparer();
+
+        public override bool Equals(object obj)
+        {
+            var dish = (DishModel) obj;
+            return  DishModelComparer.Equals(this, dish) && dish != null && Id == dish.Id;
+        }
+
+        public override int GetHashCode()
+        {
+            return DishModelComparer.GetHashCode(this);
+        }
     }
 }

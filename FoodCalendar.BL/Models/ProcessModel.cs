@@ -29,6 +29,18 @@ namespace FoodCalendar.BL.Models
             }
         }
 
-        public static IEqualityComparer<ProcessModel> ProcessModelComparer { get; } = new ProcessModelEqualityComparer();
+        public static IEqualityComparer<ProcessModel> ProcessModelComparer { get; } =
+            new ProcessModelEqualityComparer();
+
+        public override bool Equals(object obj)
+        {
+            var process = (ProcessModel) obj;
+            return ProcessModelComparer.Equals(this, process) && process != null && process.Id == Id;
+        }
+
+        public override int GetHashCode()
+        {
+            return ProcessModelComparer.GetHashCode(this);
+        }
     }
 }

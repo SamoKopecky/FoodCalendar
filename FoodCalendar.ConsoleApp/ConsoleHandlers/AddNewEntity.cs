@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using FoodCalendar.BL.Models;
 using FoodCalendar.BL.Repositories;
-using FoodCalendar.ConsoleApp.DbSynchronization;
+using FoodCalendar.ConsoleApp.EntitiesSynchronization;
 using FoodCalendar.DAL.Interfaces;
 
 namespace FoodCalendar.ConsoleApp.ConsoleHandlers
@@ -60,26 +60,23 @@ namespace FoodCalendar.ConsoleApp.ConsoleHandlers
             var propertiesWithString = new Dictionary<string, Action<string, DishModel>>()
             {
                 {"Dish Name", (s, d) => d.DishName = Utils.ScanProperty<string>(s)},
-                {"Total Time", (s, d) => d.TotalTime = Utils.ScanProperty<int>(s)},
                 {"Dish Time (Y/M/D H:M:S)", (s, d) => d.DishTime = Utils.ScanProperty<DateTime>(s)},
-                {"Calories", (s, d) => d.Calories = Utils.ScanProperty<int>(s)},
             };
             var properties = new Dictionary<string, Action<DishModel>>()
             {
-                {"Create and add a new meal", d => d.Meals.Add(CreateMeal(new MealModel()))},
+                {"Create and add a new meal", d => d.Meals.Add(CreateMeal(new MealModel(), true))},
                 {"Add an existing meal", d => d.Meals.Add(AddExistingMeal())}
             };
             FillEntity(propertiesWithString, properties, dish, "Adding dish");
             return dish;
         }
 
-        public MealModel CreateMeal(MealModel meal)
+        public MealModel CreateMeal(MealModel meal, bool implicitCreation = false)
         {
             meal.Process ??= new ProcessModel();
             var propertiesWithString = new Dictionary<string, Action<string, MealModel>>()
             {
-                {"Dish Name", (s, m) => m.MealName = Utils.ScanProperty<string>(s)},
-                {"Calories", (s, m) => m.Calories = Utils.ScanProperty<int>(s)},
+                {"Meal Name", (s, m) => m.MealName = Utils.ScanProperty<string>(s)},
             };
             var properties = new Dictionary<string, Action<MealModel>>()
             {
@@ -87,7 +84,9 @@ namespace FoodCalendar.ConsoleApp.ConsoleHandlers
                 {"Add ingredient amount", m => m.IngredientsUsed.Add(CreateIngredientUsed())}
             };
             FillEntity(propertiesWithString, properties, meal, "Adding meal");
-
+            if (!implicitCreation) return meal;
+            var repo = new MealRepository(DbContextFactory);
+            meal = repo.Insert(meal);
             return meal;
         }
 
@@ -179,7 +178,7 @@ namespace FoodCalendar.ConsoleApp.ConsoleHandlers
                 }
             } while (true);
 
-            Synchronization.SynchronizeEntity(entity);
+            Synchronization.SynchronizeEntity(entity, DbContextFactory);
         }
     }
 }

@@ -30,6 +30,18 @@ namespace FoodCalendar.BL.Models
             }
         }
 
-        public static IEqualityComparer<IngredientAmountModel> IngredientAmountComparer { get; } = new IngredientAmountEqualityComparer();
+        public static IEqualityComparer<IngredientAmountModel> IngredientAmountComparer { get; } =
+            new IngredientAmountEqualityComparer();
+
+        public override bool Equals(object obj)
+        {
+            var ia = (IngredientAmountModel) obj;
+            return IngredientAmountComparer.Equals(this, ia) && ia != null && Id == ia.Id;
+        }
+
+        public override int GetHashCode()
+        {
+            return IngredientAmountComparer.GetHashCode(this);
+        }
     }
 }

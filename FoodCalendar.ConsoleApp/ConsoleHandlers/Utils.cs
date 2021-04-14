@@ -30,11 +30,10 @@ namespace FoodCalendar.ConsoleApp.ConsoleHandlers
                 Console.WriteLine(row);
             }
 
-            Console.Write($"Enter {entityName} ID: ");
             table = table.Where(s => s[0] == '|').ToList();
             var shortIds = table.Select(row => row.Substring(2, idLength)).ToList();
             shortIds.RemoveAt(0);
-            var id = GetBestMatch(shortIds);
+            var id = GetBestMatch(shortIds, entityName);
             return entities.First(m => $"{m.Id}".Substring(0, id.Length) == id);
         }
 
@@ -121,11 +120,13 @@ namespace FoodCalendar.ConsoleApp.ConsoleHandlers
             return collection;
         }
 
-        private static string GetBestMatch(IReadOnlyCollection<string> shortIds)
+        private static string GetBestMatch(IReadOnlyCollection<string> shortIds, string name)
         {
             var matches = new List<string>();
+
             do
             {
+                Console.Write($"Enter {name} ID: ");
                 var userId = Console.ReadLine();
                 if (userId == null) continue;
                 var smallIds = shortIds.ToList().Select(s => s.Substring(0, userId.Length)).ToList();

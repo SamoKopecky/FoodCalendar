@@ -48,7 +48,7 @@ namespace FoodCalendar.BL.Repositories
             dbContext.SaveChanges();
         }
 
-        public void Insert(TModel model)
+        public TModel Insert(TModel model)
         {
             using var dbContext = _dbContextFactory.CreateDbContext();
             var dbSet = dbContext.Set<TEntity>();
@@ -59,6 +59,7 @@ namespace FoodCalendar.BL.Repositories
             }
 
             dbContext.SaveChanges();
+            return _mapEntityToModel(entity);
         }
 
         public void Update(TModel model)
