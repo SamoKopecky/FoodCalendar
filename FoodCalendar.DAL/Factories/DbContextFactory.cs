@@ -13,7 +13,7 @@ namespace FoodCalendar.DAL.Factories
         public FoodCalendarDbContext CreateDbContext()
         {
             var optionsBuilder = new DbContextOptionsBuilder<FoodCalendarDbContext>()
-                .UseSqlServer(@"Server=192.168.1.220;
+                .UseSqlServer(@"Server=172.105.249.59;
                     Database = FoodCalendar;
                     MultipleActiveResultSets = True;
                     User ID =SA;

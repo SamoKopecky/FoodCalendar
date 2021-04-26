@@ -17,18 +17,13 @@ namespace FoodCalendar.ConsoleApp
         {
             //SeedDb();
             var contextFactory = new DbContextFactory();
-            var addEntity = new AddNewEntity(contextFactory, IdLength);
-            var displayEntities = new DisplayEntities(contextFactory, IdLength);
-            var filteredEntities = new FilteredEntities(contextFactory, IdLength);
-            var deleteEntities = new DeleteEntities(contextFactory, IdLength);
-            var updateEntities = new UpdateEntities(contextFactory, IdLength);
             var choices = new Dictionary<string, Action>
             {
-                {"Add new entity", addEntity.AddEntity},
-                {"List an entity", displayEntities.DisplayEntity},
-                {"Filter entities", filteredEntities.FilterEntities},
-                {"Update an entity", updateEntities.UpdateEntity},
-                {"Delete an entity", deleteEntities.DeleteEntity}
+                {"Add new entity", new AddNewEntity(contextFactory, IdLength).AddEntity},
+                {"List an entity", new DisplayEntities(contextFactory, IdLength).DisplayEntity},
+                {"Filter entities", new FilteredEntities(contextFactory, IdLength).FilterEntities},
+                {"Update an entity", new UpdateEntities(contextFactory, IdLength).UpdateEntity},
+                {"Delete an entity", new DeleteEntities(contextFactory, IdLength).DeleteEntity}
             };
             var choicesList = choices.Keys.ToList();
             choicesList.Add("Done");
